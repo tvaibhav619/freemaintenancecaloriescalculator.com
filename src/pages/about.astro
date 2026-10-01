@@ -1,0 +1,71 @@
+---
+import Layout from '../layouts/Layout.astro';
+
+const title = "About Us & Scientific Methodology | FreeMaintenanceCaloriesCalculator.com";
+const description = "Learn about the mission, scientific formulas, and nutritional methodologies behind FreeMaintenanceCaloriesCalculator.com.";
+---
+
+<Layout title={title} description={description}>
+  <div class="max-w-4xl mx-auto px-4 sm:px-6 py-16">
+    <!-- Header -->
+    <div class="border-b border-hairline pb-8 mb-10">
+      <span class="text-xs font-semibold uppercase tracking-wider text-mute" style="font-family: var(--font-mono);">Our Mission</span>
+      <h1 class="text-3xl sm:text-4xl font-extrabold text-ink tracking-tight mt-1 mb-4">
+        Engineering Scientific Clarity for Human Nutrition
+      </h1>
+      <p class="text-base text-body leading-relaxed">
+        FreeMaintenanceCaloriesCalculator.com was created to eliminate the confusion, paywalls, and inflated calorie estimates common across mainstream fitness websites and wearable trackers.
+      </p>
+    </div>
+
+    <!-- Content Sections -->
+    <div class="flex flex-col gap-10 text-body text-sm leading-relaxed">
+      
+      <section class="flex flex-col gap-3">
+        <h2 class="text-xl font-bold text-ink">Why We Built This Tool</h2>
+        <p>
+          Most commercial fitness apps and wearable smartwatches overestimate daily calorie expenditure by 20% to 90%. This chronic overestimation causes millions of people to unintentionally overconsume calories, leading to stalled fat loss, plateaus, and frustration.
+        </p>
+        <p>
+          We built this platform based on peer-reviewed clinical research to provide individuals, lifters, athletes, and coaches with transparent, mathematical estimates of their Total Daily Energy Expenditure (TDEE) and macronutrient requirements.
+        </p>
+      </section>
+
+      <section class="flex flex-col gap-3">
+        <h2 class="text-xl font-bold text-ink">Our Scientific Methodology</h2>
+        <p>
+          Our platform does not use proprietary black-box algorithms. Instead, we rely strictly on peer-reviewed metabolic equations published in medical and sports science journals:
+        </p>
+        <ul class="list-disc list-inside space-y-2 pl-2">
+          <li>
+            <strong>Mifflin-St Jeor Equation (1990):</strong> Developed by MD Mifflin and ST St Jeor, this formula was validated by the American Dietetic Association (ADA) in a landmark review of 245 studies as the most reliable predictor of resting metabolic rate in healthy individuals.
+          </li>
+          <li>
+            <strong>Katch-McArdle Formula (1996):</strong> Unlike formulas that rely on gross body weight, Katch-McArdle isolates Lean Body Mass (LBM). Because adipose fat tissue has a minimal metabolic footprint compared to skeletal muscle and organs, this equation offers superior precision for lean lifters.
+          </li>
+          <li>
+            <strong>Revised Harris-Benedict (1984):</strong> Updated by Roza and Shizgal to modernize the original 1919 equation, providing a reliable comparative clinical benchmark.
+          </li>
+        </ul>
+      </section>
+
+      <section class="flex flex-col gap-3">
+        <h2 class="text-xl font-bold text-ink">Our Commitment to Free Access & Privacy</h2>
+        <p>
+          We believe that fundamental health and nutrition tools should be universally accessible. All features on FreeMaintenanceCaloriesCalculator.com are 100% free with no account creation, email opt-ins, or paid paywalls required. All calculations occur client-side in your browser; your personal physical metrics are never stored on our servers.
+        </p>
+      </section>
+
+      <div class="bg-canvas-elevated border border-hairline rounded-2xl p-6 shadow-xs mt-4">
+        <h3 class="text-base font-bold text-ink mb-2">Have Feedback or Questions?</h3>
+        <p class="text-xs text-mute mb-4">
+          We continually refine our algorithms based on the latest exercise metabolism literature. If you have suggestions or questions, we would love to hear from you.
+        </p>
+        <a href="/contact" class="inline-flex items-center text-xs font-semibold text-ink hover:underline">
+          Contact our team &rarr;
+        </a>
+      </div>
+
+    </div>
+  </div>
+</Layout>

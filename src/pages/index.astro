@@ -1,11 +1,805 @@
 ---
-import Welcome from '../components/Welcome.astro';
 import Layout from '../layouts/Layout.astro';
+import Calculator from '../components/Calculator.astro';
 
-// Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
-// Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
+const seoTitle = "Maintenance Calorie Calculator | Most Accurate Daily Calorie Calculator";
+const seoDescription = "Calculate your maintenance calories (TDEE), daily calorie burn, and customized macro targets. The most accurate maintenance calorie calculator and calorie calculator for weight loss.";
+
+const softwareSchema = {
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Maintenance Calorie Calculator",
+  "url": "https://freemaintenancecaloriescalculator.com/",
+  "description": "The most accurate maintenance calorie calculator and daily calorie calculator for weight loss, maintenance, and muscle gain.",
+  "applicationCategory": "HealthApplication",
+  "operatingSystem": "All",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  },
+  "featureList": [
+    "Mifflin-St Jeor equation calculation",
+    "Katch-McArdle formula for lean body mass",
+    "Revised Harris-Benedict baseline",
+    "Calorie calculator for weight loss deficit planner",
+    "Lean bulk surplus targets",
+    "Interactive macronutrient distribution",
+    "Meal frequency calorie & protein breakdown"
+  ]
+};
+
+const faqSchema = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "what is my calorie maintenance calculator?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "A calorie maintenance calculator is an evidence-based nutritional tool that determines your Total Daily Energy Expenditure (TDEE). It calculates the exact number of calories your body burns every 24 hours across resting organ function (BMR), non-exercise activity (NEAT), intentional workouts (EAT), and food digestion (TEF). Eating at this caloric target maintains your current body weight."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "how accurate is maintenance calorie calculator?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "When powered by clinical formulas like Mifflin-St Jeor, a maintenance calorie calculator is accurate within ±5% for the vast majority of healthy adults. When utilizing the Katch-McArdle formula with a known body fat percentage, precision increases further because it measures metabolically active Lean Body Mass rather than total weight."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "which maintenance calorie calculator is best?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "The best maintenance calorie calculator is one that provides transparent, clinically validated formulas (Mifflin-St Jeor for standard populations and Katch-McArdle for lean athletic individuals) rather than outdated 1919 Harris-Benedict formulas or arbitrary fitness tracker estimations. It should also calculate granular macronutrient splits and meal frequency distributions."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "calorie maintenance calculator how to calculate?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "To calculate maintenance calories: First, compute your Basal Metabolic Rate (BMR) using Mifflin-St Jeor: [10 × weight in kg] + [6.25 × height in cm] - [5 × age] + s (+5 for men, -161 for women). Second, multiply your BMR by your physical activity multiplier (1.2 for sedentary up to 1.9 for extremely active). The resulting number is your daily maintenance calories."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How do I calculate what my maintenance calories should be?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "You can calculate your maintenance calories instantly using our free calculator above by entering your age, biological sex, height, current body weight, and daily activity level. Alternatively, you can use the 14-day empirical method: eat a consistent calorie target for two weeks while tracking morning weight; if your 7-day average remains stable, that caloric intake is your true maintenance level."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Is 1200 calories enough for maintenance?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No, for virtually all adults, 1200 calories is not enough for maintenance. A 1200-calorie diet is typically below the resting Basal Metabolic Rate (BMR) of adult humans, meaning it fails to provide adequate energy for basic cellular respiration, cardiac function, and liver metabolism. Sustaining 1200 calories long-term often causes metabolic adaptation, fatigue, and nutrient deficiencies."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Is 2000 calories a day maintenance?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "A 2000 calorie intake is a common national average used on nutrition facts labels, but individual maintenance varies widely. For an average sedentary to lightly active female, maintenance is typically 1,800 to 2,200 calories. For an active adult male, maintenance frequently ranges from 2,400 to 3,000+ calories depending on body weight, muscle mass, and step count."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What is the most accurate formula for maintenance calories?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "The Mifflin-St Jeor equation is clinically proven as the most accurate standard formula for general populations where body composition is unknown. For athletic or lean individuals who know their body fat percentage, the Katch-McArdle formula is even more accurate because it calculates energy expenditure directly from Lean Body Mass (LBM)."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What is a normal amount of maintenance calories?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Normal maintenance calories for adult women generally fall between 1,800 and 2,400 calories per day, and for adult men between 2,200 and 3,000 calories per day. Factors such as height, age, muscle mass, occupation, and daily step volume cause natural variations around these ranges."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Is it better to eat 1200 or 1500 calories a day?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "For the vast majority of people aiming to lose weight, eating 1500 calories is vastly better than 1200 calories. A 1500-calorie target preserves lean muscle tissue, supports thyroid hormone output, provides essential micronutrients, and prevents the ravenous rebound binging associated with extreme 1200-calorie crash diets."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Is 1200 calories enough for a 5'5\" woman?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No, 1200 calories is not enough for maintenance for a 5'5\" woman. An average 5'5\" woman weighing 135 to 150 lbs has a resting BMR of 1,350 to 1,450 calories and a maintenance TDEE between 1,800 and 2,200 calories. Consuming 1200 calories places her in an aggressive deficit that can cause hormonal disruption, hair thinning, and lethargy."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How long will it take to lose 20 pounds on a 1500 calorie diet?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "If your maintenance TDEE is 2,000 calories, consuming 1,500 calories creates a daily 500-calorie deficit (3,500 calories per week), which equals roughly 1 pound of fat loss per week. At this safe and sustainable rate, losing 20 pounds will take approximately 20 to 24 weeks (around 5 months)."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How much will you weigh if you eat 1500 calories a day?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "If you consistently eat 1,500 calories a day, your body weight will gradually drop until 1,500 calories becomes your new biological maintenance expenditure. For an average sedentary adult female, 1,500 calories will eventually stabilize body weight at roughly 105 to 115 lbs, whereas for larger or active individuals it will continue downward until metabolic adaptation and mass loss equalize."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How many eggs are 1500 calories?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "One large whole egg contains approximately 72 calories and 6 grams of protein. Therefore, 1,500 calories equates to approximately 21 large whole eggs, providing roughly 126 grams of complete protein and 105 grams of dietary fats."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How many calories a day to lose 2 pounds a week?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "To lose 2 pounds of fat per week, you need a daily caloric deficit of 1,000 calories below your maintenance TDEE (since 2 lbs of adipose tissue equates to ~7,000 calories). For example, if your maintenance is 2,600 calories, you must consume 1,600 calories per day. Note that daily deficits over 1,000 calories are aggressive and primarily suited for individuals with significant weight to lose."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How many calories do 10,000 steps burn 300 lbs?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "A person weighing 300 lbs (136 kg) burns approximately 700 to 900 calories walking 10,000 steps (about 4.5 to 5 miles). Because physical workload and energy expenditure are directly proportional to body mass moved against gravity, a 300 lb individual expends nearly double the calories of a 150 lb person completing the exact same distance."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Should I weigh food raw or cooked when tracking maintenance calories?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Nutrition databases and food labels almost universally reference raw, uncooked food weights unless stated otherwise. Cooking fundamentally alters weight through moisture loss (meats shrink 20% to 30%, making them more calorie-dense) or water absorption (rice and pasta expand 2 to 3 times, diluting calorie density). If measuring cooked meals or meal prep, convert values using the Raw to Cooked Food Calculator (https://rawtocookedcalculator.com/) to maintain true caloric accuracy."
+      }
+    }
+  ]
+};
 ---
 
-<Layout>
-	<Welcome />
+<Layout title={seoTitle} description={seoDescription}>
+  <!-- JSON-LD Schemas for SEO -->
+  <script type="application/ld+json" set:html={JSON.stringify(softwareSchema)} />
+  <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} />
+
+  <!-- HERO SECTION -->
+  <section class="relative pt-16 pb-12 px-4 sm:px-6 overflow-hidden flex flex-col items-center text-center">
+    <div class="relative z-10 max-w-3xl mx-auto flex flex-col items-center gap-4">
+      <!-- Technical Eyebrow Label -->
+      <span class="inline-flex items-center justify-center gap-1.5 px-3 py-1 rounded-full bg-canvas-elevated border border-hairline text-[11px] sm:text-xs font-semibold text-ink shadow-xs max-w-full text-center" style="font-family: var(--font-mono);">
+        <span class="w-2 h-2 rounded-full bg-emerald-500 flex-shrink-0"></span>
+        <span class="truncate sm:whitespace-normal">Peer-Reviewed Metabolic Algorithms • 2026 Edition</span>
+      </span>
+
+      <!-- Primary H1 Display Title -->
+      <h1 class="text-3xl xs:text-4xl sm:text-6xl font-extrabold text-ink tracking-tight leading-[1.1] break-words" style="letter-spacing: -1.5px;">
+        Maintenance Calorie Calculator
+      </h1>
+
+      <!-- Subtitle with Secondary Keywords -->
+      <p class="text-base sm:text-lg text-body max-w-2xl mx-auto leading-relaxed">
+        The most accurate daily calorie calculator for weight loss, maintenance, and muscle gain. Calculate your true Total Daily Energy Expenditure (TDEE) and optimal macros with validated scientific formulas.
+      </p>
+
+      <!-- Trust Badges -->
+      <div class="flex flex-wrap items-center justify-center gap-4 pt-2 text-xs text-mute" style="font-family: var(--font-mono);">
+        <span class="flex items-center gap-1.5">✓ Mifflin-St Jeor</span>
+        <span class="flex items-center gap-1.5">✓ Katch-McArdle</span>
+        <span class="flex items-center gap-1.5">✓ Harris-Benedict</span>
+        <span class="flex items-center gap-1.5">✓ 100% Free & No Signup</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- CALCULATOR SECTION -->
+  <section id="calculator" class="px-4 sm:px-6 py-6 z-10 relative">
+    <Calculator lang="en" />
+  </section>
+
+  <!-- THE 4 PILLARS OF ENERGY EXPENDITURE -->
+  <section id="science" class="max-w-6xl mx-auto px-4 sm:px-6 py-20 border-t border-hairline mt-12">
+    <div class="max-w-3xl mb-12">
+      <span class="text-xs font-semibold uppercase tracking-wider text-mute" style="font-family: var(--font-mono);">Energy Science</span>
+      <h2 class="text-3xl font-bold text-ink tracking-tight mt-1 mb-3">The 4 Components of Total Daily Energy Expenditure (TDEE)</h2>
+      <p class="text-body text-sm leading-relaxed">
+        Your body does not burn energy in a single uniform way. Every calorie burned throughout the day originates from one of four distinct metabolic compartments:
+      </p>
+    </div>
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+      
+      <!-- BMR Card -->
+      <div class="bg-canvas-elevated border border-hairline rounded-2xl p-6 shadow-xs flex flex-col justify-between">
+        <div>
+          <div class="flex items-center justify-between mb-3">
+            <span class="w-8 h-8 rounded-lg bg-blue-50 dark:bg-blue-950/50 text-blue-600 dark:text-blue-400 flex items-center justify-center font-bold text-sm" style="font-family: var(--font-mono);">01</span>
+            <span class="text-xs font-bold text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-950/50 px-2 py-0.5 rounded" style="font-family: var(--font-mono);">60 - 70%</span>
+          </div>
+          <h3 class="text-base font-bold text-ink mb-1.5">Basal Metabolic Rate (BMR)</h3>
+          <p class="text-xs text-body leading-relaxed">
+            The resting energy cost required to keep vital organs functioning (brain, liver, heart, kidneys, and lungs) while completely inactive in a thermoneutral environment.
+          </p>
+        </div>
+        <div class="mt-4 pt-3 border-t border-hairline text-[11px] text-mute font-medium">
+          Determined by: Lean body mass, age, sex, and height.
+        </div>
+      </div>
+
+      <!-- NEAT Card -->
+      <div class="bg-canvas-elevated border border-hairline rounded-2xl p-6 shadow-xs flex flex-col justify-between">
+        <div>
+          <div class="flex items-center justify-between mb-3">
+            <span class="w-8 h-8 rounded-lg bg-emerald-50 dark:bg-emerald-950/50 text-emerald-600 dark:text-emerald-400 flex items-center justify-center font-bold text-sm" style="font-family: var(--font-mono);">02</span>
+            <span class="text-xs font-bold text-emerald-600 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-950/50 px-2 py-0.5 rounded" style="font-family: var(--font-mono);">15 - 20%</span>
+          </div>
+          <h3 class="text-base font-bold text-ink mb-1.5">Non-Exercise Activity (NEAT)</h3>
+          <p class="text-xs text-body leading-relaxed">
+            All physical energy expended outside of deliberate workouts: walking to work, typing, taking the stairs, cleaning, posture maintenance, and pacing.
+          </p>
+        </div>
+        <div class="mt-4 pt-3 border-t border-hairline text-[11px] text-mute font-medium">
+          The single biggest variable determining fat loss success.
+        </div>
+      </div>
+
+      <!-- TEF Card -->
+      <div class="bg-canvas-elevated border border-hairline rounded-2xl p-6 shadow-xs flex flex-col justify-between">
+        <div>
+          <div class="flex items-center justify-between mb-3">
+            <span class="w-8 h-8 rounded-lg bg-amber-50 dark:bg-amber-950/50 text-amber-600 dark:text-amber-400 flex items-center justify-center font-bold text-sm" style="font-family: var(--font-mono);">03</span>
+            <span class="text-xs font-bold text-amber-600 dark:text-amber-400 bg-amber-50 dark:bg-amber-950/50 px-2 py-0.5 rounded" style="font-family: var(--font-mono);">8 - 10%</span>
+          </div>
+          <h3 class="text-base font-bold text-ink mb-1.5">Thermic Effect of Food (TEF)</h3>
+          <p class="text-xs text-body leading-relaxed">
+            The metabolic cost of breaking down, digesting, and absorbing food. Dietary protein requires the highest metabolic energy (~20–30% of ingested calories) compared to fats (0–3%).
+          </p>
+        </div>
+        <div class="mt-4 pt-3 border-t border-hairline text-[11px] text-mute font-medium">
+          Elevated significantly with high-protein diets.
+        </div>
+      </div>
+
+      <!-- EAT Card -->
+      <div class="bg-canvas-elevated border border-hairline rounded-2xl p-6 shadow-xs flex flex-col justify-between">
+        <div>
+          <div class="flex items-center justify-between mb-3">
+            <span class="w-8 h-8 rounded-lg bg-violet-50 dark:bg-violet-950/50 text-violet-600 dark:text-violet-400 flex items-center justify-center font-bold text-sm" style="font-family: var(--font-mono);">04</span>
+            <span class="text-xs font-bold text-violet-600 dark:text-violet-400 bg-violet-50 dark:bg-violet-950/50 px-2 py-0.5 rounded" style="font-family: var(--font-mono);">5 - 10%</span>
+          </div>
+          <h3 class="text-base font-bold text-ink mb-1.5">Exercise Activity (EAT)</h3>
+          <p class="text-xs text-body leading-relaxed">
+            The energy expended during intentional cardiovascular, resistance, or sports training sessions. While crucial for cardiac health and muscle retention, it represents a minor portion of total daily burn.
+          </p>
+        </div>
+        <div class="mt-4 pt-3 border-t border-hairline text-[11px] text-mute font-medium">
+          Often severely overestimated by smartwatches.
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- 14-DAY CALIBRATION PROTOCOL -->
+  <section id="calibration" class="max-w-6xl mx-auto px-4 sm:px-6 py-16 border-t border-hairline">
+    <div class="bg-canvas-elevated border border-hairline rounded-2xl p-8 sm:p-10 shadow-xs">
+      <div class="max-w-3xl mb-8">
+        <span class="text-xs font-semibold uppercase tracking-wider text-ink" style="font-family: var(--font-mono);">Practical Protocol</span>
+        <h2 class="text-2xl sm:text-3xl font-bold text-ink tracking-tight mt-1 mb-3">How to Find Your Exact Maintenance in 14 Days</h2>
+        <p class="text-body text-sm leading-relaxed">
+          No mathematical formula in the world can account for individual metabolic nuances, gut biome differences, or subtle fidgeting habits. Use our calculator as your baseline starting point, then follow this clinical calibration protocol:
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div class="flex flex-col gap-2 border-l-2 border-ink pl-4">
+          <span class="text-xs font-bold text-ink" style="font-family: var(--font-mono);">PHASE 1: THE BASELINE</span>
+          <h3 class="text-sm font-semibold text-ink">Eat Exactly Your Calculated TDEE</h3>
+          <p class="text-xs text-body leading-relaxed">
+            Consume the exact calorie target calculated above every day for 14 consecutive days. Log all food with a digital kitchen scale for complete precision. If weighing pre-cooked meats or meal-prepped grains, convert values with the <a href="https://rawtocookedcalculator.com/" target="_blank" rel="noopener" class="text-ink font-medium underline underline-offset-2 hover:opacity-80 transition-opacity">Raw to Cooked Calculator</a> to account for moisture loss and grain expansion accurately.
+          </p>
+        </div>
+
+        <div class="flex flex-col gap-2 border-l-2 border-ink pl-4">
+          <span class="text-xs font-bold text-ink" style="font-family: var(--font-mono);">PHASE 2: WEIGH-IN PROTOCOL</span>
+          <h3 class="text-sm font-semibold text-ink">Track Morning Weight Daily</h3>
+          <p class="text-xs text-body leading-relaxed">
+            Step on the scale every morning immediately after waking and using the restroom, before consuming water or food. Calculate the 7-day average for Week 1 and Week 2.
+          </p>
+        </div>
+
+        <div class="flex flex-col gap-2 border-l-2 border-ink pl-4">
+          <span class="text-xs font-bold text-ink" style="font-family: var(--font-mono);">PHASE 3: CALIBRATION</span>
+          <h3 class="text-sm font-semibold text-ink">Evaluate 14-Day Trajectory</h3>
+          <p class="text-xs text-body leading-relaxed">
+            If your 7-day average is unchanged (±0.3 lbs), that number is your true biological maintenance. If you lost 0.5 lbs, add 250 kcal/day. If you gained 0.5 lbs, subtract 250 kcal/day.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SCIENTIFIC FORMULA COMPARISON TABLE -->
+  <section class="max-w-6xl mx-auto px-4 sm:px-6 py-16 border-t border-hairline">
+    <div class="max-w-3xl mb-8">
+      <span class="text-xs font-semibold uppercase tracking-wider text-mute" style="font-family: var(--font-mono);">Methodology Comparison</span>
+      <h2 class="text-2xl sm:text-3xl font-bold text-ink tracking-tight mt-1 mb-2">Scientific Formulas Explained</h2>
+      <p class="text-body text-sm leading-relaxed">
+        Our calculator allows you to toggle between the three most validated equations in sports nutrition literature:
+      </p>
+    </div>
+
+    <div class="overflow-x-auto bg-canvas-elevated rounded-2xl border border-hairline shadow-xs max-w-full overscroll-x-contain">
+      <table class="w-full min-w-[550px] text-left text-xs sm:text-sm">
+        <thead class="bg-canvas border-b border-hairline font-semibold text-ink uppercase tracking-wider text-[11px]" style="font-family: var(--font-mono);">
+          <tr>
+            <th class="py-3.5 px-4 sm:px-6">Formula</th>
+            <th class="py-3.5 px-4 sm:px-6">Key Variables Used</th>
+            <th class="py-3.5 px-4 sm:px-6">Primary Benefit</th>
+            <th class="py-3.5 px-4 sm:px-6">Best Suited For</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-hairline text-body">
+          <tr class="hover:bg-canvas/50 transition-colors">
+            <td class="py-4 px-4 sm:px-6 font-bold text-ink">Mifflin-St Jeor (1990)</td>
+            <td class="py-4 px-4 sm:px-6">Weight, Height, Age, Biological Sex</td>
+            <td class="py-4 px-4 sm:px-6">Endorsed by the Academy of Nutrition and Dietetics as the most accurate without body composition measurements.</td>
+            <td class="py-4 px-4 sm:px-6"><span class="px-2 py-0.5 rounded bg-emerald-50 dark:bg-emerald-950/50 text-emerald-700 dark:text-emerald-400 font-medium">General Public</span></td>
+          </tr>
+          <tr class="hover:bg-canvas/50 transition-colors">
+            <td class="py-4 px-4 sm:px-6 font-bold text-ink">Katch-McArdle (1996)</td>
+            <td class="py-4 px-4 sm:px-6">Lean Body Mass (LBM) via Body Fat %</td>
+            <td class="py-4 px-4 sm:px-6">Accounts for the metabolic expenditure of muscle mass versus inert fat tissue.</td>
+            <td class="py-4 px-4 sm:px-6"><span class="px-2 py-0.5 rounded bg-blue-50 dark:bg-blue-950/50 text-blue-700 dark:text-blue-400 font-medium">Athletes & Lifters</span></td>
+          </tr>
+          <tr class="hover:bg-canvas/50 transition-colors">
+            <td class="py-4 px-4 sm:px-6 font-bold text-ink">Revised Harris-Benedict (1984)</td>
+            <td class="py-4 px-4 sm:px-6">Weight, Height, Age, Biological Sex</td>
+            <td class="py-4 px-4 sm:px-6">Historic clinical standard, updated by Roza and Shizgal to remove older 1919 biases.</td>
+            <td class="py-4 px-4 sm:px-6"><span class="px-2 py-0.5 rounded bg-purple-50 dark:bg-purple-950/50 text-purple-700 dark:text-purple-400 font-medium">Clinical Reference</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- MACRO GUIDE SECTION -->
+  <section id="macros" class="max-w-6xl mx-auto px-4 sm:px-6 py-16 border-t border-hairline">
+    <div class="max-w-3xl mb-10">
+      <span class="text-xs font-semibold uppercase tracking-wider text-mute" style="font-family: var(--font-mono);">Nutritional Science</span>
+      <h2 class="text-2xl sm:text-3xl font-bold text-ink tracking-tight mt-1 mb-2">How to Set Your Macronutrients for Optimal Results</h2>
+      <p class="text-body text-sm leading-relaxed">
+        While total calories determine whether you gain or lose weight, your macronutrient distribution determines what kind of tissue you gain or lose:
+      </p>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <!-- Protein -->
+      <div class="bg-canvas-elevated border border-hairline rounded-2xl p-6 shadow-xs flex flex-col gap-3">
+        <div class="flex items-center gap-2">
+          <span class="w-3 h-3 rounded-full bg-[var(--color-grad-blue)]"></span>
+          <h3 class="text-base font-bold text-ink">Protein (4 kcal / gram)</h3>
+        </div>
+        <p class="text-xs text-body leading-relaxed">
+          The structural building block for lean tissue repair and muscle protein synthesis. High protein diets maximize satiety, protect muscle during a caloric deficit, and elevate TEF.
+        </p>
+        <div class="mt-auto bg-canvas p-3 rounded-xl border border-hairline text-xs font-medium text-ink">
+          <strong>Optimal Target:</strong> 0.8 to 1.0 grams per pound of total bodyweight (1.6–2.2g/kg).
+        </div>
+      </div>
+
+      <!-- Fats -->
+      <div class="bg-canvas-elevated border border-hairline rounded-2xl p-6 shadow-xs flex flex-col gap-3">
+        <div class="flex items-center gap-2">
+          <span class="w-3 h-3 rounded-full bg-[var(--color-grad-magenta)]"></span>
+          <h3 class="text-base font-bold text-ink">Fats (9 kcal / gram)</h3>
+        </div>
+        <p class="text-xs text-body leading-relaxed">
+          Crucial for endocrine function, testosterone and estrogen synthesis, cell membrane integrity, and fat-soluble vitamin absorption (Vitamins A, D, E, K).
+        </p>
+        <div class="mt-auto bg-canvas p-3 rounded-xl border border-hairline text-xs font-medium text-ink">
+          <strong>Optimal Target:</strong> 20% to 30% of total daily calories (minimum 0.3g per lb).
+        </div>
+      </div>
+
+      <!-- Carbs -->
+      <div class="bg-canvas-elevated border border-hairline rounded-2xl p-6 shadow-xs flex flex-col gap-3">
+        <div class="flex items-center gap-2">
+          <span class="w-3 h-3 rounded-full bg-[var(--color-grad-amber)]"></span>
+          <h3 class="text-base font-bold text-ink">Carbs (4 kcal / gram)</h3>
+        </div>
+        <p class="text-xs text-body leading-relaxed">
+          The primary fuel for glycolytic exercise, high-intensity resistance training, and central nervous system cognition. Stored as glycogen in the liver and skeletal muscles.
+        </p>
+        <div class="mt-auto bg-canvas p-3 rounded-xl border border-hairline text-xs font-medium text-ink">
+          <strong>Optimal Target:</strong> Allocated from the remaining calories after protein and fat needs are met.
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- COMPREHENSIVE ON-PAGE SEO GUIDE (800 - 1200 WORDS) -->
+  <article id="guide" class="max-w-4xl mx-auto px-4 sm:px-6 py-20 border-t border-hairline">
+    <div class="mb-10 text-center max-w-2xl mx-auto">
+      <span class="text-xs font-semibold uppercase tracking-wider text-mute" style="font-family: var(--font-mono);">Evidence-Based Energy Science</span>
+      <h2 class="text-2xl sm:text-3xl font-extrabold text-ink tracking-tight mt-1 mb-3">
+        The Definitive Guide to Using a Maintenance Calorie Calculator
+      </h2>
+      <p class="text-sm text-body leading-relaxed">
+        Everything you need to know about calculating daily energy expenditure, structuring sustainable weight loss deficits, and avoiding common metabolic pitfalls.
+      </p>
+    </div>
+
+    <div class="flex flex-col gap-10 text-sm sm:text-base text-body leading-relaxed">
+      
+      <!-- Section 1 -->
+      <section class="flex flex-col gap-3">
+        <h3 class="text-xl font-bold text-ink tracking-tight">
+          Understanding Your Maintenance Calories: Why Finding Your Baseline Matters
+        </h3>
+        <p>
+          To master your physical transformation—whether shedding stubborn fat, building lean muscle tissue, or sustaining peak athletic endurance—you must first understand the fundamental law of human energetics: energy balance. A <strong>maintenance calorie calculator</strong> is an engineered nutritional tool designed to pinpoint your Total Daily Energy Expenditure (TDEE). This number represents the precise quantity of caloric energy your body expends over a 24-hour window through cellular respiration, organ function, unconscious movement, food digestion, and physical exercise.
+        </p>
+        <p>
+          When your daily caloric consumption exactly equals your TDEE, your body maintains biological equilibrium, neither storing new adipose tissue nor catabolizing existing muscle and fat stores. Knowing this baseline is the critical cornerstone of fitness. Without utilizing a scientifically grounded <strong>calorie calculator</strong>, attempting to alter body composition is pure guesswork.
+        </p>
+      </section>
+
+      <!-- Section 2 -->
+      <section class="flex flex-col gap-3">
+        <h3 class="text-xl font-bold text-ink tracking-tight">
+          What Makes This the Best & Most Accurate Maintenance Calorie Calculator?
+        </h3>
+        <p>
+          A major frustration among fitness enthusiasts is that different online tools often provide wildly conflicting results. Many generic websites on the internet still rely on archaic formulas from the early 20th century, such as the original 1919 Harris-Benedict equation, which frequently overestimates caloric needs by 10% to 15%.
+        </p>
+        <p>
+          To engineer the <strong>most accurate maintenance calorie calculator</strong> available online, our platform integrates two gold-standard, peer-reviewed clinical methodologies:
+        </p>
+        <ul class="list-disc list-inside space-y-2 pl-2">
+          <li>
+            <strong>The Mifflin-St Jeor Equation</strong>: Endorsed by the Academy of Nutrition and Dietetics following systematic reviews of over 240 metabolic studies, this formula reliably predicts basal metabolic rate within a tight 5% margin of error across broad adult demographics using biological sex, height, weight, and age.
+          </li>
+          <li>
+            <strong>The Katch-McArdle Formula</strong>: When you supply an estimated body fat percentage, our system isolates your Lean Body Mass (LBM). Because adipose fat tissue requires negligible energy compared to metabolically active skeletal muscle, liver, and brain tissue, factoring in lean mass makes this the <strong>best maintenance calorie calculator</strong> for competitive athletes, bodybuilders, and resistance-trained individuals.
+          </li>
+        </ul>
+        <p>
+          By pairing these equations with realistic, un-inflated activity multipliers, you receive an honest, physiological baseline rather than an exaggerated target that leads to unwanted fat accumulation.
+        </p>
+      </section>
+
+      <!-- Section 3 -->
+      <section class="flex flex-col gap-3">
+        <h3 class="text-xl font-bold text-ink tracking-tight">
+          Using a Calorie Calculator for Weight Loss: The Science of Sustainable Fat Loss
+        </h3>
+        <p>
+          The overwhelming majority of people seeking a <strong>calorie calculator for weight loss</strong> share one primary objective: burning body fat while preserving hard-earned muscle. To lose fat, you must create an energy deficit wherein daily caloric intake is lower than your daily maintenance burn.
+        </p>
+        <p>
+          However, extreme caloric restriction often leads to severe metabolic slowdown, ravenous hunger, loss of bone and muscle density, and eventual binge eating. A reliable <strong>weight loss calorie calculator</strong> calculates structured, sustainable deficits rather than crash diets:
+        </p>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 my-2">
+          <div class="bg-canvas-elevated border border-hairline rounded-xl p-4">
+            <h4 class="font-bold text-ink text-sm mb-1">Mild Deficit (-10% / ~250 kcal/day)</h4>
+            <p class="text-xs text-body">
+              Ideal for leaner individuals, athletes aiming to protect gym performance, or those within 10 lbs of their goal weight. Yields approximately 0.5 lbs (0.23 kg) of fat loss weekly.
+            </p>
+          </div>
+          <div class="bg-canvas-elevated border border-hairline rounded-xl p-4">
+            <h4 class="font-bold text-ink text-sm mb-1">Standard Cut (-20% / ~500 kcal/day)</h4>
+            <p class="text-xs text-body">
+              The clinical gold standard for safe, steady fat loss of roughly 1 lb (0.45 kg) per week. Maximizes fat oxidation while mitigating metabolic adaptation.
+            </p>
+          </div>
+        </div>
+        <p>
+          By using our dedicated <strong>calorie calculator to lose weight</strong>, you can calculate the exact caloric intake needed to reach your target physique steadily, reliably, and without sacrificing energy or health.
+        </p>
+      </section>
+
+      <!-- Section 4 -->
+      <section class="flex flex-col gap-3">
+        <h3 class="text-xl font-bold text-ink tracking-tight">
+          The Treadmill Calorie Calculator Fallacy: Why Cardio Machines Lie
+        </h3>
+        <p>
+          A frequent trap that derails weight loss efforts is relying on gym machine calorie counters. Whether you walk at an incline or jog intervals, the number shown on a <strong>treadmill calorie calculator</strong> or stationary bike display is notorious for being wildly inaccurate.
+        </p>
+        <p>
+          Cardio consoles calculate caloric expenditure using broad metabolic equivalent of task (MET) formulas based solely on speed and incline, without factoring in individual resting metabolic rate, body fat percentage, biomechanical running efficiency, or whether you are holding onto the handrails (which reduces energy expenditure by up to 25%). Peer-reviewed investigations published in sports medicine journals have demonstrated that treadmill calorie calculators overestimate true energy expenditure by 20% to 42%, and in some cases by as much as 80%!
+        </p>
+        <p>
+          Furthermore, human physiology is governed by constrained total energy expenditure: intense cardio often causes subconscious behavioral compensation, leading individuals to sit longer and reduce their non-exercise activity (NEAT) for the rest of the day. Instead of attempting to calculate exercise burn in isolation via machine screens, using our unified <strong>daily calorie calculator</strong> factors your regular workout routine into your overall weekly activity multiplier—preventing the dangerous mistake of "eating back" imaginary workout calories.
+        </p>
+      </section>
+
+      <!-- Section 5 -->
+      <section class="flex flex-col gap-3">
+        <h3 class="text-xl font-bold text-ink tracking-tight">
+          How to Structure Your Daily Calorie Calculator Targets by Macronutrient
+        </h3>
+        <p>
+          While total energy intake determines whether you gain, lose, or maintain body mass, your macronutrient ratio determines whether that change consists of adipose tissue or lean skeletal muscle. When using our <strong>daily calorie calculator</strong>, apply these evidence-based nutritional guidelines:
+        </p>
+        <ul class="list-disc list-inside space-y-2 pl-2">
+          <li>
+            <strong>High-Quality Protein (0.8 to 1.0g per lb of bodyweight)</strong>: Protein possesses the highest thermic effect of food (TEF), consuming 20% to 30% of its own caloric value during metabolic breakdown. Consuming adequate protein triggers muscle protein synthesis, blunts hunger hormones, and preserves lean muscle during a caloric cut.
+          </li>
+          <li>
+            <strong>Essential Dietary Fats (20% to 30% of total calories)</strong>: Essential fatty acids are biologically mandatory for steroid hormone production (including testosterone and estrogen), fat-soluble vitamin assimilation (Vitamins A, D, E, and K), and cellular membrane integrity.
+          </li>
+          <li>
+            <strong>Complex Carbohydrates (Remaining Caloric Balance)</strong>: Carbohydrates replenish intramuscular glycogen, fuel high-intensity glycolytic training, and optimize central nervous system output.
+          </li>
+        </ul>
+      </section>
+
+      <!-- Section 6 -->
+      <section class="flex flex-col gap-3">
+        <h3 class="text-xl font-bold text-ink tracking-tight">
+          Practical Calibration: Verifying Your True Numbers in the Real World
+        </h3>
+        <p>
+          Any mathematical equation—no matter how advanced—remains an estimation based on population averages. Subtle differences in thyroid signaling, brown adipose tissue thermogenesis, and unconscious daily fidgeting mean your individual maintenance level may differ slightly from initial predictions.
+        </p>
+        <p>
+          Treat the output from this <strong>maintenance calorie calculator</strong> as your authoritative starting baseline. Track your daily intake with a digital food scale and log your morning body weight across 14 consecutive days. When logging meals, be vigilant with measurement states—raw ingredients change mass significantly when cooked. Using an accurate <a href="https://rawtocookedcalculator.com/" target="_blank" rel="noopener" class="text-ink font-medium underline underline-offset-2 hover:opacity-80 transition-opacity">raw to cooked food calculator</a> ensures that moisture evaporation in proteins and water absorption in carbs don't distort your daily calorie tally. If your two-week average weight remains unchanged, you have confirmed your biological maintenance calorie baseline with real-world empirical proof.
+        </p>
+      </section>
+
+    </div>
+  </article>
+
+  <!-- FAQ SECTION -->
+  <section id="faq" class="max-w-4xl mx-auto px-4 sm:px-6 py-20 border-t border-hairline">
+    <div class="text-center max-w-2xl mx-auto mb-12">
+      <span class="text-xs font-semibold uppercase tracking-wider text-mute" style="font-family: var(--font-mono);">Evidence-Based Answers</span>
+      <h2 class="text-3xl font-bold text-ink tracking-tight mt-1 mb-2">Frequently Asked Questions</h2>
+      <p class="text-body text-sm leading-relaxed">
+        Common questions about calculating maintenance calories, structuring weight loss diets, and understanding daily energy expenditure.
+      </p>
+    </div>
+
+    <div class="flex flex-col gap-3.5">
+      
+      <!-- FAQ 1 -->
+      <details class="group bg-canvas-elevated border border-hairline rounded-xl p-5 [&_summary::-webkit-details-marker]:hidden">
+        <summary class="flex cursor-pointer items-center justify-between font-semibold text-ink text-sm sm:text-base">
+          <span>what is my calorie maintenance calculator?</span>
+          <span class="transition group-open:rotate-180 text-mute">
+            <svg fill="none" height="20" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" width="20"><path d="M6 9l6 6 6-6"></path></svg>
+          </span>
+        </summary>
+        <p class="text-body mt-3 text-xs sm:text-sm leading-relaxed">
+          A calorie maintenance calculator is an evidence-based nutritional tool that determines your Total Daily Energy Expenditure (TDEE). It calculates the exact number of calories your body burns every 24 hours across resting organ function (BMR), non-exercise activity (NEAT), intentional workouts (EAT), and food digestion (TEF). Consuming this exact caloric target keeps your body weight stable.
+        </p>
+      </details>
+
+      <!-- FAQ 2 -->
+      <details class="group bg-canvas-elevated border border-hairline rounded-xl p-5 [&_summary::-webkit-details-marker]:hidden">
+        <summary class="flex cursor-pointer items-center justify-between font-semibold text-ink text-sm sm:text-base">
+          <span>how accurate is maintenance calorie calculator?</span>
+          <span class="transition group-open:rotate-180 text-mute">
+            <svg fill="none" height="20" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" width="20"><path d="M6 9l6 6 6-6"></path></svg>
+          </span>
+        </summary>
+        <p class="text-body mt-3 text-xs sm:text-sm leading-relaxed">
+          When powered by clinical formulas like Mifflin-St Jeor, a maintenance calorie calculator is accurate within ±5% for the vast majority of healthy adults. When utilizing the Katch-McArdle formula with a known body fat percentage, precision increases further because it measures metabolically active Lean Body Mass rather than total weight. Real-world calorie needs can still vary slightly based on individual daily movement, hormones, and genetics.
+        </p>
+      </details>
+
+      <!-- FAQ 3 -->
+      <details class="group bg-canvas-elevated border border-hairline rounded-xl p-5 [&_summary::-webkit-details-marker]:hidden">
+        <summary class="flex cursor-pointer items-center justify-between font-semibold text-ink text-sm sm:text-base">
+          <span>which maintenance calorie calculator is best?</span>
+          <span class="transition group-open:rotate-180 text-mute">
+            <svg fill="none" height="20" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" width="20"><path d="M6 9l6 6 6-6"></path></svg>
+          </span>
+        </summary>
+        <p class="text-body mt-3 text-xs sm:text-sm leading-relaxed">
+          The best maintenance calorie calculator is one that provides transparent, clinically validated formulas (Mifflin-St Jeor for standard populations and Katch-McArdle for lean athletic individuals) rather than outdated 1919 Harris-Benedict formulas or arbitrary fitness tracker estimations. It should also calculate granular macronutrient splits and meal frequency distributions.
+        </p>
+      </details>
+
+      <!-- FAQ 4 -->
+      <details class="group bg-canvas-elevated border border-hairline rounded-xl p-5 [&_summary::-webkit-details-marker]:hidden">
+        <summary class="flex cursor-pointer items-center justify-between font-semibold text-ink text-sm sm:text-base">
+          <span>calorie maintenance calculator how to calculate?</span>
+          <span class="transition group-open:rotate-180 text-mute">
+            <svg fill="none" height="20" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" width="20"><path d="M6 9l6 6 6-6"></path></svg>
+          </span>
+        </summary>
+        <p class="text-body mt-3 text-xs sm:text-sm leading-relaxed">
+          To calculate maintenance calories: First, compute your Basal Metabolic Rate (BMR) using Mifflin-St Jeor: [10 × weight in kg] + [6.25 × height in cm] - [5 × age] + s (+5 for men, -161 for women). Second, multiply your BMR by your physical activity multiplier (1.2 for sedentary up to 1.9 for extremely active). The resulting number is your daily maintenance calories.
+        </p>
+      </details>
+
+      <!-- FAQ 5 -->
+      <details class="group bg-canvas-elevated border border-hairline rounded-xl p-5 [&_summary::-webkit-details-marker]:hidden">
+        <summary class="flex cursor-pointer items-center justify-between font-semibold text-ink text-sm sm:text-base">
+          <span>How do I calculate what my maintenance calories should be?</span>
+          <span class="transition group-open:rotate-180 text-mute">
+            <svg fill="none" height="20" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" width="20"><path d="M6 9l6 6 6-6"></path></svg>
+          </span>
+        </summary>
+        <p class="text-body mt-3 text-xs sm:text-sm leading-relaxed">
+          You can calculate your maintenance calories instantly using our free calculator above by entering your age, biological sex, height, current body weight, and daily activity level. Alternatively, you can use the 14-day empirical method: eat a consistent calorie target for two weeks while tracking morning weight; if your 7-day average remains stable, that caloric intake is your true maintenance level.
+        </p>
+      </details>
+
+      <!-- FAQ 6 -->
+      <details class="group bg-canvas-elevated border border-hairline rounded-xl p-5 [&_summary::-webkit-details-marker]:hidden">
+        <summary class="flex cursor-pointer items-center justify-between font-semibold text-ink text-sm sm:text-base">
+          <span>Is 1200 calories enough for maintenance?</span>
+          <span class="transition group-open:rotate-180 text-mute">
+            <svg fill="none" height="20" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" width="20"><path d="M6 9l6 6 6-6"></path></svg>
+          </span>
+        </summary>
+        <p class="text-body mt-3 text-xs sm:text-sm leading-relaxed">
+          No, for virtually all adults, 1200 calories is not enough for maintenance. A 1200-calorie diet is typically below the resting Basal Metabolic Rate (BMR) of adult humans, meaning it fails to provide adequate energy for basic cellular respiration, cardiac function, and liver metabolism. Sustaining 1200 calories long-term often causes metabolic adaptation, fatigue, and nutrient deficiencies.
+        </p>
+      </details>
+
+      <!-- FAQ 7 -->
+      <details class="group bg-canvas-elevated border border-hairline rounded-xl p-5 [&_summary::-webkit-details-marker]:hidden">
+        <summary class="flex cursor-pointer items-center justify-between font-semibold text-ink text-sm sm:text-base">
+          <span>Is 2000 calories a day maintenance?</span>
+          <span class="transition group-open:rotate-180 text-mute">
+            <svg fill="none" height="20" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" width="20"><path d="M6 9l6 6 6-6"></path></svg>
+          </span>
+        </summary>
+        <p class="text-body mt-3 text-xs sm:text-sm leading-relaxed">
+          A 2000 calorie intake is a common national average used on nutrition facts labels, but individual maintenance varies widely. For an average sedentary to lightly active female, maintenance is typically 1,800 to 2,200 calories. For an active adult male, maintenance frequently ranges from 2,400 to 3,000+ calories depending on body weight, muscle mass, and step count.
+        </p>
+      </details>
+
+      <!-- FAQ 8 -->
+      <details class="group bg-canvas-elevated border border-hairline rounded-xl p-5 [&_summary::-webkit-details-marker]:hidden">
+        <summary class="flex cursor-pointer items-center justify-between font-semibold text-ink text-sm sm:text-base">
+          <span>What is the most accurate formula for maintenance calories?</span>
+          <span class="transition group-open:rotate-180 text-mute">
+            <svg fill="none" height="20" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" width="20"><path d="M6 9l6 6 6-6"></path></svg>
+          </span>
+        </summary>
+        <p class="text-body mt-3 text-xs sm:text-sm leading-relaxed">
+          The Mifflin-St Jeor equation is clinically proven as the most accurate standard formula for general populations where body composition is unknown. For athletic or lean individuals who know their body fat percentage, the Katch-McArdle formula is even more accurate because it calculates energy expenditure directly from Lean Body Mass (LBM).
+        </p>
+      </details>
+
+      <!-- FAQ 9 -->
+      <details class="group bg-canvas-elevated border border-hairline rounded-xl p-5 [&_summary::-webkit-details-marker]:hidden">
+        <summary class="flex cursor-pointer items-center justify-between font-semibold text-ink text-sm sm:text-base">
+          <span>What is a normal amount of maintenance calories?</span>
+          <span class="transition group-open:rotate-180 text-mute">
+            <svg fill="none" height="20" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" width="20"><path d="M6 9l6 6 6-6"></path></svg>
+          </span>
+        </summary>
+        <p class="text-body mt-3 text-xs sm:text-sm leading-relaxed">
+          Normal maintenance calories for adult women generally fall between 1,800 and 2,400 calories per day, and for adult men between 2,200 and 3,000 calories per day. Factors such as height, age, muscle mass, occupation, and daily step volume cause natural variations around these ranges.
+        </p>
+      </details>
+
+      <!-- FAQ 10 -->
+      <details class="group bg-canvas-elevated border border-hairline rounded-xl p-5 [&_summary::-webkit-details-marker]:hidden">
+        <summary class="flex cursor-pointer items-center justify-between font-semibold text-ink text-sm sm:text-base">
+          <span>Is it better to eat 1200 or 1500 calories a day?</span>
+          <span class="transition group-open:rotate-180 text-mute">
+            <svg fill="none" height="20" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" width="20"><path d="M6 9l6 6 6-6"></path></svg>
+          </span>
+        </summary>
+        <p class="text-body mt-3 text-xs sm:text-sm leading-relaxed">
+          For the vast majority of people aiming to lose weight, eating 1500 calories is vastly better than 1200 calories. A 1500-calorie target preserves lean muscle tissue, supports thyroid hormone output, provides essential micronutrients, and prevents the ravenous rebound binging associated with extreme 1200-calorie crash diets.
+        </p>
+      </details>
+
+      <!-- FAQ 11 -->
+      <details class="group bg-canvas-elevated border border-hairline rounded-xl p-5 [&_summary::-webkit-details-marker]:hidden">
+        <summary class="flex cursor-pointer items-center justify-between font-semibold text-ink text-sm sm:text-base">
+          <span>Is 1200 calories enough for a 5'5" woman?</span>
+          <span class="transition group-open:rotate-180 text-mute">
+            <svg fill="none" height="20" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" width="20"><path d="M6 9l6 6 6-6"></path></svg>
+          </span>
+        </summary>
+        <p class="text-body mt-3 text-xs sm:text-sm leading-relaxed">
+          No, 1200 calories is not enough for maintenance for a 5'5" woman. An average 5'5" woman weighing 135 to 150 lbs has a resting BMR of 1,350 to 1,450 calories and a maintenance TDEE between 1,800 and 2,200 calories. Consuming 1200 calories places her in an aggressive deficit that can cause hormonal disruption, hair thinning, and lethargy.
+        </p>
+      </details>
+
+      <!-- FAQ 12 -->
+      <details class="group bg-canvas-elevated border border-hairline rounded-xl p-5 [&_summary::-webkit-details-marker]:hidden">
+        <summary class="flex cursor-pointer items-center justify-between font-semibold text-ink text-sm sm:text-base">
+          <span>How long will it take to lose 20 pounds on a 1500 calorie diet?</span>
+          <span class="transition group-open:rotate-180 text-mute">
+            <svg fill="none" height="20" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" width="20"><path d="M6 9l6 6 6-6"></path></svg>
+          </span>
+        </summary>
+        <p class="text-body mt-3 text-xs sm:text-sm leading-relaxed">
+          If your maintenance TDEE is 2,000 calories, consuming 1,500 calories creates a daily 500-calorie deficit (3,500 calories per week), which equals roughly 1 pound of fat loss per week. At this safe and sustainable rate, losing 20 pounds will take approximately 20 to 24 weeks (around 5 months).
+        </p>
+      </details>
+
+      <!-- FAQ 13 -->
+      <details class="group bg-canvas-elevated border border-hairline rounded-xl p-5 [&_summary::-webkit-details-marker]:hidden">
+        <summary class="flex cursor-pointer items-center justify-between font-semibold text-ink text-sm sm:text-base">
+          <span>How much will you weigh if you eat 1500 calories a day?</span>
+          <span class="transition group-open:rotate-180 text-mute">
+            <svg fill="none" height="20" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" width="20"><path d="M6 9l6 6 6-6"></path></svg>
+          </span>
+        </summary>
+        <p class="text-body mt-3 text-xs sm:text-sm leading-relaxed">
+          If you consistently eat 1,500 calories a day, your body weight will gradually drop until 1,500 calories becomes your new biological maintenance expenditure. For an average sedentary adult female, 1,500 calories will eventually stabilize body weight at roughly 105 to 115 lbs, whereas for larger or active individuals it will continue downward until metabolic adaptation and mass loss equalize.
+        </p>
+      </details>
+
+      <!-- FAQ 14 -->
+      <details class="group bg-canvas-elevated border border-hairline rounded-xl p-5 [&_summary::-webkit-details-marker]:hidden">
+        <summary class="flex cursor-pointer items-center justify-between font-semibold text-ink text-sm sm:text-base">
+          <span>How many eggs are 1500 calories?</span>
+          <span class="transition group-open:rotate-180 text-mute">
+            <svg fill="none" height="20" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" width="20"><path d="M6 9l6 6 6-6"></path></svg>
+          </span>
+        </summary>
+        <p class="text-body mt-3 text-xs sm:text-sm leading-relaxed">
+          One large whole egg contains approximately 72 calories and 6 grams of protein. Therefore, 1,500 calories equates to approximately 21 large whole eggs, providing roughly 126 grams of complete protein and 105 grams of dietary fats.
+        </p>
+      </details>
+
+      <!-- FAQ 15 -->
+      <details class="group bg-canvas-elevated border border-hairline rounded-xl p-5 [&_summary::-webkit-details-marker]:hidden">
+        <summary class="flex cursor-pointer items-center justify-between font-semibold text-ink text-sm sm:text-base">
+          <span>How many calories a day to lose 2 pounds a week?</span>
+          <span class="transition group-open:rotate-180 text-mute">
+            <svg fill="none" height="20" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" width="20"><path d="M6 9l6 6 6-6"></path></svg>
+          </span>
+        </summary>
+        <p class="text-body mt-3 text-xs sm:text-sm leading-relaxed">
+          To lose 2 pounds of fat per week, you need a daily caloric deficit of 1,000 calories below your maintenance TDEE (since 2 lbs of adipose tissue equates to ~7,000 calories). For example, if your maintenance is 2,600 calories, you must consume 1,600 calories per day. Note that daily deficits over 1,000 calories are aggressive and primarily suited for individuals with significant weight to lose.
+        </p>
+      </details>
+
+      <!-- FAQ 16 -->
+      <details class="group bg-canvas-elevated border border-hairline rounded-xl p-5 [&_summary::-webkit-details-marker]:hidden">
+        <summary class="flex cursor-pointer items-center justify-between font-semibold text-ink text-sm sm:text-base">
+          <span>How many calories do 10,000 steps burn 300 lbs?</span>
+          <span class="transition group-open:rotate-180 text-mute">
+            <svg fill="none" height="20" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" width="20"><path d="M6 9l6 6 6-6"></path></svg>
+          </span>
+        </summary>
+        <p class="text-body mt-3 text-xs sm:text-sm leading-relaxed">
+          A person weighing 300 lbs (136 kg) burns approximately 700 to 900 calories walking 10,000 steps (about 4.5 to 5 miles). Because physical workload and energy expenditure are directly proportional to body mass moved against gravity, a 300 lb individual expends nearly double the calories of a 150 lb person completing the exact same distance.
+        </p>
+      </details>
+
+      <!-- FAQ 17 -->
+      <details class="group bg-canvas-elevated border border-hairline rounded-xl p-5 [&_summary::-webkit-details-marker]:hidden">
+        <summary class="flex cursor-pointer items-center justify-between font-semibold text-ink text-sm sm:text-base">
+          <span>Should I weigh food raw or cooked when tracking maintenance calories?</span>
+          <span class="transition group-open:rotate-180 text-mute">
+            <svg fill="none" height="20" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" width="20"><path d="M6 9l6 6 6-6"></path></svg>
+          </span>
+        </summary>
+        <p class="text-body mt-3 text-xs sm:text-sm leading-relaxed">
+          Nutrition facts and caloric databases almost universally reference raw, uncooked food weights unless stated otherwise. Cooking fundamentally alters weight through moisture loss (meats shrink 20% to 30%, making them more calorie-dense) or water absorption (rice and pasta expand 2 to 3 times, diluting calorie density). If measuring cooked meals or batch meal prep, convert values using the <a href="https://rawtocookedcalculator.com/" target="_blank" rel="noopener" class="text-ink font-medium underline underline-offset-2 hover:opacity-80 transition-opacity">Raw to Cooked Calculator</a> to ensure your daily calorie tracking remains exact.
+        </p>
+      </details>
+
+    </div>
+  </section>
 </Layout>

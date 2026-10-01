@@ -1,0 +1,338 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Calculator from '../../components/Calculator.astro';
+import { seoMetadata } from '../../i18n/ui';
+
+const seo = seoMetadata.ko;
+
+const softwareSchema = {
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "유지 칼로리 계산기",
+  "url": "https://freemaintenancecaloriescalculator.com/ko/",
+  "description": "과학적 공식(미플린-세인트 지어 & 캐치-맥카들) 기반 무료 유지 칼로리(TDEE) 및 기초대사량(BMR) 계산기.",
+  "applicationCategory": "HealthApplication",
+  "operatingSystem": "All",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "KRW"
+  },
+  "featureList": [
+    "임상적으로 입증된 미플린-세인트 지어 방정식",
+    "제지방량(LBM) 기반 캐치-맥카들 공식 지원",
+    "개정 해리스-베네딕트 참조 표준",
+    "요요 없는 지속 가능한 체지방 감량 칼로리 플래너",
+    "린매스업(근육 증가) 맞춤 잉여 칼로리 계산",
+    "탄단지(탄수화물·단백질·지방) 매크로 자동 배분",
+    "식사 횟수별 끼니당 단백질 및 칼로리 분할 표시"
+  ]
+};
+
+const faqSchema = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "유지 칼로리(TDEE)란 무엇인가요?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "유지 칼로리(일일 총 에너지 소비량, TDEE)는 체중 변화 없이 현재 상태를 유지하기 위해 하루 동안 신체가 소모하는 총 에너지입니다. 기초대사량(BMR), 일상 활동 열발생(NEAT), 식사성 열발생(TEF), 운동 열발생(EAT)의 합으로 구성됩니다."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "가장 정확한 칼로리 계산 공식은 무엇인가요?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "미국 영양학회(AND)의 대규모 비교 연구에 따르면, 일반 인구에게는 미플린-세인트 지어(Mifflin-St Jeor) 공식이 가장 정확합니다. 체지방률을 정확히 파악하고 있는 운동선수나 보디빌더의 경우 체지방을 제외한 활성 근육량을 반영하는 캐치-맥카들(Katch-McArdle) 공식이 더욱 정밀합니다."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "유지 칼로리는 어떻게 계산되나요?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "먼저 미플린 공식으로 기초대사량(BMR)을 구합니다: [10 × 체중kg] + [6.25 × 신장cm] - [5 × 연령] + s (남성 +5, 여성 -161). 그 후 개인의 일일 활동 수준에 따라 1.2에서 1.9 사이의 활동 계수(PAL)를 곱하여 최종 유지 칼로리를 도출합니다."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "성인이 하루 1200칼로리 이하로 섭취해도 괜찮나요?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "절대 권장하지 않습니다. 대다수 성인에게 1200kcal는 심장, 뇌, 간 등의 기본 생명 유지에 필요한 기초대사량에도 못 미치는 초저열량입니다. 극단적 절식은 근육 손실, 호르몬 불균형, 대사 적응(기초대사량 저하)을 유발하여 치명적인 요요 현상을 만듭니다."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "체지방 1kg을 감량하려면 얼마의 칼로리를 줄여야 하나요?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "순수 체지방 1kg을 연소하기 위해서는 약 7,700kcal의 누적 칼로리 적자가 필요합니다. 근손실 없이 건강하게 감량하려면 유지 칼로리에서 하루 300~500kcal 정도의 완만한 칼로리 적자를 설정하는 것이 이상적입니다."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "스마트워치나 헬스장 트레드밀의 칼로리 소모량은 신뢰할 수 있나요?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "대체로 실제 소모량보다 과대평가됩니다. 스마트워치와 유산소 기구는 통계적 표준 대사당량(MET)에 기반하며, 개인의 체조성이나 생체역학적 효율을 직접 측정하지 못합니다. 임상 연구 결과 평균 20~40% 높게 측정되는 것으로 나타났습니다."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "유지 칼로리를 계산할 때 음식은 조리 전(생것)과 조리 후 중 어느 상태로 측정해야 하나요?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "영양 성분표와 칼로리 데이터베이스는 별도 표기가 없는 한 기본적으로 '조리 전(생것)' 상태의 중량을 기준으로 합니다. 조리 과정에서 육류는 수분이 빠져 무게가 20~30% 줄어들고(칼로리 밀도 증가), 쌀과 파스타는 수분을 흡수하여 무게가 2~3배로 불어납니다. 조리된 음식이나 밀프렙을 정확하게 기록하려면 <a href=\"https://rawtocookedcalculator.com/\" target=\"_blank\" rel=\"noopener\" class=\"text-ink font-medium underline underline-offset-2 hover:opacity-80 transition-opacity\">조리 전후 중량 변환 계산기</a>를 활용해 조리 후 무게를 생것 기준으로 정확히 환산하여 계산하는 것이 좋습니다."
+      }
+    }
+  ]
+};
+---
+
+<Layout title={seo.title} description={seo.description} keywords={seo.keywords}>
+  <script type="application/ld+json" set:html={JSON.stringify(softwareSchema)} />
+  <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} />
+
+  <!-- HERO SECTION -->
+  <section class="relative pt-12 pb-10 sm:pt-16 sm:pb-14 border-b border-hairline overflow-hidden">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 relative z-10 text-center flex flex-col items-center">
+      
+      <!-- Telemetry Badge -->
+      <div class="inline-flex items-center justify-center gap-2 px-3 py-1 rounded-full border border-hairline bg-canvas-elevated text-[11px] sm:text-xs font-medium text-mute mb-6 max-w-full text-center" style="font-family: var(--font-mono);">
+        <span class="w-1.5 h-1.5 rounded-full bg-[var(--color-grad-cyan)] animate-pulse flex-shrink-0"></span>
+        <span class="truncate sm:whitespace-normal">임상 수준 정밀도 • 미플린-세인트 지어 & 캐치-맥카들 • 2026 최신 개정</span>
+      </div>
+
+      <!-- Main H1 Heading -->
+      <h1 class="text-3xl xs:text-4xl sm:text-5xl lg:text-6xl font-extrabold text-ink tracking-tight max-w-4xl leading-[1.15] text-balance break-words">
+        무료 <span class="text-transparent bg-clip-text bg-gradient-to-r from-ink via-mute to-ink">유지 칼로리</span> 계산기 (TDEE)
+      </h1>
+
+      <!-- Supporting Subheading -->
+      <p class="mt-5 text-base sm:text-lg text-mute max-w-2xl leading-relaxed text-balance">
+        과학적으로 검증된 대사 방정식을 통해 당신의 하루 총 에너지 소비량(TDEE)과 유지 칼로리를 정확히 계산하세요. 체지방 감량, 체중 유지, 근육 증량 목표를 손쉽게 수립할 수 있습니다.
+      </p>
+
+      <!-- Trust Badges -->
+      <div class="flex flex-wrap items-center justify-center gap-4 pt-4 text-xs text-mute" style="font-family: var(--font-mono);">
+        <span class="flex items-center gap-1.5">✓ 미플린-세인트 지어 공식</span>
+        <span class="flex items-center gap-1.5">✓ 캐치-맥카들 체지방 공식</span>
+        <span class="flex items-center gap-1.5">✓ 개정 해리스-베네딕트</span>
+        <span class="flex items-center gap-1.5">✓ 100% 무료 & 회원가입 불필요</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- CALCULATOR SECTION -->
+  <section id="calculator" class="py-12 sm:py-16">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6">
+      <Calculator lang="ko" />
+    </div>
+  </section>
+
+  <!-- THE 4 PILLARS OF TDEE -->
+  <section id="science" class="max-w-6xl mx-auto px-4 sm:px-6 py-20 border-t border-hairline">
+    <div class="max-w-3xl mb-12">
+      <span class="text-xs font-semibold uppercase tracking-wider text-mute" style="font-family: var(--font-mono);">대사 생리학 가이드</span>
+      <h2 class="text-3xl font-bold text-ink tracking-tight mt-1 mb-3">하루 총 에너지 소비량(TDEE)을 결정하는 4대 기둥</h2>
+      <p class="text-body text-sm leading-relaxed">
+        인체는 서로 긴밀히 연결된 네 가지 대사 구획을 통해 하루 동안 에너지를 소비합니다:
+      </p>
+    </div>
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+      <!-- BMR Card -->
+      <div class="bg-canvas-elevated border border-hairline rounded-2xl p-6 shadow-xs flex flex-col justify-between">
+        <div>
+          <div class="flex items-center justify-between mb-3">
+            <span class="w-8 h-8 rounded-lg bg-blue-50 dark:bg-blue-950/50 text-blue-600 dark:text-blue-400 flex items-center justify-center font-bold text-sm font-mono">01</span>
+            <span class="text-xs font-bold text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-950/50 px-2 py-0.5 rounded font-mono">60 - 70%</span>
+          </div>
+          <h3 class="text-base font-bold text-ink mb-1.5">기초대사량 (BMR)</h3>
+          <p class="text-xs text-body leading-relaxed">
+            완전한 휴식 상태에서 뇌, 심장, 신장, 간 등의 생체 장기가 정상 작동하기 위해 필요한 최소한의 에너지입니다.
+          </p>
+        </div>
+        <div class="mt-4 pt-3 border-t border-hairline text-[11px] text-mute font-medium">
+          결정 요인: 제지방 근육량, 키, 나이 및 생물학적 성별.
+        </div>
+      </div>
+
+      <!-- NEAT Card -->
+      <div class="bg-canvas-elevated border border-hairline rounded-2xl p-6 shadow-xs flex flex-col justify-between">
+        <div>
+          <div class="flex items-center justify-between mb-3">
+            <span class="w-8 h-8 rounded-lg bg-emerald-50 dark:bg-emerald-950/50 text-emerald-600 dark:text-emerald-400 flex items-center justify-center font-bold text-sm font-mono">02</span>
+            <span class="text-xs font-bold text-emerald-600 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-950/50 px-2 py-0.5 rounded font-mono">15 - 25%</span>
+          </div>
+          <h3 class="text-base font-bold text-ink mb-1.5">비운동성 활동 열발생 (NEAT)</h3>
+          <p class="text-xs text-body leading-relaxed">
+            걷기, 서서 일하기, 계단 이용, 청소 등 일상생활의 자발적 움직임에서 소모되는 활동 칼로리입니다.
+          </p>
+        </div>
+        <div class="mt-4 pt-3 border-t border-hairline text-[11px] text-mute font-medium">
+          다이어트 성공 여부를 좌우하는 가장 강력한 변수.
+        </div>
+      </div>
+
+      <!-- TEF Card -->
+      <div class="bg-canvas-elevated border border-hairline rounded-2xl p-6 shadow-xs flex flex-col justify-between">
+        <div>
+          <div class="flex items-center justify-between mb-3">
+            <span class="w-8 h-8 rounded-lg bg-amber-50 dark:bg-amber-950/50 text-amber-600 dark:text-amber-400 flex items-center justify-center font-bold text-sm font-mono">03</span>
+            <span class="text-xs font-bold text-amber-600 dark:text-amber-400 bg-amber-50 dark:bg-amber-950/50 px-2 py-0.5 rounded font-mono">8 - 12%</span>
+          </div>
+          <h3 class="text-base font-bold text-ink mb-1.5">식이성 열발생 (TEF)</h3>
+          <p class="text-xs text-body leading-relaxed">
+            섭취한 영양소를 소화, 흡수, 대사하는 과정에서 체온으로 방출되는 열에너지입니다. 단백질은 칼로리의 최대 30%를 소모합니다.
+          </p>
+        </div>
+        <div class="mt-4 pt-3 border-t border-hairline text-[11px] text-mute font-medium">
+          고단백 식단을 구성할 때 현저히 증대됩니다.
+        </div>
+      </div>
+
+      <!-- EAT Card -->
+      <div class="bg-canvas-elevated border border-hairline rounded-2xl p-6 shadow-xs flex flex-col justify-between">
+        <div>
+          <div class="flex items-center justify-between mb-3">
+            <span class="w-8 h-8 rounded-lg bg-purple-50 dark:bg-purple-950/50 text-purple-600 dark:text-purple-400 flex items-center justify-center font-bold text-sm font-mono">04</span>
+            <span class="text-xs font-bold text-purple-600 dark:text-purple-400 bg-purple-50 dark:bg-purple-950/50 px-2 py-0.5 rounded font-mono">5 - 15%</span>
+          </div>
+          <h3 class="text-base font-bold text-ink mb-1.5">운동 열발생 (EAT)</h3>
+          <p class="text-xs text-body leading-relaxed">
+            웨이트 트레이닝, 러닝머신, 고강도 인터벌(HIIT), 구기 종목 등 의도적인 스포츠 트레이닝 소모 칼로리입니다.
+          </p>
+        </div>
+        <div class="mt-4 pt-3 border-t border-hairline text-[11px] text-mute font-medium">
+          다이어트 시 근손실을 방어하는 필수 생체 신호.
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FORMULA COMPARISON TABLE -->
+  <section class="max-w-6xl mx-auto px-4 sm:px-6 py-16 border-t border-hairline">
+    <div class="max-w-3xl mb-8">
+      <span class="text-xs font-semibold uppercase tracking-wider text-mute" style="font-family: var(--font-mono);">계산 공식 비교</span>
+      <h2 class="text-2xl sm:text-3xl font-bold text-ink tracking-tight mt-1 mb-2">학술적으로 입증된 3대 대사 방정식</h2>
+      <p class="text-body text-sm leading-relaxed">
+        스포츠 영양학 및 임상 현장에서 가장 널리 공인된 계산 모델의 특징을 비교해 보세요:
+      </p>
+    </div>
+
+    <div class="overflow-x-auto bg-canvas-elevated rounded-2xl border border-hairline shadow-xs max-w-full overscroll-x-contain">
+      <table class="w-full min-w-[550px] text-left text-xs sm:text-sm">
+        <thead class="bg-canvas border-b border-hairline font-semibold text-ink uppercase tracking-wider text-[11px]" style="font-family: var(--font-mono);">
+          <tr>
+            <th class="py-3.5 px-4 sm:px-6">공식명</th>
+            <th class="py-3.5 px-4 sm:px-6">필요 변수</th>
+            <th class="py-3.5 px-4 sm:px-6">핵심 장점</th>
+            <th class="py-3.5 px-4 sm:px-6">추천 대상</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-hairline text-body">
+          <tr class="hover:bg-canvas/50 transition-colors">
+            <td class="py-4 px-4 sm:px-6 font-bold text-ink">미플린-세인트 지어 (1990)</td>
+            <td class="py-4 px-4 sm:px-6">체중, 키, 나이, 성별</td>
+            <td class="py-4 px-4 sm:px-6">별도의 체지방 측정 장비 없이도 현대인의 체형에서 오차가 가장 적음.</td>
+            <td class="py-4 px-4 sm:px-6"><span class="px-2 py-0.5 rounded bg-emerald-50 dark:bg-emerald-950/50 text-emerald-700 dark:text-emerald-400 font-medium">일반 성인 & 다이어터</span></td>
+          </tr>
+          <tr class="hover:bg-canvas/50 transition-colors">
+            <td class="py-4 px-4 sm:px-6 font-bold text-ink">캐치-맥카들 (1996)</td>
+            <td class="py-4 px-4 sm:px-6">제지방량(LBM, 체지방률)</td>
+            <td class="py-4 px-4 sm:px-6">비활성 지방을 제외하고 실제 대사를 일으키는 근육량만을 바탕으로 산출.</td>
+            <td class="py-4 px-4 sm:px-6"><span class="px-2 py-0.5 rounded bg-blue-50 dark:bg-blue-950/50 text-blue-700 dark:text-blue-400 font-medium">운동선수 & 헬스인</span></td>
+          </tr>
+          <tr class="hover:bg-canvas/50 transition-colors">
+            <td class="py-4 px-4 sm:px-6 font-bold text-ink">개정 해리스-베네딕트 (1984)</td>
+            <td class="py-4 px-4 sm:px-6">체중, 키, 나이, 성별</td>
+            <td class="py-4 px-4 sm:px-6">1919년 원본의 과대평가 문제를 Roza와 Shizgal이 현대 기준으로 보정한 표준.</td>
+            <td class="py-4 px-4 sm:px-6"><span class="px-2 py-0.5 rounded bg-purple-50 dark:bg-purple-950/50 text-purple-700 dark:text-purple-400 font-medium">병원 임상 기준</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- MACRO GUIDE SECTION -->
+  <section id="macros" class="max-w-6xl mx-auto px-4 sm:px-6 py-16 border-t border-hairline">
+    <div class="max-w-3xl mb-10">
+      <span class="text-xs font-semibold uppercase tracking-wider text-mute" style="font-family: var(--font-mono);">영양 밸런스</span>
+      <h2 class="text-2xl sm:text-3xl font-bold text-ink tracking-tight mt-1 mb-2">목표별 이상적인 탄단지 매크로 배분</h2>
+      <p class="text-body text-sm leading-relaxed">
+        총 칼로리가 체중의 증감을 결정한다면, 3대 영양소의 비율은 체성분(근육인지 지방인지)의 변화를 결정합니다:
+      </p>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div class="bg-canvas-elevated border border-hairline rounded-2xl p-6 shadow-xs flex flex-col gap-3">
+        <div class="flex items-center gap-2">
+          <span class="w-3 h-3 rounded-full bg-[var(--color-grad-blue)]"></span>
+          <h3 class="text-base font-bold text-ink">단백질 (1g당 4 kcal)</h3>
+        </div>
+        <p class="text-xs text-body leading-relaxed">
+          근육 합성 및 손상 조직 복구의 필수 요소입니다. 식욕 억제와 포만감 유지에 가장 탁월하며 칼로리 제한 시 근손실을 방지합니다.
+        </p>
+        <div class="mt-auto bg-canvas p-3 rounded-xl border border-hairline text-xs font-medium text-ink">
+          <strong>권장 섭취량:</strong> 체중 1kg당 1.6g ~ 2.2g.
+        </div>
+      </div>
+
+      <div class="bg-canvas-elevated border border-hairline rounded-2xl p-6 shadow-xs flex flex-col gap-3">
+        <div class="flex items-center gap-2">
+          <span class="w-3 h-3 rounded-full bg-[var(--color-grad-magenta)]"></span>
+          <h3 class="text-base font-bold text-ink">지방 (1g당 9 kcal)</h3>
+        </div>
+        <p class="text-xs text-body leading-relaxed">
+          테스토스테론 등 생명 유지에 필수적인 호르몬 합성 및 지용성 비타민(A, D, E, K) 흡수에 필수적입니다. 과도한 무지방 식단은 피해야 합니다.
+        </p>
+        <div class="mt-auto bg-canvas p-3 rounded-xl border border-hairline text-xs font-medium text-ink">
+          <strong>권장 섭취량:</strong> 총 칼로리의 20% ~ 30% (체중당 최소 0.7g).
+        </div>
+      </div>
+
+      <div class="bg-canvas-elevated border border-hairline rounded-2xl p-6 shadow-xs flex flex-col gap-3">
+        <div class="flex items-center gap-2">
+          <span class="w-3 h-3 rounded-full bg-[var(--color-grad-amber)]"></span>
+          <h3 class="text-base font-bold text-ink">탄수화물 (1g당 4 kcal)</h3>
+        </div>
+        <p class="text-xs text-body leading-relaxed">
+          뇌와 중추신경계의 핵심 에너지원이며, 고강도 근력 트레이닝 시 간과 근육의 글리코겐을 재충전하여 운동 퍼포먼스를 유지시킵니다.
+        </p>
+        <div class="mt-auto bg-canvas p-3 rounded-xl border border-hairline text-xs font-medium text-ink">
+          <strong>권장 섭취량:</strong> 단백질과 지방 배분 후 남은 칼로리.
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQS SECTION -->
+  <section id="faq" class="max-w-4xl mx-auto px-4 sm:px-6 py-20 border-t border-hairline">
+    <div class="text-center max-w-2xl mx-auto mb-12">
+      <span class="text-xs font-semibold uppercase tracking-wider text-mute" style="font-family: var(--font-mono);">자주 묻는 질문</span>
+      <h2 class="text-3xl font-bold text-ink tracking-tight mt-1 mb-2">유지 칼로리 관련 FAQ</h2>
+      <p class="text-body text-sm leading-relaxed">
+        대사 생리학, 안전한 체지방 감량 적자 계산 및 지속 가능한 식단 관리에 대한 과학적 답변입니다.
+      </p>
+    </div>
+
+    <div class="flex flex-col gap-3.5">
+      {faqSchema.mainEntity.map((item) => (
+        <details class="group bg-canvas-elevated border border-hairline rounded-xl p-5 [&_summary::-webkit-details-marker]:hidden">
+          <summary class="flex cursor-pointer items-center justify-between font-semibold text-ink text-sm sm:text-base">
+            <span>{item.name}</span>
+            <span class="transition group-open:rotate-180 text-mute">
+              <svg fill="none" height="20" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" width="20"><path d="M6 9l6 6 6-6"></path></svg>
+            </span>
+          </summary>
+          <p class="text-body mt-3 text-xs sm:text-sm leading-relaxed" set:html={item.acceptedAnswer.text} />
+        </details>
+      ))}
+    </div>
+  </section>
+</Layout>

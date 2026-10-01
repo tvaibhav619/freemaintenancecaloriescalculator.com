@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://freemaintenancecaloriescalculator.com/sitemap.xml
+Sitemap: https://freemaintenancecaloriescalculator.com/sitemap-index.xml

@@ -1,5 +1,5 @@
 {
-  "name": "",
+  "name": "majestic-metal",
   "type": "module",
   "version": "0.0.1",
   "engines": {
@@ -8,13 +8,21 @@
   "scripts": {
     "dev": "astro dev",
     "build": "astro build",
+    "postbuild": "node -e \"const fs=require('fs'); if(fs.existsSync('dist/sitemap-0.xml')) fs.copyFileSync('dist/sitemap-0.xml', 'dist/sitemap.xml');\"",
     "preview": "astro preview",
-    "astro": "astro"
+    "astro": "astro",
+    "deploy": "astro build && wrangler deploy"
   },
   "dependencies": {
-    "astro": "^7.3.2"
+    "@astrojs/sitemap": "^3.7.4",
+    "@tailwindcss/vite": "^4.3.3",
+    "astro": "^7.3.2",
+    "tailwindcss": "^4.3.3"
   },
   "allowScripts": {
     "esbuild": true
+  },
+  "devDependencies": {
+    "wrangler": "^4.130.0"
   }
 }

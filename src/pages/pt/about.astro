@@ -1,0 +1,67 @@
+---
+import Layout from '../../layouts/Layout.astro';
+
+const title = "Sobre Nós e Metodologia Científica | FreeMaintenanceCaloriesCalculator.com";
+const description = "Conheça a missão, os embasamentos clínicos e as fórmulas científicas do FreeMaintenanceCaloriesCalculator.com.";
+---
+
+<Layout title={title} description={description}>
+  <div class="max-w-4xl mx-auto px-4 sm:px-6 py-16">
+    <div class="border-b border-hairline pb-8 mb-10">
+      <span class="text-xs font-semibold uppercase tracking-wider text-mute" style="font-family: var(--font-mono);">Nossa Missão</span>
+      <h1 class="text-3xl sm:text-4xl font-extrabold text-ink tracking-tight mt-1 mb-4">
+        Precisão Científica Aplicada à Nutrição Humana
+      </h1>
+      <p class="text-base text-body leading-relaxed">
+        O FreeMaintenanceCaloriesCalculator.com foi concebido para libertar os praticantes de atividades físicas de estimativas enganosas, paywalls e algoritmos opacos de aplicativos comerciais.
+      </p>
+    </div>
+
+    <div class="flex flex-col gap-10 text-body text-sm leading-relaxed">
+      <section class="flex flex-col gap-3">
+        <h2 class="text-xl font-bold text-ink">Por que criamos esta plataforma</h2>
+        <p>
+          Muitos smartwatches e equipamentos de academia superestimam o gasto calórico real entre 20% e 90%. Essa distorção sistemática faz com que muitas pessoas consumam mais calorias do que pretendem, bloqueando a perda de gordura.
+        </p>
+        <p>
+          Desenvolvemos uma ferramenta independente e alinhada com as publicações médicas de referência para calcular o Gasto Energético Total Diário (TDEE) com total transparência.
+        </p>
+      </section>
+
+      <section class="flex flex-col gap-3">
+        <h2 class="text-xl font-bold text-ink">Equações científicas empregadas</h2>
+        <p>
+          Utilizamos exclusivamente equações validadas pela ciência da nutrição:
+        </p>
+        <ul class="list-disc list-inside space-y-2 pl-2">
+          <li>
+            <strong>Equação Mifflin-St Jeor (1990):</strong> Reconhecida pela Academia de Nutrição e Dietética como o modelo preditivo mais consistente para indivíduos saudáveis.
+          </li>
+          <li>
+            <strong>Fórmula Katch-McArdle (1996):</strong> Focada na massa magra metabolicamente ativa, garantindo exatidão para atletas e pessoas com baixo índice de gordura.
+          </li>
+          <li>
+            <strong>Harris-Benedict Revisada (1984):</strong> Modelo clássico calibrado por Roza e Shizgal para fins comparativos.
+          </li>
+        </ul>
+      </section>
+
+      <section class="flex flex-col gap-3">
+        <h2 class="text-xl font-bold text-ink">Acesso Livre e Privacidade</h2>
+        <p>
+          Ferramentas nutricionais fundamentais devem ser universais e livres. Todo o processamento ocorre no próprio navegador, sem guardar suas medidas em servidores.
+        </p>
+      </section>
+
+      <div class="bg-canvas-elevated border border-hairline rounded-2xl p-6 shadow-xs mt-4">
+        <h3 class="text-base font-bold text-ink mb-2">Quer enviar uma sugestão?</h3>
+        <p class="text-xs text-mute mb-4">
+          Aprimoramos continuamente nossos cálculos com base nas descobertas mais recentes da fisiologia esportiva.
+        </p>
+        <a href="/pt/contact" class="inline-flex items-center text-xs font-semibold text-ink hover:underline">
+          Fale com nossa equipe &rarr;
+        </a>
+      </div>
+    </div>
+  </div>
+</Layout>

@@ -1,0 +1,338 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Calculator from '../../components/Calculator.astro';
+import { seoMetadata } from '../../i18n/ui';
+
+const seo = seoMetadata.ja;
+
+const softwareSchema = {
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "メンテナンスカロリー計算ツール",
+  "url": "https://freemaintenancecaloriescalculator.com/ja/",
+  "description": "科学的計算式（ミフリン法・キャッチマカードル法）による高精度な無料メンテナンスカロリー（TDEE・BMR）計算ツール。",
+  "applicationCategory": "HealthApplication",
+  "operatingSystem": "All",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "JPY"
+  },
+  "featureList": [
+    "臨床的に実証されたミフリン＝サン・ジェオール計算式",
+    "除脂肪体重（LBM）に基づくキャッチ＝マカードル方程式",
+    "改訂版ハリス・ベネディクト標準対応",
+    "持続可能な減量のためのカロリー制限プランナー",
+    "クリーンバルク対応の筋肉増量カロリー計算",
+    "PFCマクロ栄養素（タンパク質・脂質・炭水化物）自動配分",
+    "食事回数に応じたカロリー・プロテイン分割表示"
+  ]
+};
+
+const faqSchema = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "メンテナンスカロリー（維持カロリー）とは何ですか？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "メンテナンスカロリーとは、現在の体重を維持するために必要な1日の総消費カロリー（TDEE：Total Daily Energy Expenditure）のことです。基礎代謝（BMR）、日常生活活動（NEAT）、食事誘発性熱産生（TEF）、運動消費（EAT）の合算値であり、摂取カロリーと消費カロリーが一致すると体重が増減しません。"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "最も精度の高いカロリー計算式はどれですか？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "米国栄養士会（AND）の検証により、一般的な成人にはミフリン＝サン・ジェオール式（Mifflin-St Jeor）が最も高い精度を持つと結論づけられています。体脂肪率を把握している筋トレ実践者やアスリートには、除脂肪体重から直接算出するキャッチ＝マカードル式（Katch-McArdle）が最も正確です。"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "メンテナンスカロリーの計算手順を教えてください。",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "まずミフリン式で基礎代謝（BMR）を計算します：[10 × 体重kg] + [6.25 × 身長cm] - [5 × 年齢] + s（男性+5、女性-161）。次に、日頃の活動レベルに応じた身体活動レベル係数（PAL：1.2〜1.9）を掛けることで、維持カロリーが算出されます。"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "大人の減量で1日1200kcalに抑えるのは安全ですか？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "安全ではありません。ほとんどの成人にとって1200kcalは脳や心臓、内臓を維持するための基礎代謝量を大きく下回ります。過度な食事制限は筋肉の分解、代謝の低下（適応熱産生）、ホルモンバランスの乱れを引き起こし、深刻なリバウンドの原因となります。"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "体脂肪1kgを落とすにはどれくらいのカロリー制限が必要ですか？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "純粋な体脂肪1kgを燃焼するには約7,200〜7,700kcalの累積アンダーカロリーが必要です。筋肉量を維持しながら健康的に落とすには、メンテナンスカロリーから1日マイナス300〜500kcalを目安にするのが理想的です。"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "スマートウォッチやランニングマシンの消費カロリー表示は正確ですか？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "一般に過大評価される傾向があります。市販のスマートウォッチや有酸素マシンは簡易的な速度や心拍数の統計モデルを使用しており、個人の除脂肪量や筋効率を測定していません。臨床研究では20〜40%程度高く表示されることが報告されています。"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "メンテナンスカロリーを計算する際、食材は生と調理後のどちらで計量すべきですか？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "食品成分表やカロリーデータベースの数値は、特に明記がない限り原則として「生の（加熱調理前）」状態の重量に基づいています。加熱調理により、肉や魚は水分が抜けて20〜30%重量が減少（カロリー密度が上昇）し、米やパスタは水分を吸って2〜3倍に膨らみます（カロリー密度が低下）。調理済みの作り置き料理を正確に記録するには、<a href=\"https://rawtocookedcalculator.com/\" target=\"_blank\" rel=\"noopener\" class=\"text-ink font-medium underline underline-offset-2 hover:opacity-80 transition-opacity\">生肉・加熱後換算計算機</a>を使用して、調理後の重量を生換算して計算することをおすすめします。"
+      }
+    }
+  ]
+};
+---
+
+<Layout title={seo.title} description={seo.description} keywords={seo.keywords}>
+  <script type="application/ld+json" set:html={JSON.stringify(softwareSchema)} />
+  <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} />
+
+  <!-- HERO SECTION -->
+  <section class="relative pt-12 pb-10 sm:pt-16 sm:pb-14 border-b border-hairline overflow-hidden">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 relative z-10 text-center flex flex-col items-center">
+      
+      <!-- Telemetry Badge -->
+      <div class="inline-flex items-center justify-center gap-2 px-3 py-1 rounded-full border border-hairline bg-canvas-elevated text-[11px] sm:text-xs font-medium text-mute mb-6 max-w-full text-center" style="font-family: var(--font-mono);">
+        <span class="w-1.5 h-1.5 rounded-full bg-[var(--color-grad-cyan)] animate-pulse flex-shrink-0"></span>
+        <span class="truncate sm:whitespace-normal">臨床研究レベルの高精度 • ミフリン法 & キャッチ＝マカードル法 • 2026年最新版</span>
+      </div>
+
+      <!-- Main H1 Heading -->
+      <h1 class="text-3xl xs:text-4xl sm:text-5xl lg:text-6xl font-extrabold text-ink tracking-tight max-w-4xl leading-[1.15] text-balance break-words">
+        無料<span class="text-transparent bg-clip-text bg-gradient-to-r from-ink via-mute to-ink">メンテナンスカロリー</span>計算ツール (TDEE)
+      </h1>
+
+      <!-- Supporting Subheading -->
+      <p class="mt-5 text-base sm:text-lg text-mute max-w-2xl leading-relaxed text-balance">
+        科学的根拠に基づいた代謝方程式で、あなたの1日の総エネルギー消費量（TDEE）と維持カロリーを瞬時に算出。ダイエット・減量、体重維持、筋肉増量の目標設定に最適です。
+      </p>
+
+      <!-- Trust Badges -->
+      <div class="flex flex-wrap items-center justify-center gap-4 pt-4 text-xs text-mute" style="font-family: var(--font-mono);">
+        <span class="flex items-center gap-1.5">✓ ミフリン＝サン・ジェオール式</span>
+        <span class="flex items-center gap-1.5">✓ キャッチ＝マカードル方程式</span>
+        <span class="flex items-center gap-1.5">✓ 改訂版ハリス・ベネディクト</span>
+        <span class="flex items-center gap-1.5">✓ 完全無料・会員登録不要</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- CALCULATOR SECTION -->
+  <section id="calculator" class="py-12 sm:py-16">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6">
+      <Calculator lang="ja" />
+    </div>
+  </section>
+
+  <!-- THE 4 PILLARS OF TDEE -->
+  <section id="science" class="max-w-6xl mx-auto px-4 sm:px-6 py-20 border-t border-hairline">
+    <div class="max-w-3xl mb-12">
+      <span class="text-xs font-semibold uppercase tracking-wider text-mute" style="font-family: var(--font-mono);">代謝生理学ガイド</span>
+      <h2 class="text-3xl font-bold text-ink tracking-tight mt-1 mb-3">1日の総エネルギー消費量（TDEE）を構成する4大要素</h2>
+      <p class="text-body text-sm leading-relaxed">
+        人間の体は、互いに関連し合う4つの代謝プロセスを通じてカロリーを消費しています：
+      </p>
+    </div>
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+      <!-- BMR Card -->
+      <div class="bg-canvas-elevated border border-hairline rounded-2xl p-6 shadow-xs flex flex-col justify-between">
+        <div>
+          <div class="flex items-center justify-between mb-3">
+            <span class="w-8 h-8 rounded-lg bg-blue-50 dark:bg-blue-950/50 text-blue-600 dark:text-blue-400 flex items-center justify-center font-bold text-sm font-mono">01</span>
+            <span class="text-xs font-bold text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-950/50 px-2 py-0.5 rounded font-mono">60 - 70%</span>
+          </div>
+          <h3 class="text-base font-bold text-ink mb-1.5">基礎代謝量 (BMR)</h3>
+          <p class="text-xs text-body leading-relaxed">
+            呼吸、心臓の鼓動、体温調節、肝臓や腎臓の活動など、安静時に生命を維持するための最小限のエネルギー。
+          </p>
+        </div>
+        <div class="mt-4 pt-3 border-t border-hairline text-[11px] text-mute font-medium">
+          主な決定要因：除脂肪筋肉量、身長、年齢、性別。
+        </div>
+      </div>
+
+      <!-- NEAT Card -->
+      <div class="bg-canvas-elevated border border-hairline rounded-2xl p-6 shadow-xs flex flex-col justify-between">
+        <div>
+          <div class="flex items-center justify-between mb-3">
+            <span class="w-8 h-8 rounded-lg bg-emerald-50 dark:bg-emerald-950/50 text-emerald-600 dark:text-emerald-400 flex items-center justify-center font-bold text-sm font-mono">02</span>
+            <span class="text-xs font-bold text-emerald-600 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-950/50 px-2 py-0.5 rounded font-mono">15 - 25%</span>
+          </div>
+          <h3 class="text-base font-bold text-ink mb-1.5">非運動性活動熱産生 (NEAT)</h3>
+          <p class="text-xs text-body leading-relaxed">
+            通勤の歩行、階段利用、家事、立ち姿勢の維持など、計画的なトレーニング以外の日常活動による消費カロリー。
+          </p>
+        </div>
+        <div class="mt-4 pt-3 border-t border-hairline text-[11px] text-mute font-medium">
+          ダイエット成功において個人差が最も大きい重要要素。
+        </div>
+      </div>
+
+      <!-- TEF Card -->
+      <div class="bg-canvas-elevated border border-hairline rounded-2xl p-6 shadow-xs flex flex-col justify-between">
+        <div>
+          <div class="flex items-center justify-between mb-3">
+            <span class="w-8 h-8 rounded-lg bg-amber-50 dark:bg-amber-950/50 text-amber-600 dark:text-amber-400 flex items-center justify-center font-bold text-sm font-mono">03</span>
+            <span class="text-xs font-bold text-amber-600 dark:text-amber-400 bg-amber-50 dark:bg-amber-950/50 px-2 py-0.5 rounded font-mono">8 - 12%</span>
+          </div>
+          <h3 class="text-base font-bold text-ink mb-1.5">食事誘発性熱産生 (TEF)</h3>
+          <p class="text-xs text-body leading-relaxed">
+            摂取した栄養素を消化・吸収・輸送・貯蔵する際に消費されるエネルギー。タンパク質は摂取カロリーの約20〜30%を消費します。
+          </p>
+        </div>
+        <div class="mt-4 pt-3 border-t border-hairline text-[11px] text-mute font-medium">
+          高タンパクな食事によって大幅に向上します。
+        </div>
+      </div>
+
+      <!-- EAT Card -->
+      <div class="bg-canvas-elevated border border-hairline rounded-2xl p-6 shadow-xs flex flex-col justify-between">
+        <div>
+          <div class="flex items-center justify-between mb-3">
+            <span class="w-8 h-8 rounded-lg bg-purple-50 dark:bg-purple-950/50 text-purple-600 dark:text-purple-400 flex items-center justify-center font-bold text-sm font-mono">04</span>
+            <span class="text-xs font-bold text-purple-600 dark:text-purple-400 bg-purple-50 dark:bg-purple-950/50 px-2 py-0.5 rounded font-mono">5 - 15%</span>
+          </div>
+          <h3 class="text-base font-bold text-ink mb-1.5">運動性活動熱産生 (EAT)</h3>
+          <p class="text-xs text-body leading-relaxed">
+            筋力トレーニング、ジョギング、高強度インターバルトレーニング（HIIT）など、意図的な運動によって消費されるエネルギー。
+          </p>
+        </div>
+        <div class="mt-4 pt-3 border-t border-hairline text-[11px] text-mute font-medium">
+          減量中の筋肉量減少を防ぐシグナルとして不可欠。
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FORMULA COMPARISON TABLE -->
+  <section class="max-w-6xl mx-auto px-4 sm:px-6 py-16 border-t border-hairline">
+    <div class="max-w-3xl mb-8">
+      <span class="text-xs font-semibold uppercase tracking-wider text-mute" style="font-family: var(--font-mono);">計算モデルの比較</span>
+      <h2 class="text-2xl sm:text-3xl font-bold text-ink tracking-tight mt-1 mb-2">学術的に実証された3大方程式</h2>
+      <p class="text-body text-sm leading-relaxed">
+        運動生理学・スポーツ栄養学の現場で広く採用されている代表的な計算モデルの特徴比較：
+      </p>
+    </div>
+
+    <div class="overflow-x-auto bg-canvas-elevated rounded-2xl border border-hairline shadow-xs max-w-full overscroll-x-contain">
+      <table class="w-full min-w-[550px] text-left text-xs sm:text-sm">
+        <thead class="bg-canvas border-b border-hairline font-semibold text-ink uppercase tracking-wider text-[11px]" style="font-family: var(--font-mono);">
+          <tr>
+            <th class="py-3.5 px-4 sm:px-6">計算式</th>
+            <th class="py-3.5 px-4 sm:px-6">必要入力値</th>
+            <th class="py-3.5 px-4 sm:px-6">最大の特徴・利点</th>
+            <th class="py-3.5 px-4 sm:px-6">推奨対象</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-hairline text-body">
+          <tr class="hover:bg-canvas/50 transition-colors">
+            <td class="py-4 px-4 sm:px-6 font-bold text-ink">ミフリン＝サン・ジェオール (1990)</td>
+            <td class="py-4 px-4 sm:px-6">体重、身長、年齢、性別</td>
+            <td class="py-4 px-4 sm:px-6">体脂肪率の計測器具がなくても、現代人の体型において最も統計的誤差が小さい。</td>
+            <td class="py-4 px-4 sm:px-6"><span class="px-2 py-0.5 rounded bg-emerald-50 dark:bg-emerald-950/50 text-emerald-700 dark:text-emerald-400 font-medium">一般成人・ダイエッター</span></td>
+          </tr>
+          <tr class="hover:bg-canvas/50 transition-colors">
+            <td class="py-4 px-4 sm:px-6 font-bold text-ink">キャッチ＝マカードル (1996)</td>
+            <td class="py-4 px-4 sm:px-6">除脂肪体重（体脂肪率%）</td>
+            <td class="py-4 px-4 sm:px-6">脂肪を除いた純粋な筋肉・内臓の代謝量のみから算出するため、筋肉質の人に最適。</td>
+            <td class="py-4 px-4 sm:px-6"><span class="px-2 py-0.5 rounded bg-blue-50 dark:bg-blue-950/50 text-blue-700 dark:text-blue-400 font-medium">トレーニー・アスリート</span></td>
+          </tr>
+          <tr class="hover:bg-canvas/50 transition-colors">
+            <td class="py-4 px-4 sm:px-6 font-bold text-ink">改訂版ハリス・ベネディクト (1984)</td>
+            <td class="py-4 px-4 sm:px-6">体重、身長、年齢、性別</td>
+            <td class="py-4 px-4 sm:px-6">古典的な1919年版の過大評価をRozaとShizgalが現代基準に補正した歴史的標準式。</td>
+            <td class="py-4 px-4 sm:px-6"><span class="px-2 py-0.5 rounded bg-purple-50 dark:bg-purple-950/50 text-purple-700 dark:text-purple-400 font-medium">医療・臨床基準</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- MACRO GUIDE SECTION -->
+  <section id="macros" class="max-w-6xl mx-auto px-4 sm:px-6 py-16 border-t border-hairline">
+    <div class="max-w-3xl mb-10">
+      <span class="text-xs font-semibold uppercase tracking-wider text-mute" style="font-family: var(--font-mono);">PFCバランス最適化</span>
+      <h2 class="text-2xl sm:text-3xl font-bold text-ink tracking-tight mt-1 mb-2">理想的なマクロ栄養素の配分比率</h2>
+      <p class="text-body text-sm leading-relaxed">
+        総摂取カロリーは体重の増減を決めますが、三大栄養素（タンパク質・脂質・炭水化物）の割合が体型の質（筋肉か体脂肪か）を決定します：
+      </p>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div class="bg-canvas-elevated border border-hairline rounded-2xl p-6 shadow-xs flex flex-col gap-3">
+        <div class="flex items-center gap-2">
+          <span class="w-3 h-3 rounded-full bg-[var(--color-grad-blue)]"></span>
+          <h3 class="text-base font-bold text-ink">タンパク質（4 kcal / 1g）</h3>
+        </div>
+        <p class="text-xs text-body leading-relaxed">
+          筋肉の修復・合成、免疫細胞の生成に不可欠。高い満腹感をもたらし、カロリー制限中の筋肉異化（カタボリズム）を防止します。
+        </p>
+        <div class="mt-auto bg-canvas p-3 rounded-xl border border-hairline text-xs font-medium text-ink">
+          <strong>推奨摂取量：</strong> 体重1kgあたり1.6g〜2.2g。
+        </div>
+      </div>
+
+      <div class="bg-canvas-elevated border border-hairline rounded-2xl p-6 shadow-xs flex flex-col gap-3">
+        <div class="flex items-center gap-2">
+          <span class="w-3 h-3 rounded-full bg-[var(--color-grad-magenta)]"></span>
+          <h3 class="text-base font-bold text-ink">脂質（9 kcal / 1g）</h3>
+        </div>
+        <p class="text-xs text-body leading-relaxed">
+          テストステロンなどのホルモン分泌、細胞膜の構成、脂溶性ビタミン（A, D, E, K）の吸収に必須の栄養素です。極端な脂質制限は禁物です。
+        </p>
+        <div class="mt-auto bg-canvas p-3 rounded-xl border border-hairline text-xs font-medium text-ink">
+          <strong>推奨摂取量：</strong> 総カロリーの20%〜30%（体重あたり最低0.7g）。
+        </div>
+      </div>
+
+      <div class="bg-canvas-elevated border border-hairline rounded-2xl p-6 shadow-xs flex flex-col gap-3">
+        <div class="flex items-center gap-2">
+          <span class="w-3 h-3 rounded-full bg-[var(--color-grad-amber)]"></span>
+          <h3 class="text-base font-bold text-ink">炭水化物（4 kcal / 1g）</h3>
+        </div>
+        <p class="text-xs text-body leading-relaxed">
+          脳や中枢神経系の主エネルギー源であり、筋力トレーニング時の筋グリコーゲンを素早く再補充して高強度な運動パフォーマンスを支えます。
+        </p>
+        <div class="mt-auto bg-canvas p-3 rounded-xl border border-hairline text-xs font-medium text-ink">
+          <strong>推奨摂取量：</strong> タンパク質と脂質を確保した残りのカロリー。
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQS SECTION -->
+  <section id="faq" class="max-w-4xl mx-auto px-4 sm:px-6 py-20 border-t border-hairline">
+    <div class="text-center max-w-2xl mx-auto mb-12">
+      <span class="text-xs font-semibold uppercase tracking-wider text-mute" style="font-family: var(--font-mono);">Q&A</span>
+      <h2 class="text-3xl font-bold text-ink tracking-tight mt-1 mb-2">メンテナンスカロリーに関するよくある質問</h2>
+      <p class="text-body text-sm leading-relaxed">
+        代謝メカニズム、健康的なアンダーカロリー設定、食事管理に関するエビデンスに基づく回答。
+      </p>
+    </div>
+
+    <div class="flex flex-col gap-3.5">
+      {faqSchema.mainEntity.map((item) => (
+        <details class="group bg-canvas-elevated border border-hairline rounded-xl p-5 [&_summary::-webkit-details-marker]:hidden">
+          <summary class="flex cursor-pointer items-center justify-between font-semibold text-ink text-sm sm:text-base">
+            <span>{item.name}</span>
+            <span class="transition group-open:rotate-180 text-mute">
+              <svg fill="none" height="20" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" width="20"><path d="M6 9l6 6 6-6"></path></svg>
+            </span>
+          </summary>
+          <p class="text-body mt-3 text-xs sm:text-sm leading-relaxed" set:html={item.acceptedAnswer.text} />
+        </details>
+      ))}
+    </div>
+  </section>
+</Layout>

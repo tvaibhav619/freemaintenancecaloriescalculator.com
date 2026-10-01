@@ -1,0 +1,338 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Calculator from '../../components/Calculator.astro';
+import { seoMetadata } from '../../i18n/ui';
+
+const seo = seoMetadata.pt;
+
+const softwareSchema = {
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Calculadora de Calorias de Manutenção",
+  "url": "https://freemaintenancecaloriescalculator.com/pt/",
+  "description": "Calculadora de calorias de manutenção (TDEE e TMB) com precisão científica baseada em Mifflin-St Jeor e Katch-McArdle.",
+  "applicationCategory": "HealthApplication",
+  "operatingSystem": "All",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "BRL"
+  },
+  "featureList": [
+    "Equação clinicamente validada de Mifflin-St Jeor",
+    "Fórmula de Katch-McArdle baseada em massa magra",
+    "Referência Harris-Benedict revisada",
+    "Planejador de déficit calórico para emagrecimento sustentável",
+    "Calculadora de superávit para ganho de massa muscular limpa",
+    "Distribuição dinâmica de macronutrientes",
+    "Divisão personalizada de proteínas e calorias por refeição"
+  ]
+};
+
+const faqSchema = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "O que são calorias de manutenção (TDEE)?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "As calorias de manutenção correspondem ao Gasto Energético Total Diário (TDEE). Representam a soma de todas as calorias consumidas pelo corpo em 24 horas: taxa metabólica basal (TMB), atividade física espontânea (NEAT), efeito térmico dos alimentos (TEF) e treinos planejados (EAT). Ingerir esse valor mantém seu peso corporal inalterado."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Qual fórmula é a mais exata para calcular o gasto calórico diário?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "A equação de Mifflin-St Jeor é considerada internacionalmente o padrão-ouro clínico para indivíduos com peso normal ou sobrepeso. Já a fórmula Katch-McArdle é ideal para praticantes de musculação e atletas que conhecem sua porcentagem de gordura corporal, pois considera estritamente a massa metabolicamente ativa."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Como calcular as calorias de manutenção na prática?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Primeiro calcula-se a Taxa Metabólica Basal (TMB) pela fórmula de Mifflin-St Jeor: [10 × peso em kg] + [6,25 × altura em cm] - [5 × idade] + s (+5 para homens, -161 para mulheres). Em seguida, multiplica-se esse resultado pelo nível de atividade física diária (fator entre 1,2 e 1,9)."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Uma dieta de 1200 calorias é recomendável para manter ou perder peso?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Não. Para a imensa maioria dos adultos, 1200 calorias diárias fica significativamente abaixo da Taxa Metabólica Basal necessária apenas para manter órgãos vitais funcionando. Restrições severas provocam perda severa de massa magra, desequilíbrio hormonal e desaceleração metabólica adaptativa."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Qual déficit calórico diário é necessário para perder 1 kg de gordura por semana?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Para perder 1 kg de gordura corporal pura, é necessário um déficit acumulado de cerca de 7.700 kcal, o que equivale a um déficit diário em torno de 1.000 a 1.100 kcal abaixo das calorias de manutenção."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Por que smartwatches e esteiras costumam errar o gasto calórico?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Equipamentos de academia e relógios inteligentes estimam calorias através de médias populacionais genéricas (METs), sem considerar sua composição corporal real, eficiência biomecânica ou adaptações mitocondriais. Pesquisas científicas indicam que esses dispositivos superestimam o gasto calórico em até 40%."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Deve-se pesar os alimentos crus ou cozidos para controlar as calorias de manutenção?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "As tabelas nutricionais e rótulos quase sempre referem-se ao peso dos alimentos crus, salvo indicação em contrário. O cozimento altera drasticamente o peso por perda de água (carnes perdem de 20% a 30% do peso, concentrando calorias) ou absorção de água (arroz e macarrão dobram ou triplicam de volume). Ao pesar marmitas ou refeições prontas, use a <a href=\"https://rawtocookedcalculator.com/\" target=\"_blank\" rel=\"noopener\" class=\"text-ink font-medium underline underline-offset-2 hover:opacity-80 transition-opacity\">Calculadora de Cru para Cozido</a> para converter com precisão o peso cozido para o equivalente cru."
+      }
+    }
+  ]
+};
+---
+
+<Layout title={seo.title} description={seo.description} keywords={seo.keywords}>
+  <script type="application/ld+json" set:html={JSON.stringify(softwareSchema)} />
+  <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} />
+
+  <!-- HERO SECTION -->
+  <section class="relative pt-12 pb-10 sm:pt-16 sm:pb-14 border-b border-hairline overflow-hidden">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 relative z-10 text-center flex flex-col items-center">
+      
+      <!-- Telemetry Badge -->
+      <div class="inline-flex items-center justify-center gap-2 px-3 py-1 rounded-full border border-hairline bg-canvas-elevated text-[11px] sm:text-xs font-medium text-mute mb-6 max-w-full text-center" style="font-family: var(--font-mono);">
+        <span class="w-1.5 h-1.5 rounded-full bg-[var(--color-grad-cyan)] animate-pulse flex-shrink-0"></span>
+        <span class="truncate sm:whitespace-normal">Precisão Clínica • Mifflin-St Jeor & Katch-McArdle • Edição 2026</span>
+      </div>
+
+      <!-- Main H1 Heading -->
+      <h1 class="text-3xl xs:text-4xl sm:text-5xl lg:text-6xl font-extrabold text-ink tracking-tight max-w-4xl leading-[1.1] text-balance break-words">
+        Calculadora de Calorias de <span class="text-transparent bg-clip-text bg-gradient-to-r from-ink via-mute to-ink">Manutenção</span> Grátis
+      </h1>
+
+      <!-- Supporting Subheading -->
+      <p class="mt-5 text-base sm:text-lg text-mute max-w-2xl leading-relaxed text-balance">
+        Calcule com rigor científico seu Gasto Energético Diário Total (TDEE) e taxa metabólica basal (TMB). Planeje suas metas de emagrecimento, manutenção ou hipertrofia muscular.
+      </p>
+
+      <!-- Trust Badges -->
+      <div class="flex flex-wrap items-center justify-center gap-4 pt-4 text-xs text-mute" style="font-family: var(--font-mono);">
+        <span class="flex items-center gap-1.5">✓ Equação Mifflin-St Jeor</span>
+        <span class="flex items-center gap-1.5">✓ Fórmula Katch-McArdle</span>
+        <span class="flex items-center gap-1.5">✓ Harris-Benedict Revisada</span>
+        <span class="flex items-center gap-1.5">✓ 100% Grátis e Sem Cadastro</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- CALCULATOR SECTION -->
+  <section id="calculator" class="py-12 sm:py-16">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6">
+      <Calculator lang="pt" />
+    </div>
+  </section>
+
+  <!-- THE 4 PILLARS OF TDEE -->
+  <section id="science" class="max-w-6xl mx-auto px-4 sm:px-6 py-20 border-t border-hairline">
+    <div class="max-w-3xl mb-12">
+      <span class="text-xs font-semibold uppercase tracking-wider text-mute" style="font-family: var(--font-mono);">Fisiologia Energética</span>
+      <h2 class="text-3xl font-bold text-ink tracking-tight mt-1 mb-3">Os 4 Pilares do Gasto Energético Diário (TDEE)</h2>
+      <p class="text-body text-sm leading-relaxed">
+        Seu corpo utiliza energia através de quatro compartimentos metabólicos complementares:
+      </p>
+    </div>
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+      <!-- BMR Card -->
+      <div class="bg-canvas-elevated border border-hairline rounded-2xl p-6 shadow-xs flex flex-col justify-between">
+        <div>
+          <div class="flex items-center justify-between mb-3">
+            <span class="w-8 h-8 rounded-lg bg-blue-50 dark:bg-blue-950/50 text-blue-600 dark:text-blue-400 flex items-center justify-center font-bold text-sm font-mono">01</span>
+            <span class="text-xs font-bold text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-950/50 px-2 py-0.5 rounded font-mono">60 - 70%</span>
+          </div>
+          <h3 class="text-base font-bold text-ink mb-1.5">Taxa Metabólica Basal (TMB)</h3>
+          <p class="text-xs text-body leading-relaxed">
+            Energia vital necessária para manter órgãos vitais em pleno funcionamento (coração, cérebro, rins e pulmões) em repouso absoluto.
+          </p>
+        </div>
+        <div class="mt-4 pt-3 border-t border-hairline text-[11px] text-mute font-medium">
+          Fatores: Massa muscular, estatura, idade e sexo biológico.
+        </div>
+      </div>
+
+      <!-- NEAT Card -->
+      <div class="bg-canvas-elevated border border-hairline rounded-2xl p-6 shadow-xs flex flex-col justify-between">
+        <div>
+          <div class="flex items-center justify-between mb-3">
+            <span class="w-8 h-8 rounded-lg bg-emerald-50 dark:bg-emerald-950/50 text-emerald-600 dark:text-emerald-400 flex items-center justify-center font-bold text-sm font-mono">02</span>
+            <span class="text-xs font-bold text-emerald-600 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-950/50 px-2 py-0.5 rounded font-mono">15 - 25%</span>
+          </div>
+          <h3 class="text-base font-bold text-ink mb-1.5">Atividade Espontânea (NEAT)</h3>
+          <p class="text-xs text-body leading-relaxed">
+            Calorias gastas com movimentações espontâneas do dia a dia: caminhar, subir escadas, afazeres domésticos e trabalhar de pé.
+          </p>
+        </div>
+        <div class="mt-4 pt-3 border-t border-hairline text-[11px] text-mute font-medium">
+          O maior diferencial individual para a queima de gordura.
+        </div>
+      </div>
+
+      <!-- TEF Card -->
+      <div class="bg-canvas-elevated border border-hairline rounded-2xl p-6 shadow-xs flex flex-col justify-between">
+        <div>
+          <div class="flex items-center justify-between mb-3">
+            <span class="w-8 h-8 rounded-lg bg-amber-50 dark:bg-amber-950/50 text-amber-600 dark:text-amber-400 flex items-center justify-center font-bold text-sm font-mono">03</span>
+            <span class="text-xs font-bold text-amber-600 dark:text-amber-400 bg-amber-50 dark:bg-amber-950/50 px-2 py-0.5 rounded font-mono">8 - 12%</span>
+          </div>
+          <h3 class="text-base font-bold text-ink mb-1.5">Efeito Térmico Alimentos (TEF)</h3>
+          <p class="text-xs text-body leading-relaxed">
+            Energia necessária para digestão, absorção e assimilação dos nutrientes. As proteínas exigem até 30% do seu próprio valor energético.
+          </p>
+        </div>
+        <div class="mt-4 pt-3 border-t border-hairline text-[11px] text-mute font-medium">
+          Potencializado consideravelmente por dietas hiperproteicas.
+        </div>
+      </div>
+
+      <!-- EAT Card -->
+      <div class="bg-canvas-elevated border border-hairline rounded-2xl p-6 shadow-xs flex flex-col justify-between">
+        <div>
+          <div class="flex items-center justify-between mb-3">
+            <span class="w-8 h-8 rounded-lg bg-purple-50 dark:bg-purple-950/50 text-purple-600 dark:text-purple-400 flex items-center justify-center font-bold text-sm font-mono">04</span>
+            <span class="text-xs font-bold text-purple-600 dark:text-purple-400 bg-purple-50 dark:bg-purple-950/50 px-2 py-0.5 rounded font-mono">5 - 15%</span>
+          </div>
+          <h3 class="text-base font-bold text-ink mb-1.5">Exercício Físico (EAT)</h3>
+          <p class="text-xs text-body leading-relaxed">
+            Treinamento deliberado: musculação pesada, treinos de alta intensidade (HIIT), corrida e esportes coletivos.
+          </p>
+        </div>
+        <div class="mt-4 pt-3 border-t border-hairline text-[11px] text-mute font-medium">
+          Fundamental para sinalizar manutenção muscular no déficit.
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FORMULA COMPARISON TABLE -->
+  <section class="max-w-6xl mx-auto px-4 sm:px-6 py-16 border-t border-hairline">
+    <div class="max-w-3xl mb-8">
+      <span class="text-xs font-semibold uppercase tracking-wider text-mute" style="font-family: var(--font-mono);">Metodologia</span>
+      <h2 class="text-2xl sm:text-3xl font-bold text-ink tracking-tight mt-1 mb-2">Comparativo de Fórmulas Científicas</h2>
+      <p class="text-body text-sm leading-relaxed">
+        Alterne entre as três fórmulas mais respeitadas e validadas pela ciência da nutrição esportiva:
+      </p>
+    </div>
+
+    <div class="overflow-x-auto bg-canvas-elevated rounded-2xl border border-hairline shadow-xs max-w-full overscroll-x-contain">
+      <table class="w-full min-w-[550px] text-left text-xs sm:text-sm">
+        <thead class="bg-canvas border-b border-hairline font-semibold text-ink uppercase tracking-wider text-[11px]" style="font-family: var(--font-mono);">
+          <tr>
+            <th class="py-3.5 px-4 sm:px-6">Fórmula</th>
+            <th class="py-3.5 px-4 sm:px-6">Variáveis Utilizadas</th>
+            <th class="py-3.5 px-4 sm:px-6">Maior Benefício</th>
+            <th class="py-3.5 px-4 sm:px-6">Público Recomendado</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-hairline text-body">
+          <tr class="hover:bg-canvas/50 transition-colors">
+            <td class="py-4 px-4 sm:px-6 font-bold text-ink">Mifflin-St Jeor (1990)</td>
+            <td class="py-4 px-4 sm:px-6">Peso, Altura, Idade, Sexo</td>
+            <td class="py-4 px-4 sm:px-6">A mais precisa estatisticamente sem exigir exame de bioimpedância ou dobras.</td>
+            <td class="py-4 px-4 sm:px-6"><span class="px-2 py-0.5 rounded bg-emerald-50 dark:bg-emerald-950/50 text-emerald-700 dark:text-emerald-400 font-medium">Público Geral</span></td>
+          </tr>
+          <tr class="hover:bg-canvas/50 transition-colors">
+            <td class="py-4 px-4 sm:px-6 font-bold text-ink">Katch-McArdle (1996)</td>
+            <td class="py-4 px-4 sm:px-6">Massa Magra (LBM) via % Gordura</td>
+            <td class="py-4 px-4 sm:px-6">Calcula o consumo real apenas do tecido muscular e metabólico ativo.</td>
+            <td class="py-4 px-4 sm:px-6"><span class="px-2 py-0.5 rounded bg-blue-50 dark:bg-blue-950/50 text-blue-700 dark:text-blue-400 font-medium">Atletas & Marombeiros</span></td>
+          </tr>
+          <tr class="hover:bg-canvas/50 transition-colors">
+            <td class="py-4 px-4 sm:px-6 font-bold text-ink">Harris-Benedict Revisada (1984)</td>
+            <td class="py-4 px-4 sm:px-6">Peso, Altura, Idade, Sexo</td>
+            <td class="py-4 px-4 sm:px-6">Ajustada por Roza e Shizgal para eliminar as distorções da fórmula original de 1919.</td>
+            <td class="py-4 px-4 sm:px-6"><span class="px-2 py-0.5 rounded bg-purple-50 dark:bg-purple-950/50 text-purple-700 dark:text-purple-400 font-medium">Referência Clínica</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- MACRO GUIDE SECTION -->
+  <section id="macros" class="max-w-6xl mx-auto px-4 sm:px-6 py-16 border-t border-hairline">
+    <div class="max-w-3xl mb-10">
+      <span class="text-xs font-semibold uppercase tracking-wider text-mute" style="font-family: var(--font-mono);">Nutrição Otimizada</span>
+      <h2 class="text-2xl sm:text-3xl font-bold text-ink tracking-tight mt-1 mb-2">Divisão Ideal de Macronutrientes</h2>
+      <p class="text-body text-sm leading-relaxed">
+        As calorias totais ditam as oscilações na balança, mas os macronutrientes determinam se a mudança ocorrerá em gordura ou músculo:
+      </p>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div class="bg-canvas-elevated border border-hairline rounded-2xl p-6 shadow-xs flex flex-col gap-3">
+        <div class="flex items-center gap-2">
+          <span class="w-3 h-3 rounded-full bg-[var(--color-grad-blue)]"></span>
+          <h3 class="text-base font-bold text-ink">Proteínas (4 kcal / grama)</h3>
+        </div>
+        <p class="text-xs text-body leading-relaxed">
+          Essenciais para a síntese e recuperação muscular. Fornecem a maior sensação de saciedade e impedem a perda de massa magra em fases de déficit.
+        </p>
+        <div class="mt-auto bg-canvas p-3 rounded-xl border border-hairline text-xs font-medium text-ink">
+          <strong>Meta recomendada:</strong> 1,6 a 2,2 g por kg de peso corporal.
+        </div>
+      </div>
+
+      <div class="bg-canvas-elevated border border-hairline rounded-2xl p-6 shadow-xs flex flex-col gap-3">
+        <div class="flex items-center gap-2">
+          <span class="w-3 h-3 rounded-full bg-[var(--color-grad-magenta)]"></span>
+          <h3 class="text-base font-bold text-ink">Gorduras (9 kcal / grama)</h3>
+        </div>
+        <p class="text-xs text-body leading-relaxed">
+          Cruciais para a produção de hormônios vitais (como testosterona) e absorção de vitaminas lipossolúveis (A, D, E e K).
+        </p>
+        <div class="mt-auto bg-canvas p-3 rounded-xl border border-hairline text-xs font-medium text-ink">
+          <strong>Meta recomendada:</strong> 20% a 30% das calorias diárias (mínimo 0,7g/kg).
+        </div>
+      </div>
+
+      <div class="bg-canvas-elevated border border-hairline rounded-2xl p-6 shadow-xs flex flex-col gap-3">
+        <div class="flex items-center gap-2">
+          <span class="w-3 h-3 rounded-full bg-[var(--color-grad-amber)]"></span>
+          <h3 class="text-base font-bold text-ink">Carboidratos (4 kcal / grama)</h3>
+        </div>
+        <p class="text-xs text-body leading-relaxed">
+          Combustível principal para o sistema nervoso central e contrações musculares intensas nos treinos de força. Repõem o glicogênio.
+        </p>
+        <div class="mt-auto bg-canvas p-3 rounded-xl border border-hairline text-xs font-medium text-ink">
+          <strong>Meta recomendada:</strong> Ajustados com as calorias restantes.
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQS SECTION -->
+  <section id="faq" class="max-w-4xl mx-auto px-4 sm:px-6 py-20 border-t border-hairline">
+    <div class="text-center max-w-2xl mx-auto mb-12">
+      <span class="text-xs font-semibold uppercase tracking-wider text-mute" style="font-family: var(--font-mono);">Perguntas & Respostas</span>
+      <h2 class="text-3xl font-bold text-ink tracking-tight mt-1 mb-2">Dúvidas Frequentes sobre Manutenção Calórica</h2>
+      <p class="text-body text-sm leading-relaxed">
+        Respostas científicas sobre gasto metabólico, cálculo de déficit para emagrecer e preservação muscular.
+      </p>
+    </div>
+
+    <div class="flex flex-col gap-3.5">
+      {faqSchema.mainEntity.map((item) => (
+        <details class="group bg-canvas-elevated border border-hairline rounded-xl p-5 [&_summary::-webkit-details-marker]:hidden">
+          <summary class="flex cursor-pointer items-center justify-between font-semibold text-ink text-sm sm:text-base">
+            <span>{item.name}</span>
+            <span class="transition group-open:rotate-180 text-mute">
+              <svg fill="none" height="20" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" width="20"><path d="M6 9l6 6 6-6"></path></svg>
+            </span>
+          </summary>
+          <p class="text-body mt-3 text-xs sm:text-sm leading-relaxed" set:html={item.acceptedAnswer.text} />
+        </details>
+      ))}
+    </div>
+  </section>
+</Layout>

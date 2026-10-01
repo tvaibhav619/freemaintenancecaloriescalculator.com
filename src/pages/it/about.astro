@@ -1,0 +1,67 @@
+---
+import Layout from '../../layouts/Layout.astro';
+
+const title = "Chi Siamo & Metodologia Scientifica | FreeMaintenanceCaloriesCalculator.com";
+const description = "Scopri la missione, le equazioni cliniche e i criteri scientifici alla base di FreeMaintenanceCaloriesCalculator.com.";
+---
+
+<Layout title={title} description={description}>
+  <div class="max-w-4xl mx-auto px-4 sm:px-6 py-16">
+    <div class="border-b border-hairline pb-8 mb-10">
+      <span class="text-xs font-semibold uppercase tracking-wider text-mute" style="font-family: var(--font-mono);">La Nostra Missione</span>
+      <h1 class="text-3xl sm:text-4xl font-extrabold text-ink tracking-tight mt-1 mb-4">
+        Chiarezza Scientifica Applicata alla Nutrizione Umana
+      </h1>
+      <p class="text-base text-body leading-relaxed">
+        FreeMaintenanceCaloriesCalculator.com nasce per liberare gli utenti da stime arbitrarie, paywall ingannevoli e sovrastime energetiche diffuse nelle app commerciali e negli smartwatch.
+      </p>
+    </div>
+
+    <div class="flex flex-col gap-10 text-body text-sm leading-relaxed">
+      <section class="flex flex-col gap-3">
+        <h2 class="text-xl font-bold text-ink">Perché abbiamo creato questo strumento</h2>
+        <p>
+          Molti orologi fitness e macchine cardio sovrastimano il dispendio calorico quotidiano tra il 20% e il 90%. Questa imprecisione induce moltissime persone a mangiare più del necessario, compromettendo la perdita di massa grassa.
+        </p>
+        <p>
+          Offriamo un calcolatore indipendente, trasparente e basato sui dati della fisiologia energetica moderna.
+        </p>
+      </section>
+
+      <section class="flex flex-col gap-3">
+        <h2 class="text-xl font-bold text-ink">Le equazioni scientifiche adottate</h2>
+        <p>
+          Non utilizziamo formule proprietarie opache, bensì le equazioni validate dalla letteratura scientifica:
+        </p>
+        <ul class="list-disc list-inside space-y-2 pl-2">
+          <li>
+            <strong>Formula Mifflin-St Jeor (1990):</strong> Eletta dall'Academy of Nutrition and Dietetics come il punto di riferimento più accurato per la popolazione adulta.
+          </li>
+          <li>
+            <strong>Formula Katch-McArdle (1996):</strong> Basata sulla massa magra (LBM), fondamentale per sportivi e individui con massa muscolare sviluppata.
+          </li>
+          <li>
+            <strong>Harris-Benedict Revisionata (1984):</strong> La classica formulazione ricalibrata da Roza e Shizgal per una verifica clinica comparativa.
+          </li>
+        </ul>
+      </section>
+
+      <section class="flex flex-col gap-3">
+        <h2 class="text-xl font-bold text-ink">Accesso Gratuito e Massima Riservatezza</h2>
+        <p>
+          Riteniamo che gli strumenti nutrizionali di base debbano rimanere aperti e gratuiti. I dati vengono elaborati localmente nel browser senza registrazione o archiviazione sui server.
+        </p>
+      </section>
+
+      <div class="bg-canvas-elevated border border-hairline rounded-2xl p-6 shadow-xs mt-4">
+        <h3 class="text-base font-bold text-ink mb-2">Desideri proporre un feedback?</h3>
+        <p class="text-xs text-mute mb-4">
+          Perfezioniamo costantemente i nostri algoritmi in linea con le ultime scoperte della ricerca scientifica.
+        </p>
+        <a href="/it/contact" class="inline-flex items-center text-xs font-semibold text-ink hover:underline">
+          Contatta il nostro team &rarr;
+        </a>
+      </div>
+    </div>
+  </div>
+</Layout>

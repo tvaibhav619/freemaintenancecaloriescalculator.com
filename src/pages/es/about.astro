@@ -1,0 +1,67 @@
+---
+import Layout from '../../layouts/Layout.astro';
+
+const title = "Sobre Nosotros y Metodología Científica | FreeMaintenanceCaloriesCalculator.com";
+const description = "Conozca la misión, fórmulas científicas y metodología metabólica detrás de FreeMaintenanceCaloriesCalculator.com.";
+---
+
+<Layout title={title} description={description}>
+  <div class="max-w-4xl mx-auto px-4 sm:px-6 py-16">
+    <div class="border-b border-hairline pb-8 mb-10">
+      <span class="text-xs font-semibold uppercase tracking-wider text-mute" style="font-family: var(--font-mono);">Nuestra Misión</span>
+      <h1 class="text-3xl sm:text-4xl font-extrabold text-ink tracking-tight mt-1 mb-4">
+        Claridad Científica Aplicada a la Nutrición Humana
+      </h1>
+      <p class="text-base text-body leading-relaxed">
+        FreeMaintenanceCaloriesCalculator.com fue desarrollado para eliminar la confusión, las barreras de pago y las estimaciones infladas tan comunes en las aplicaciones comerciales y relojes inteligentes.
+      </p>
+    </div>
+
+    <div class="flex flex-col gap-10 text-body text-sm leading-relaxed">
+      <section class="flex flex-col gap-3">
+        <h2 class="text-xl font-bold text-ink">Por Qué Creamos Esta Herramienta</h2>
+        <p>
+          La mayoría de aplicaciones y pulseras de actividad sobreestiman el gasto calórico entre un 20% y un 90%. Esta sobreestimación crónica provoca que muchas personas ingieran más calorías de las debidas, estancando su progreso físico.
+        </p>
+        <p>
+          Construimos esta plataforma basándonos en estudios clínicos para brindar estimaciones matemáticas transparentes del Gasto Energético Diario Total (TDEE) y la distribución de macronutrientes.
+        </p>
+      </section>
+
+      <section class="flex flex-col gap-3">
+        <h2 class="text-xl font-bold text-ink">Nuestra Metodología Científica</h2>
+        <p>
+          No utilizamos algoritmos opacos. Confiamos estrictamente en ecuaciones metabólicas validadas en la literatura médica:
+        </p>
+        <ul class="list-disc list-inside space-y-2 pl-2">
+          <li>
+            <strong>Ecuación Mifflin-St Jeor (1990):</strong> Respaldada por la Academia de Nutrición y Dietética como el estándar más fiable para estimar el gasto metabólico basal en adultos sanos.
+          </li>
+          <li>
+            <strong>Fórmula Katch-McArdle (1996):</strong> Aísla la masa magra libre de grasa, ofreciendo máxima precisión a deportistas y personas con bajo porcentaje de grasa.
+          </li>
+          <li>
+            <strong>Harris-Benedict Revisada (1984):</strong> Actualizada por Roza y Shizgal para modernizar el cálculo histórico de 1919.
+          </li>
+        </ul>
+      </section>
+
+      <section class="flex flex-col gap-3">
+        <h2 class="text-xl font-bold text-ink">Compromiso con el Acceso Libre y la Privacidad</h2>
+        <p>
+          Creemos que las herramientas de salud esenciales deben ser universales y gratuitas. Todos los cálculos se efectúan en su propio navegador sin almacenar métricas en servidores remotos.
+        </p>
+      </section>
+
+      <div class="bg-canvas-elevated border border-hairline rounded-2xl p-6 shadow-xs mt-4">
+        <h3 class="text-base font-bold text-ink mb-2">¿Desea Enviar Sugerencias?</h3>
+        <p class="text-xs text-mute mb-4">
+          Actualizamos continuamente nuestras calculadoras siguiendo la investigación deportiva más reciente.
+        </p>
+        <a href="/es/contact" class="inline-flex items-center text-xs font-semibold text-ink hover:underline">
+          Contactar con nuestro equipo &rarr;
+        </a>
+      </div>
+    </div>
+  </div>
+</Layout>

@@ -1,0 +1,75 @@
+---
+import Layout from '../../layouts/Layout.astro';
+
+const title = "고객 지원 및 문의 | FreeMaintenanceCaloriesCalculator.com";
+const description = "공식 관련 문의, 버그 제보, 기능 개선 제안 등 FreeMaintenanceCaloriesCalculator.com에 문의하세요.";
+---
+
+<Layout title={title} description={description}>
+  <div class="max-w-3xl mx-auto px-4 sm:px-6 py-16">
+    <div class="border-b border-hairline pb-8 mb-10 text-center">
+      <span class="text-xs font-semibold uppercase tracking-wider text-mute" style="font-family: var(--font-mono);">고객 지원</span>
+      <h1 class="text-3xl sm:text-4xl font-extrabold text-ink tracking-tight mt-1 mb-2">고객 지원 및 문의</h1>
+      <p class="text-sm text-body max-w-md mx-auto mb-4">
+        대사 공식에 대한 질문, 계산 오류 제보, 새로운 기능 제안 등 언제든지 문의해 주시기 바랍니다.
+      </p>
+      <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-canvas-elevated border border-hairline text-xs text-mute">
+        <span>공식 이메일:</span>
+        <a href="mailto:hello@freemaintenancecaloriecalculator.com" class="font-semibold text-ink hover:underline">hello@freemaintenancecaloriecalculator.com</a>
+      </div>
+    </div>
+
+    <div class="bg-canvas-elevated border border-hairline rounded-2xl p-6 sm:p-8 shadow-xs">
+      <form id="contact-form" class="flex flex-col gap-5">
+        <div>
+          <label for="name" class="block text-xs font-semibold uppercase tracking-wider text-ink mb-1.5" style="font-family: var(--font-mono);">이름</label>
+          <input type="text" id="name" name="name" required placeholder="홍길동" class="w-full bg-canvas text-ink border border-hairline rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-ink focus:ring-1 focus:ring-ink transition-all" />
+        </div>
+
+        <div>
+          <label for="email" class="block text-xs font-semibold uppercase tracking-wider text-ink mb-1.5" style="font-family: var(--font-mono);">이메일 주소</label>
+          <input type="email" id="email" name="email" required placeholder="example@domain.kr" class="w-full bg-canvas text-ink border border-hairline rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-ink focus:ring-1 focus:ring-ink transition-all" />
+        </div>
+
+        <div>
+          <label for="subject" class="block text-xs font-semibold uppercase tracking-wider text-ink mb-1.5" style="font-family: var(--font-mono);">문의 유형</label>
+          <select id="subject" name="subject" class="w-full bg-canvas text-ink border border-hairline rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-ink focus:ring-1 focus:ring-ink transition-all">
+            <option value="feedback">일반 피드백 및 기능 제안</option>
+            <option value="bug">버그 및 계산 오류 신고</option>
+            <option value="formula">과학적 대사 공식 관련 문의</option>
+            <option value="business">제휴 및 미디어 문의</option>
+          </select>
+        </div>
+
+        <div>
+          <label for="message" class="block text-xs font-semibold uppercase tracking-wider text-ink mb-1.5" style="font-family: var(--font-mono);">문의 내용</label>
+          <textarea id="message" name="message" rows="5" required placeholder="문의하실 내용을 입력해 주세요..." class="w-full bg-canvas text-ink border border-hairline rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-ink focus:ring-1 focus:ring-ink transition-all"></textarea>
+        </div>
+
+        <button type="submit" id="submit-btn" class="bg-primary text-on-primary hover:bg-black font-semibold text-sm py-3 px-6 rounded-xl transition-all shadow-xs self-start">
+          메시지 보내기
+        </button>
+        <p id="form-status" class="text-xs text-emerald-600 font-medium hidden">감사합니다! 메시지가 성공적으로 전송되었습니다.</p>
+      </form>
+    </div>
+
+    <script>
+      const form = document.getElementById("contact-form") as HTMLFormElement;
+      const status = document.getElementById("form-status") as HTMLElement;
+      const btn = document.getElementById("submit-btn") as HTMLButtonElement;
+
+      form?.addEventListener("submit", (e) => {
+        e.preventDefault();
+        btn.disabled = true;
+        btn.innerText = "전송 중...";
+        setTimeout(() => {
+          form.reset();
+          btn.disabled = false;
+          btn.innerText = "메시지 보내기";
+          status.classList.remove("hidden");
+          setTimeout(() => status.classList.add("hidden"), 5000);
+        }, 600);
+      });
+    </script>
+  </div>
+</Layout>

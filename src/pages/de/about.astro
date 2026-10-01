@@ -1,0 +1,67 @@
+---
+import Layout from '../../layouts/Layout.astro';
+
+const title = "Über Uns & Methodik | FreeMaintenanceCaloriesCalculator.com";
+const description = "Erfahren Sie mehr über die Mission, die klinischen Formeln und die Methodik hinter FreeMaintenanceCaloriesCalculator.com.";
+---
+
+<Layout title={title} description={description}>
+  <div class="max-w-4xl mx-auto px-4 sm:px-6 py-16">
+    <div class="border-b border-hairline pb-8 mb-10">
+      <span class="text-xs font-semibold uppercase tracking-wider text-mute" style="font-family: var(--font-mono);">Unsere Mission</span>
+      <h1 class="text-3xl sm:text-4xl font-extrabold text-ink tracking-tight mt-1 mb-4">
+        Wissenschaftliche Präzision für die menschliche Ernährung
+      </h1>
+      <p class="text-base text-body leading-relaxed">
+        FreeMaintenanceCaloriesCalculator.com wurde entwickelt, um unzuverlässige Schätzungen, Werbefallen und Paywalls kommerzieller Fitness-Apps durch transparente wissenschaftliche Berechnungen zu ersetzen.
+      </p>
+    </div>
+
+    <div class="flex flex-col gap-10 text-body text-sm leading-relaxed">
+      <section class="flex flex-col gap-3">
+        <h2 class="text-xl font-bold text-ink">Warum wir diesen Rechner entwickelt haben</h2>
+        <p>
+          Zahlreiche Wearables und Kardiogeräte überschätzen den Kalorienverbrauch im Alltag um 20% bis 90%. Dieser Fehler führt dazu, dass Trainierende unbeabsichtigt zu viele Kalorien aufnehmen und Diätplateaus erleben.
+        </p>
+        <p>
+          Unsere Plattform liefert verlässliche, auf sportwissenschaftlichen Studien basierende Richtwerte für Ihren täglichen Energiebedarf (TDEE) und die optimale Makronährstoff-Verteilung.
+        </p>
+      </section>
+
+      <section class="flex flex-col gap-3">
+        <h2 class="text-xl font-bold text-ink">Validierte wissenschaftliche Formeln</h2>
+        <p>
+          Wir nutzen keine proprietären Algorithmen, sondern öffentlich überprüfbare Formeln aus der medizinischen Fachliteratur:
+        </p>
+        <ul class="list-disc list-inside space-y-2 pl-2">
+          <li>
+            <strong>Mifflin-St Jeor Formel (1990):</strong> Von der Academy of Nutrition and Dietetics nach Auswertung von 245 Studien als zuverlässigste Standardformel für gesunde Erwachsene anerkannt.
+          </li>
+          <li>
+            <strong>Katch-McArdle Formel (1996):</strong> Berechnet den Grundumsatz basierend auf der fettfreien Magermasse und liefert Bestwerte für austrainierte Sportler.
+          </li>
+          <li>
+            <strong>Revidierte Harris-Benedict Formel (1984):</strong> Modernisierte Fassung des historischen Standards von Roza und Shizgal.
+          </li>
+        </ul>
+      </section>
+
+      <section class="flex flex-col gap-3">
+        <h2 class="text-xl font-bold text-ink">Kostenfreie Nutzung & Datenschutz</h2>
+        <p>
+          Fundamentale Ernährungstools müssen frei zugänglich sein. Alle Berechnungen laufen ohne Datenspeicherung direkt in Ihrem Browser ab.
+        </p>
+      </section>
+
+      <div class="bg-canvas-elevated border border-hairline rounded-2xl p-6 shadow-xs mt-4">
+        <h3 class="text-base font-bold text-ink mb-2">Haben Sie Fragen oder Feedback?</h3>
+        <p class="text-xs text-mute mb-4">
+          Wir optimieren unsere Berechnungsmodelle fortlaufend anhand aktueller stoffwechselphysiologischer Publikationen.
+        </p>
+        <a href="/de/contact" class="inline-flex items-center text-xs font-semibold text-ink hover:underline">
+          Unser Team kontaktieren &rarr;
+        </a>
+      </div>
+    </div>
+  </div>
+</Layout>

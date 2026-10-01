@@ -1,23 +1,435 @@
+---
+import '../styles/global.css';
+import LanguagePicker from '../components/LanguagePicker.astro';
+import { languages, type SupportedLanguage } from '../i18n/ui';
+import { getLangFromUrl, useTranslations, useTranslatedPath } from '../i18n/utils';
+
+interface Props {
+	title: string;
+	description?: string;
+	canonical?: string;
+	keywords?: string;
+	image?: string;
+	noindex?: boolean;
+}
+
+const currentLang = (Astro.currentLocale as SupportedLanguage) || getLangFromUrl(Astro.url);
+const t = useTranslations(currentLang);
+const translatePath = useTranslatedPath(currentLang);
+
+const { 
+	title, 
+	description = "Calculate your maintenance calories (TDEE), BMR, and macronutrient targets instantly with scientific precision.",
+	canonical,
+	keywords = "maintenance calorie calculator, most accurate maintenance calorie calculator, best maintenance calorie calculator, calorie calculator, calorie calculator for weight loss, weight loss calorie calculator, calorie calculator to lose weight, treadmill calorie calculator, daily calorie calculator",
+	image = "https://freemaintenancecaloriescalculator.com/og-image.svg",
+	noindex = false
+} = Astro.props;
+
+// Determine clean subpath without language prefix
+const pathname = Astro.url.pathname;
+const segments = pathname.split('/').filter(Boolean);
+if (segments.length > 0 && segments[0] in languages) {
+	segments.shift();
+}
+const basePath = '/' + segments.join('/') + (segments.length > 0 ? '/' : '');
+
+const siteUrl = "https://freemaintenancecaloriescalculator.com";
+const resolvedCanonical = canonical || (currentLang === 'en' ? `${siteUrl}${basePath}` : `${siteUrl}/${currentLang}${basePath === '/' ? '/' : basePath}`);
+---
+
 <!doctype html>
-<html lang="en">
+<html lang={currentLang} class="dark scroll-smooth overflow-x-hidden max-w-full">
 	<head>
-		<meta charset="utf-8" />
-		<meta name="viewport" content="width=device-width" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<link rel="icon" href="/favicon.ico" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro Basics</title>
+		<!-- Google tag (gtag.js) -->
+		<script is:inline async src="https://www.googletagmanager.com/gtag/js?id=G-E6S242Z77Q"></script>
+		<script is:inline>
+			window.dataLayer = window.dataLayer || [];
+			function gtag(){dataLayer.push(arguments);}
+			gtag('js', new Date());
+
+			gtag('config', 'G-E6S242Z77Q');
+		</script>
+
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg?v=3" />
+		<link rel="shortcut icon" href="/favicon.svg?v=3" />
+		<link rel="canonical" href={resolvedCanonical} />
+		<link rel="sitemap" href="/sitemap-index.xml" />
+		<link rel="sitemap" href="/sitemap.xml" />
+
+		<!-- Hreflang Tags for International SEO (Available across all 8 supported languages) -->
+		{!noindex && (
+			<>
+				<link rel="alternate" hreflang="x-default" href={`${siteUrl}${basePath}`} />
+				<link rel="alternate" hreflang="en" href={`${siteUrl}${basePath}`} />
+				<link rel="alternate" hreflang="es" href={`${siteUrl}/es${basePath === '/' ? '/' : basePath}`} />
+				<link rel="alternate" hreflang="ja" href={`${siteUrl}/ja${basePath === '/' ? '/' : basePath}`} />
+				<link rel="alternate" hreflang="fr" href={`${siteUrl}/fr${basePath === '/' ? '/' : basePath}`} />
+				<link rel="alternate" hreflang="de" href={`${siteUrl}/de${basePath === '/' ? '/' : basePath}`} />
+				<link rel="alternate" hreflang="pt" href={`${siteUrl}/pt${basePath === '/' ? '/' : basePath}`} />
+				<link rel="alternate" hreflang="ko" href={`${siteUrl}/ko${basePath === '/' ? '/' : basePath}`} />
+				<link rel="alternate" hreflang="it" href={`${siteUrl}/it${basePath === '/' ? '/' : basePath}`} />
+			</>
+		)}
+
+		<!-- Primary SEO Meta Tags -->
+		<title>{title}</title>
+		<meta name="title" content={title} />
+		<meta name="description" content={description} />
+		<meta name="keywords" content={keywords} />
+		{noindex ? (
+			<meta name="robots" content="noindex, nofollow" />
+		) : (
+			<meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
+		)}
+		<meta name="author" content="Free Maintenance Calories Calculator" />
+
+		<!-- Global Structured Data (Organization, WebSite & Breadcrumbs) -->
+		<script type="application/ld+json" set:html={JSON.stringify({
+			"@context": "https://schema.org",
+			"@graph": [
+				{
+					"@type": "Organization",
+					"@id": "https://freemaintenancecaloriescalculator.com/#organization",
+					"name": "Free Maintenance Calories Calculator",
+					"url": "https://freemaintenancecaloriescalculator.com/",
+					"logo": {
+						"@type": "ImageObject",
+						"url": "https://freemaintenancecaloriescalculator.com/og-image.svg"
+					}
+				},
+				{
+					"@type": "WebSite",
+					"@id": "https://freemaintenancecaloriescalculator.com/#website",
+					"url": "https://freemaintenancecaloriescalculator.com/",
+					"name": "Free Maintenance Calories Calculator",
+					"publisher": {
+						"@id": "https://freemaintenancecaloriescalculator.com/#organization"
+					},
+					"inLanguage": currentLang
+				},
+				{
+					"@type": "BreadcrumbList",
+					"@id": `${resolvedCanonical}#breadcrumb`,
+					"itemListElement": [
+						{
+							"@type": "ListItem",
+							"position": 1,
+							"name": "Home",
+							"item": "https://freemaintenancecaloriescalculator.com/"
+						},
+						...(basePath !== '/' ? [{
+							"@type": "ListItem",
+							"position": 2,
+							"name": title.split('|')[0].trim(),
+							"item": resolvedCanonical
+						}] : currentLang !== 'en' ? [{
+							"@type": "ListItem",
+							"position": 2,
+							"name": languages[currentLang],
+							"item": resolvedCanonical
+						}] : [])
+					]
+				}
+			]
+		})} />
+
+		<!-- Open Graph / Facebook -->
+		<meta property="og:type" content="website" />
+		<meta property="og:url" content={resolvedCanonical} />
+		<meta property="og:title" content={title} />
+		<meta property="og:description" content={description} />
+		<meta property="og:image" content={image} />
+		<meta property="og:site_name" content="Free Maintenance Calories Calculator" />
+		<meta property="og:locale" content={currentLang === 'en' ? 'en_US' : currentLang} />
+
+		<!-- Twitter -->
+		<meta name="twitter:card" content="summary_large_image" />
+		<meta name="twitter:url" content={resolvedCanonical} />
+		<meta name="twitter:title" content={title} />
+		<meta name="twitter:description" content={description} />
+		<meta name="twitter:image" content={image} />
+
+		<!-- Inline Theme Initialization (Default Dark Mode) -->
+		<script is:inline>
+			const theme = (() => {
+				if (typeof localStorage !== 'undefined' && localStorage.getItem('theme')) {
+					return localStorage.getItem('theme');
+				}
+				return 'dark'; // Default is Dark mode
+			})();
+			if (theme === 'dark') {
+				document.documentElement.classList.add('dark');
+				document.documentElement.classList.remove('light');
+			} else {
+				document.documentElement.classList.add('light');
+				document.documentElement.classList.remove('dark');
+			}
+		</script>
 	</head>
-	<body>
-		<slot />
+	<body class="antialiased min-h-screen flex flex-col bg-canvas text-body transition-colors duration-200 overflow-x-hidden w-full max-w-full relative">
+		<!-- Header / Nav -->
+		<header class="sticky top-0 z-50 border-b border-hairline bg-canvas-elevated/90 backdrop-blur-md w-full max-w-full">
+			<div class="max-w-7xl mx-auto px-2.5 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-2 sm:gap-6 w-full">
+				<!-- Brand Logo & Domain -->
+				<a href={translatePath('/')} class="flex items-center gap-1.5 sm:gap-2.5 font-semibold text-ink tracking-tight hover:opacity-90 transition-opacity min-w-0 flex-shrink" aria-label="freemaintenancecaloriescalculator.com">
+					<!-- Dumbbell Brand Icon Tile -->
+					<div class="w-7 h-7 sm:w-9 sm:h-9 rounded-lg sm:rounded-xl bg-ink text-canvas flex items-center justify-center shadow-xs flex-shrink-0">
+						<svg class="w-3.5 h-3.5 sm:w-4.5 sm:h-4.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+							<path d="m6.5 6.5 11 11"/>
+							<path d="m21 21-1-1"/>
+							<path d="m3 3 1 1"/>
+							<path d="m18 22 4-4"/>
+							<path d="m2 6 4-4"/>
+							<path d="m3 10 7-7"/>
+							<path d="m14 21 7-7"/>
+						</svg>
+					</div>
+
+					<!-- Brand Name: Full domain clearly visible on desktop, tablet, and mobile with no overlap -->
+					<div class="flex flex-col justify-center min-w-0 flex-shrink">
+						<!-- Desktop / Tablet single-line view -->
+						<div class="hidden sm:inline-flex items-baseline font-bold tracking-tight text-ink text-xs sm:text-sm lg:text-[15px] whitespace-nowrap">
+							<span>freemaintenancecalories<span class="text-primary font-bold">calculator</span></span><span class="text-mute font-medium text-xs">.com</span>
+						</div>
+						<!-- Mobile view: 2 clean stacked lines ensuring complete visibility without pushing header width -->
+						<div class="flex sm:hidden flex-col leading-tight min-w-0">
+							<span class="font-extrabold tracking-tight text-ink text-[11px] sm:text-xs truncate">
+								freemaintenancecalories
+							</span>
+							<span class="text-[9px] sm:text-[10px] font-semibold text-mute tracking-wide font-mono -mt-0.5">
+								calculator.com
+							</span>
+						</div>
+					</div>
+				</a>
+
+				<!-- Desktop Navigation Links -->
+				<nav class="hidden lg:flex items-center gap-3 xl:gap-5 text-xs xl:text-sm font-medium flex-shrink-0">
+					<a href={`${translatePath('/')}#calculator`} class="text-body hover:text-ink transition-colors whitespace-nowrap">{t('nav.calculator')}</a>
+					<a href={`${translatePath('/')}#science`} class="text-body hover:text-ink transition-colors whitespace-nowrap">{t('nav.guide')}</a>
+					<a href={`${translatePath('/')}#macros`} class="text-body hover:text-ink transition-colors whitespace-nowrap">{t('nav.formulas')}</a>
+					<a href={`${translatePath('/')}#faq`} class="text-body hover:text-ink transition-colors whitespace-nowrap">{t('nav.faqs')}</a>
+					<a href={translatePath('/about')} class="text-body hover:text-ink transition-colors whitespace-nowrap">{t('nav.about')}</a>
+				</nav>
+
+				<!-- Action Controls (Language, Theme, CTA & Mobile Hamburger) -->
+				<div class="flex items-center gap-1 sm:gap-2 flex-shrink-0">
+					<!-- Language Picker -->
+					<LanguagePicker idPrefix="header" />
+
+					<!-- Dark / Light Mode Toggle Button -->
+					<button type="button" id="theme-toggle" aria-label="Toggle theme" class="h-8 w-8 sm:h-9 sm:w-9 rounded-xl border border-hairline bg-canvas hover:bg-canvas-elevated flex items-center justify-center text-ink transition-all shadow-xs flex-shrink-0">
+						<!-- Sun Icon (visible in dark mode) -->
+						<svg id="theme-icon-sun" class="w-4 h-4 hidden dark:block" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+							<circle cx="12" cy="12" r="4"/>
+							<path d="M12 2v2"/>
+							<path d="M12 20v2"/>
+							<path d="m4.93 4.93 1.41 1.41"/>
+							<path d="m17.66 17.66 1.41 1.41"/>
+							<path d="M2 12h2"/>
+							<path d="M20 12h2"/>
+							<path d="m6.34 17.66-1.41 1.41"/>
+							<path d="m19.07 4.93-1.41 1.41"/>
+						</svg>
+						<!-- Moon Icon (visible in light mode) -->
+						<svg id="theme-icon-moon" class="w-4 h-4 block dark:hidden" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+							<path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/>
+						</svg>
+					</button>
+
+					<!-- Desktop CTA Button -->
+					<a href={`${translatePath('/')}#calculator`} class="hidden xl:inline-flex h-9 bg-primary text-on-primary hover:opacity-90 text-xs font-semibold px-3.5 rounded-xl items-center transition-all shadow-xs whitespace-nowrap flex-shrink-0">
+						<span class="hidden 2xl:inline">{t('calc.submit')}</span>
+						<span class="inline 2xl:hidden">{t('nav.calculator')}</span>
+					</a>
+
+					<!-- Mobile Hamburger Button -->
+					<button
+						type="button"
+						id="mobile-menu-btn"
+						aria-label="Toggle navigation menu"
+						aria-expanded="false"
+						class="lg:hidden h-8 w-8 sm:h-9 sm:w-9 rounded-xl border border-hairline bg-canvas hover:bg-canvas-elevated flex items-center justify-center text-ink transition-all shadow-xs flex-shrink-0"
+					>
+						<svg id="menu-icon-bars" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+							<path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" />
+						</svg>
+						<svg id="menu-icon-close" class="w-4 h-4 hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+							<path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+						</svg>
+					</button>
+				</div>
+			</div>
+
+			<!-- Mobile Slide-Down Menu Drawer -->
+			<div id="mobile-menu-drawer" class="hidden lg:hidden border-t border-hairline bg-canvas-elevated/95 backdrop-blur-md px-4 py-3 shadow-md">
+				<nav class="flex flex-col gap-1 text-sm font-medium">
+					<a href={`${translatePath('/')}#calculator`} class="mobile-nav-link py-2.5 px-3 rounded-lg hover:bg-canvas text-ink font-semibold flex items-center justify-between transition-colors">
+						<span>{t('nav.calculator')}</span>
+						<span class="text-[11px] text-mute font-mono">01</span>
+					</a>
+					<a href={`${translatePath('/')}#science`} class="mobile-nav-link py-2.5 px-3 rounded-lg hover:bg-canvas text-ink font-semibold flex items-center justify-between transition-colors">
+						<span>{t('nav.guide')}</span>
+						<span class="text-[11px] text-mute font-mono">02</span>
+					</a>
+					<a href={`${translatePath('/')}#macros`} class="mobile-nav-link py-2.5 px-3 rounded-lg hover:bg-canvas text-ink font-semibold flex items-center justify-between transition-colors">
+						<span>{t('nav.formulas')}</span>
+						<span class="text-[11px] text-mute font-mono">03</span>
+					</a>
+					<a href={`${translatePath('/')}#faq`} class="mobile-nav-link py-2.5 px-3 rounded-lg hover:bg-canvas text-ink font-semibold flex items-center justify-between transition-colors">
+						<span>{t('nav.faqs')}</span>
+						<span class="text-[11px] text-mute font-mono">04</span>
+					</a>
+					<a href={translatePath('/about')} class="mobile-nav-link py-2.5 px-3 rounded-lg hover:bg-canvas text-ink font-semibold flex items-center justify-between transition-colors">
+						<span>{t('nav.about')}</span>
+						<span class="text-[11px] text-mute font-mono">05</span>
+					</a>
+					<div class="pt-2 border-t border-hairline mt-1">
+						<a href={`${translatePath('/')}#calculator`} class="mobile-nav-link w-full py-2.5 px-4 rounded-xl bg-ink text-canvas font-semibold text-center text-xs flex items-center justify-center shadow-xs">
+							{t('calc.submit')}
+						</a>
+					</div>
+				</nav>
+			</div>
+		</header>
+
+		<!-- Main Content -->
+		<main class="flex-grow w-full max-w-full overflow-x-hidden">
+			<slot />
+		</main>
+
+		<!-- Footer -->
+		<footer class="border-t border-hairline bg-canvas-elevated mt-20 w-full max-w-full overflow-x-hidden">
+			<div class="max-w-6xl mx-auto px-4 sm:px-6 py-16">
+				<div class="grid grid-cols-1 md:grid-cols-4 gap-10">
+					<!-- Col 1: Brand & Purpose -->
+					<div class="md:col-span-1 flex flex-col gap-3">
+						<div class="flex items-center gap-2 font-bold text-ink">
+							<div class="w-6 h-6 rounded-md bg-ink text-canvas flex items-center justify-center shadow-xs">
+								<svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+									<path d="m6.5 6.5 11 11"/>
+									<path d="m21 21-1-1"/>
+									<path d="m3 3 1 1"/>
+									<path d="m18 22 4-4"/>
+									<path d="m2 6 4-4"/>
+									<path d="m3 10 7-7"/>
+									<path d="m14 21 7-7"/>
+								</svg>
+							</div>
+							<h2 class="text-sm font-bold text-ink">{t('footer.brandTitle')}</h2>
+						</div>
+						<p class="text-xs text-mute leading-relaxed">
+							{t('footer.brandDesc')}
+						</p>
+						<div class="pt-2">
+							<LanguagePicker idPrefix="footer" />
+						</div>
+					</div>
+
+					<!-- Col 2: Navigation -->
+					<div class="flex flex-col gap-3">
+						<h3 class="text-xs font-semibold uppercase tracking-wider text-ink" style="font-family: var(--font-mono);">{t('footer.colFeatures')}</h3>
+						<ul class="flex flex-col gap-2 text-xs">
+							<li><a href={`${translatePath('/')}#calculator`} class="hover:text-ink transition-colors">{t('footer.linkTdee')}</a></li>
+							<li><a href={`${translatePath('/')}#calculator`} class="hover:text-ink transition-colors">{t('footer.linkBmr')}</a></li>
+							<li><a href={`${translatePath('/')}#macros`} class="hover:text-ink transition-colors">{t('footer.linkMacros')}</a></li>
+							<li><a href={`${translatePath('/')}#science`} class="hover:text-ink transition-colors">{t('footer.linkPillars')}</a></li>
+						</ul>
+					</div>
+
+					<!-- Col 3: Educational Guides -->
+					<div class="flex flex-col gap-3">
+						<h3 class="text-xs font-semibold uppercase tracking-wider text-ink" style="font-family: var(--font-mono);">{t('footer.colScience')}</h3>
+						<ul class="flex flex-col gap-2 text-xs">
+							<li><a href={`${translatePath('/')}#science`} class="hover:text-ink transition-colors">{t('footer.linkMifflin')}</a></li>
+							<li><a href={`${translatePath('/')}#science`} class="hover:text-ink transition-colors">{t('footer.linkKatch')}</a></li>
+							<li><a href={`${translatePath('/')}#calibration`} class="hover:text-ink transition-colors">{t('footer.linkCalibration')}</a></li>
+							<li><a href={`${translatePath('/')}#faq`} class="hover:text-ink transition-colors">{t('footer.linkFaq')}</a></li>
+							<li><a href="https://rawtocookedcalculator.com/" target="_blank" rel="noopener" class="hover:text-ink transition-colors inline-flex items-center gap-1">{t('footer.linkRawToCooked')} <svg class="w-3 h-3 opacity-60" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg></a></li>
+						</ul>
+					</div>
+
+					<!-- Col 4: Trust & Legal -->
+					<div class="flex flex-col gap-3">
+						<h3 class="text-xs font-semibold uppercase tracking-wider text-ink" style="font-family: var(--font-mono);">{t('footer.colLegal')}</h3>
+						<ul class="flex flex-col gap-2 text-xs">
+							<li><a href={translatePath('/about')} class="hover:text-ink transition-colors">{t('footer.linkAbout')}</a></li>
+							<li><a href={translatePath('/contact')} class="hover:text-ink transition-colors">{t('footer.linkContact')}</a></li>
+							<li><a href={translatePath('/privacy')} class="hover:text-ink transition-colors">{t('footer.linkPrivacy')}</a></li>
+							<li><a href={translatePath('/terms')} class="hover:text-ink transition-colors">{t('footer.linkTerms')}</a></li>
+						</ul>
+					</div>
+				</div>
+
+				<!-- Disclaimer Banner -->
+				<div class="border-t border-hairline mt-12 pt-6 text-[11px] text-faint leading-relaxed text-center sm:text-left">
+					<p class="mb-2"><strong>{t('footer.disclaimerTitle')}</strong> {t('footer.disclaimerText')}</p>
+					<p>&copy; {new Date().getFullYear()} FreeMaintenanceCaloriesCalculator.com. {t('footer.rights')}</p>
+				</div>
+			</div>
+		</footer>
+
+		<!-- Theme & Mobile Menu Scripts -->
+		<script>
+			function initThemeToggle() {
+				const toggle = document.getElementById('theme-toggle');
+				toggle?.addEventListener('click', () => {
+					const isDark = document.documentElement.classList.contains('dark');
+					if (isDark) {
+						document.documentElement.classList.remove('dark');
+						document.documentElement.classList.add('light');
+						localStorage.setItem('theme', 'light');
+					} else {
+						document.documentElement.classList.remove('light');
+						document.documentElement.classList.add('dark');
+						localStorage.setItem('theme', 'dark');
+					}
+				});
+			}
+
+			function initMobileMenu() {
+				const btn = document.getElementById('mobile-menu-btn');
+				const drawer = document.getElementById('mobile-menu-drawer');
+				const iconBars = document.getElementById('menu-icon-bars');
+				const iconClose = document.getElementById('menu-icon-close');
+				if (!btn || !drawer) return;
+
+				btn.addEventListener('click', () => {
+					const isOpen = !drawer.classList.contains('hidden');
+					if (isOpen) {
+						drawer.classList.add('hidden');
+						btn.setAttribute('aria-expanded', 'false');
+						iconBars?.classList.remove('hidden');
+						iconClose?.classList.add('hidden');
+					} else {
+						drawer.classList.remove('hidden');
+						btn.setAttribute('aria-expanded', 'true');
+						iconBars?.classList.add('hidden');
+						iconClose?.classList.remove('hidden');
+					}
+				});
+
+				// Auto close menu when clicking any navigation link
+				const links = drawer.querySelectorAll('.mobile-nav-link');
+				links.forEach(l => {
+					l.addEventListener('click', () => {
+						drawer.classList.add('hidden');
+						btn.setAttribute('aria-expanded', 'false');
+						iconBars?.classList.remove('hidden');
+						iconClose?.classList.add('hidden');
+					});
+				});
+			}
+
+			initThemeToggle();
+			initMobileMenu();
+			document.addEventListener('astro:page-load', () => {
+				initThemeToggle();
+				initMobileMenu();
+			});
+		</script>
 	</body>
 </html>
-
-<style>
-	html,
-	body {
-		margin: 0;
-		width: 100%;
-		height: 100%;
-	}
-</style>

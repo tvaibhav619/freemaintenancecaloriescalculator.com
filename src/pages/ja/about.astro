@@ -1,0 +1,67 @@
+---
+import Layout from '../../layouts/Layout.astro';
+
+const title = "当サイトについて・計算方法 | FreeMaintenanceCaloriesCalculator.com";
+const description = "FreeMaintenanceCaloriesCalculator.comの理念、採用している科学的計算式、および計算方法論について解説します。";
+---
+
+<Layout title={title} description={description}>
+  <div class="max-w-4xl mx-auto px-4 sm:px-6 py-16">
+    <div class="border-b border-hairline pb-8 mb-10">
+      <span class="text-xs font-semibold uppercase tracking-wider text-mute" style="font-family: var(--font-mono);">サイト理念</span>
+      <h1 class="text-3xl sm:text-4xl font-extrabold text-ink tracking-tight mt-1 mb-4">
+        栄養科学の根拠に基づく高精度なエネルギー計算
+      </h1>
+      <p class="text-base text-body leading-relaxed">
+        FreeMaintenanceCaloriesCalculator.comは、一般的なフィットネスアプリやスマートウォッチに見られる消費カロリーの過大推計や課金誘導を排し、誰もが信頼できる客観的・学術的な計算指標を提供するために開発されました。
+      </p>
+    </div>
+
+    <div class="flex flex-col gap-10 text-body text-sm leading-relaxed">
+      <section class="flex flex-col gap-3">
+        <h2 class="text-xl font-bold text-ink">開発の背景</h2>
+        <p>
+          市販のスマートウォッチやランニングマシンの消費カロリー表示は、実際よりも20%〜90%過大に算出されることが多くの臨床試験で確認されています。この過大評価を信じてカロリーを摂取しすぎた結果、減量が停滞してしまうケースが後を絶ちません。
+        </p>
+        <p>
+          当サイトでは、査読済み医学論文に準拠した透明性の高い計算ロジックにより、真の総消費エネルギー（TDEE）とPFCマクロバランスを算出します。
+        </p>
+      </section>
+
+      <section class="flex flex-col gap-3">
+        <h2 class="text-xl font-bold text-ink">採用している科学的計算式</h2>
+        <p>
+          ブラックボックス化された独自計算ではなく、世界中のスポーツ栄養学で広く認められた公式のみを使用しています：
+        </p>
+        <ul class="list-disc list-inside space-y-2 pl-2">
+          <li>
+            <strong>ミフリン＝サン・ジェオール式（1990年）：</strong> 米国栄養士会（ADA）が245の比較研究をもとに「健康な成人の基礎代謝推定において最も信頼性が高い」と認定した臨床基準。
+          </li>
+          <li>
+            <strong>キャッチ＝マカードル式（1996年）：</strong> 総体重ではなく除脂肪体重（LBM）から直接基礎代謝を算出。筋肉量が多く体脂肪率が低いアスリートに最適な精度を発揮。
+          </li>
+          <li>
+            <strong>改定ハリス・ベネディクト式（1984年）：</strong> ローザとシズガルによって現代的に補正された歴史的標準式。
+          </li>
+        </ul>
+      </section>
+
+      <section class="flex flex-col gap-3">
+        <h2 class="text-xl font-bold text-ink">完全無料・プライバシー重視</h2>
+        <p>
+          基礎的な栄養ツールは誰でも無償で利用できるべきであると考えています。計算はすべてブラウザ内で完結し、利用者の身体データがサーバーに記録されることはありません。
+        </p>
+      </section>
+
+      <div class="bg-canvas-elevated border border-hairline rounded-2xl p-6 shadow-xs mt-4">
+        <h3 class="text-base font-bold text-ink mb-2">ご意見・ご提案はこちら</h3>
+        <p class="text-xs text-mute mb-4">
+          当サイトは最新の運動生理学・栄養学研究の進展に合わせて計算モデルを継続的に改良しています。
+        </p>
+        <a href="/ja/contact" class="inline-flex items-center text-xs font-semibold text-ink hover:underline">
+          お問い合わせはこちら &rarr;
+        </a>
+      </div>
+    </div>
+  </div>
+</Layout>

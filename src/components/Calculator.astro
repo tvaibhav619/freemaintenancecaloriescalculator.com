@@ -1,0 +1,735 @@
+---
+import { type SupportedLanguage, ui, defaultLang } from '../i18n/ui';
+import { useTranslations, getLangFromUrl } from '../i18n/utils';
+
+interface Props {
+  lang?: SupportedLanguage;
+}
+
+const currentLang: SupportedLanguage = Astro.props.lang || (Astro.currentLocale as SupportedLanguage) || getLangFromUrl(Astro.url);
+const t = useTranslations(currentLang);
+const currentUi = ui[currentLang] || ui[defaultLang];
+---
+
+<!-- Embed serialized translations for client-side JS hydration -->
+<script type="application/json" id="calc-i18n" set:html={JSON.stringify(currentUi)} />
+
+<div class="max-w-6xl mx-auto w-full flex flex-col gap-8">
+  <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+    
+    <!-- LEFT COLUMN: INPUT PARAMETERS -->
+    <div class="lg:col-span-5 bg-canvas-elevated rounded-2xl border border-hairline p-4 sm:p-7 shadow-xs flex flex-col gap-6">
+      
+      <!-- Card Header & Unit Switcher -->
+      <div class="flex flex-wrap items-center justify-between gap-3 border-b border-hairline pb-4">
+        <div class="min-w-0">
+          <h2 class="text-lg font-bold text-ink tracking-tight">{t('calc.title')}</h2>
+          <p class="text-xs text-mute mt-0.5">{t('calc.subtitle')}</p>
+        </div>
+        
+        <!-- Unit Toggle (Segmented control) -->
+        <div class="flex bg-canvas rounded-lg p-1 border border-hairline">
+          <button type="button" id="unit-imperial" class="px-3 py-1 text-xs font-semibold rounded-md bg-canvas-elevated text-ink shadow-xs transition-all">{t('calc.unitImperial')}</button>
+          <button type="button" id="unit-metric" class="px-3 py-1 text-xs font-medium rounded-md text-mute hover:text-ink transition-all">{t('calc.unitMetric')}</button>
+        </div>
+      </div>
+
+      <form id="calculator-form" class="flex flex-col gap-5">
+        
+        <!-- Biological Sex -->
+        <div>
+          <label class="block text-xs font-semibold text-ink uppercase tracking-wider mb-2" style="font-family: var(--font-mono);">{t('calc.sex')}</label>
+          <div class="grid grid-cols-2 gap-3">
+            <label class="cursor-pointer">
+              <input type="radio" name="gender" value="male" class="peer sr-only" checked />
+              <div class="text-center py-2.5 px-4 border border-hairline rounded-xl text-sm font-medium peer-checked:border-ink peer-checked:bg-ink peer-checked:text-canvas transition-all">
+                {t('calc.male')}
+              </div>
+            </label>
+            <label class="cursor-pointer">
+              <input type="radio" name="gender" value="female" class="peer sr-only" />
+              <div class="text-center py-2.5 px-4 border border-hairline rounded-xl text-sm font-medium peer-checked:border-ink peer-checked:bg-ink peer-checked:text-canvas transition-all">
+                {t('calc.female')}
+              </div>
+            </label>
+          </div>
+        </div>
+
+        <!-- Age & Weight -->
+        <div class="grid grid-cols-2 gap-4">
+          <div>
+            <label for="age" class="block text-xs font-semibold text-ink uppercase tracking-wider mb-1.5" style="font-family: var(--font-mono);">{t('calc.age')}</label>
+            <input type="number" id="age" name="age" value="28" min="15" max="100" class="w-full bg-canvas text-ink border border-hairline rounded-xl px-3.5 py-2.5 text-sm font-medium focus:outline-none focus:border-ink focus:ring-1 focus:ring-ink transition-all" />
+          </div>
+          <div>
+            <label for="weight" class="block text-xs font-semibold text-ink uppercase tracking-wider mb-1.5" style="font-family: var(--font-mono);">
+              {t('calc.weight')} (<span id="weight-unit-label">lbs</span>)
+            </label>
+            <input type="number" id="weight" name="weight" value="175" min="30" max="700" step="0.5" class="w-full bg-canvas text-ink border border-hairline rounded-xl px-3.5 py-2.5 text-sm font-medium focus:outline-none focus:border-ink focus:ring-1 focus:ring-ink transition-all" />
+          </div>
+        </div>
+
+        <!-- Height (Imperial default) -->
+        <div id="height-imperial-group" class="grid grid-cols-2 gap-4">
+          <div>
+            <label for="height-ft" class="block text-xs font-semibold text-ink uppercase tracking-wider mb-1.5" style="font-family: var(--font-mono);">{t('calc.heightFt')}</label>
+            <input type="number" id="height-ft" name="height-ft" value="5" min="3" max="8" class="w-full bg-canvas text-ink border border-hairline rounded-xl px-3.5 py-2.5 text-sm font-medium focus:outline-none focus:border-ink focus:ring-1 focus:ring-ink transition-all" />
+          </div>
+          <div>
+            <label for="height-in" class="block text-xs font-semibold text-ink uppercase tracking-wider mb-1.5" style="font-family: var(--font-mono);">{t('calc.heightIn')}</label>
+            <input type="number" id="height-in" name="height-in" value="10" min="0" max="11" class="w-full bg-canvas text-ink border border-hairline rounded-xl px-3.5 py-2.5 text-sm font-medium focus:outline-none focus:border-ink focus:ring-1 focus:ring-ink transition-all" />
+          </div>
+        </div>
+
+        <!-- Height (Metric hidden initially) -->
+        <div id="height-metric-group" class="hidden">
+          <label for="height-cm" class="block text-xs font-semibold text-ink uppercase tracking-wider mb-1.5" style="font-family: var(--font-mono);">{t('calc.heightCm')}</label>
+          <input type="number" id="height-cm" name="height-cm" value="178" min="90" max="250" class="w-full bg-canvas text-ink border border-hairline rounded-xl px-3.5 py-2.5 text-sm font-medium focus:outline-none focus:border-ink focus:ring-1 focus:ring-ink transition-all" />
+        </div>
+
+        <!-- Activity Level (With descriptive details) -->
+        <div>
+          <label for="activity" class="block text-xs font-semibold text-ink uppercase tracking-wider mb-1.5" style="font-family: var(--font-mono);">
+            {t('calc.activity')}
+          </label>
+          <select id="activity" name="activity" class="w-full bg-canvas text-ink border border-hairline rounded-xl px-3.5 py-2.5 text-sm font-medium focus:outline-none focus:border-ink focus:ring-1 focus:ring-ink transition-all">
+            <option value="1.2">{t('calc.actSedentary')}</option>
+            <option value="1.375">{t('calc.actLight')}</option>
+            <option value="1.55" selected>{t('calc.actModerate')}</option>
+            <option value="1.725">{t('calc.actVery')}</option>
+            <option value="1.9">{t('calc.actExtremely')}</option>
+          </select>
+        </div>
+
+        <!-- Formula Selection -->
+        <div>
+          <label for="formula" class="block text-xs font-semibold text-ink uppercase tracking-wider mb-1.5" style="font-family: var(--font-mono);">
+            {t('calc.formula')}
+          </label>
+          <select id="formula" name="formula" class="w-full bg-canvas text-ink border border-hairline rounded-xl px-3.5 py-2.5 text-sm font-medium focus:outline-none focus:border-ink focus:ring-1 focus:ring-ink transition-all">
+            <option value="mifflin" selected>{t('calc.formulaMifflin')}</option>
+            <option value="katch">{t('calc.formulaKatch')}</option>
+            <option value="harris">{t('calc.formulaHarris')}</option>
+          </select>
+        </div>
+
+        <!-- Body Fat % (Optional) -->
+        <div>
+          <div class="flex items-center justify-between mb-1.5">
+            <label for="bf" class="block text-xs font-semibold text-ink uppercase tracking-wider" style="font-family: var(--font-mono);">{t('calc.bodyFat')}</label>
+            <span class="text-[11px] text-mute font-medium">{t('calc.bfOptional')}</span>
+          </div>
+          <input type="number" id="bf" name="bf" placeholder="e.g. 15" min="3" max="60" step="0.5" class="w-full bg-canvas text-ink border border-hairline rounded-xl px-3.5 py-2.5 text-sm font-medium focus:outline-none focus:border-ink focus:ring-1 focus:ring-ink transition-all" />
+          <p id="bf-hint" class="text-[11px] text-mute mt-1">{t('calc.bfHint')}</p>
+        </div>
+
+        <!-- Submit / Recalculate Button -->
+        <button type="button" id="calc-submit-btn" class="w-full py-3.5 px-4 rounded-xl bg-ink text-canvas font-semibold text-sm shadow-xs hover:opacity-90 transition-all flex items-center justify-center gap-2">
+          <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="m6.5 6.5 11 11"/>
+            <path d="m21 21-1-1"/>
+            <path d="m3 3 1 1"/>
+            <path d="m18 22 4-4"/>
+            <path d="m2 6 4-4"/>
+            <path d="m3 10 7-7"/>
+            <path d="m14 21 7-7"/>
+          </svg>
+          <span>{t('calc.submit')}</span>
+        </button>
+
+      </form>
+    </div>
+
+    <!-- RIGHT COLUMN: RESULTS DASHBOARD -->
+    <div class="lg:col-span-7 flex flex-col gap-6">
+      
+      <!-- HERO RESULT CARD -->
+      <div class="relative overflow-hidden rounded-2xl bg-neutral-950 dark:bg-[#141414] border border-hairline text-white p-5 sm:p-8 shadow-sm">
+        <div class="relative z-10 flex flex-col items-center text-center">
+          <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/10 text-[11px] font-medium tracking-wide uppercase text-white/80 mb-3" style="font-family: var(--font-mono);">
+            <span class="w-1.5 h-1.5 rounded-full bg-[var(--color-grad-cyan)] animate-pulse"></span>
+            {t('calc.tdeeLabel')}
+          </span>
+
+          <div class="flex items-baseline justify-center gap-2">
+            <span id="result-tdee" class="text-4xl sm:text-6xl font-extrabold tracking-tight text-white">2,560</span>
+            <span class="text-sm sm:text-lg text-white/70 font-medium">{t('calc.kcalPerDay')}</span>
+          </div>
+
+          <p class="text-xs sm:text-sm text-white/70 max-w-md mt-2">
+            {t('calc.tdeeExplainer')}
+          </p>
+
+          <div class="mt-4 pt-4 border-t border-white/10 flex flex-wrap items-center justify-center gap-3 sm:gap-6 text-xs text-white/80" style="font-family: var(--font-mono);">
+            <div>{t('calc.weeklyLabel')}: <span id="result-weekly" class="font-bold text-white">17,920</span> kcal</div>
+            <div class="hidden sm:inline">•</div>
+            <div>{t('calc.formulaLabel')}: <span id="active-formula-tag" class="text-[var(--color-grad-cyan)] font-medium">Mifflin-St Jeor</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- KEY METRICS ROW (BMR, BMI, LEAN BODY MASS) -->
+      <div class="grid grid-cols-3 gap-1.5 sm:gap-4">
+        <div class="bg-canvas-elevated border border-hairline rounded-xl p-2 sm:p-4 text-center">
+          <div class="text-[10px] sm:text-[11px] font-semibold text-mute uppercase tracking-wider mb-1 line-clamp-1" style="font-family: var(--font-mono);"><span class="sm:hidden">BMR</span><span class="hidden sm:inline">{t('calc.bmrLabel')}</span></div>
+          <div class="text-base sm:text-2xl font-bold text-ink" id="result-bmr">1,652</div>
+          <div class="text-[9px] sm:text-[10px] text-mute mt-0.5 line-clamp-1">{t('calc.atRest')}</div>
+        </div>
+
+        <div class="bg-canvas-elevated border border-hairline rounded-xl p-2 sm:p-4 text-center">
+          <div class="text-[10px] sm:text-[11px] font-semibold text-mute uppercase tracking-wider mb-1 line-clamp-1" style="font-family: var(--font-mono);">{t('calc.bmiScore')}</div>
+          <div class="text-base sm:text-2xl font-bold text-ink" id="result-bmi">25.1</div>
+          <div class="text-[9px] sm:text-[10px] font-medium text-mute mt-0.5 line-clamp-1" id="bmi-status">{t('calc.bmiNormal')}</div>
+        </div>
+
+        <div class="bg-canvas-elevated border border-hairline rounded-xl p-2 sm:p-4 text-center">
+          <div class="text-[10px] sm:text-[11px] font-semibold text-mute uppercase tracking-wider mb-1 line-clamp-1" style="font-family: var(--font-mono);">{t('calc.leanMass')}</div>
+          <div class="text-base sm:text-2xl font-bold text-ink" id="result-lbm">—</div>
+          <div class="text-[9px] sm:text-[10px] text-mute mt-0.5 line-clamp-1" id="lbm-unit">{t('calc.inputBfHint')}</div>
+        </div>
+      </div>
+
+      <!-- GOAL ADJUSTMENT SELECTOR -->
+      <div class="bg-canvas-elevated border border-hairline rounded-2xl p-4 sm:p-6 shadow-xs flex flex-col gap-4">
+        <div class="flex items-center justify-between">
+          <div>
+            <h3 class="text-xs sm:text-sm font-bold text-ink tracking-tight uppercase" style="font-family: var(--font-mono);">{t('calc.goalTitle')}</h3>
+            <p class="text-[11px] sm:text-xs text-mute">{t('calc.goalSubtitle')}</p>
+          </div>
+          <span class="text-[11px] sm:text-xs font-semibold px-2 py-0.5 rounded bg-canvas border border-hairline text-ink" id="active-goal-name">{t('calc.goalMaintainDesc')}</span>
+        </div>
+
+        <!-- 5 Goal Buttons Grid -->
+        <div class="grid grid-cols-2 sm:grid-cols-5 gap-2 sm:gap-2.5">
+          
+          <button type="button" data-goal="aggressive-cut" class="goal-btn border border-hairline rounded-xl p-2.5 sm:p-3 text-center transition-all hover:border-ink/50 bg-canvas">
+            <div class="text-[9px] sm:text-[10px] font-semibold uppercase text-mute" style="font-family: var(--font-mono);">{t('calc.goalAggCut')}</div>
+            <div class="text-base sm:text-lg font-bold text-ink my-0.5" id="goal-agg-cut">2,048</div>
+            <div class="text-[9px] sm:text-[10px] text-red-600 dark:text-red-400 font-medium">-500 kcal</div>
+          </button>
+
+          <button type="button" data-goal="mild-cut" class="goal-btn border border-hairline rounded-xl p-2.5 sm:p-3 text-center transition-all hover:border-ink/50 bg-canvas">
+            <div class="text-[9px] sm:text-[10px] font-semibold uppercase text-mute" style="font-family: var(--font-mono);">{t('calc.goalMildCut')}</div>
+            <div class="text-base sm:text-lg font-bold text-ink my-0.5" id="goal-mild-cut">2,304</div>
+            <div class="text-[9px] sm:text-[10px] text-amber-700 dark:text-amber-400 font-medium">-250 kcal</div>
+          </button>
+
+          <button type="button" data-goal="maintain" class="goal-btn active border-2 border-ink rounded-xl p-2.5 sm:p-3 text-center transition-all bg-canvas shadow-xs">
+            <div class="text-[9px] sm:text-[10px] font-bold uppercase text-ink" style="font-family: var(--font-mono);">{t('calc.goalMaintain')}</div>
+            <div class="text-base sm:text-lg font-bold text-ink my-0.5" id="goal-maintain">2,560</div>
+            <div class="text-[9px] sm:text-[10px] text-mute font-medium">0 kcal</div>
+          </button>
+
+          <button type="button" data-goal="lean-bulk" class="goal-btn border border-hairline rounded-xl p-2.5 sm:p-3 text-center transition-all hover:border-ink/50 bg-canvas">
+            <div class="text-[9px] sm:text-[10px] font-semibold uppercase text-mute" style="font-family: var(--font-mono);">{t('calc.goalLeanBulk')}</div>
+            <div class="text-base sm:text-lg font-bold text-ink my-0.5" id="goal-lean-bulk">2,816</div>
+            <div class="text-[9px] sm:text-[10px] text-emerald-700 dark:text-emerald-400 font-medium">+250 kcal</div>
+          </button>
+
+          <button type="button" data-goal="aggressive-bulk" class="goal-btn col-span-2 sm:col-span-1 border border-hairline rounded-xl p-2.5 sm:p-3 text-center transition-all hover:border-ink/50 bg-canvas">
+            <div class="text-[9px] sm:text-[10px] font-semibold uppercase text-mute" style="font-family: var(--font-mono);">{t('calc.goalHeavyBulk')}</div>
+            <div class="text-base sm:text-lg font-bold text-ink my-0.5" id="goal-agg-bulk">3,072</div>
+            <div class="text-[9px] sm:text-[10px] text-blue-700 dark:text-blue-400 font-medium">+500 kcal</div>
+          </button>
+
+        </div>
+      </div>
+
+      <!-- MACRONUTRIENT BREAKDOWN CARD -->
+      <div class="bg-canvas-elevated border border-hairline rounded-2xl p-4 sm:p-6 shadow-xs flex flex-col gap-4 sm:gap-5">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-hairline pb-4">
+          <div>
+            <h3 class="text-xs sm:text-sm font-bold text-ink tracking-tight uppercase" style="font-family: var(--font-mono);">
+              {t('calc.macrosTitle')}
+            </h3>
+            <p class="text-[11px] sm:text-xs text-mute mt-0.5">{t('calc.calculatedFor')} <span id="macro-target-calories" class="font-bold text-ink">2,560 kcal</span></p>
+          </div>
+
+          <!-- Macro Preset Tabs -->
+          <div class="flex flex-wrap bg-canvas rounded-lg p-1 border border-hairline self-start sm:self-auto gap-1">
+            <button type="button" id="macro-high-protein" class="px-2 sm:px-2.5 py-1 text-[11px] sm:text-xs font-semibold rounded-md text-mute hover:text-ink transition-all">{t('calc.highProtein')}</button>
+            <button type="button" id="macro-balanced" class="px-2 sm:px-2.5 py-1 text-[11px] sm:text-xs font-semibold rounded-md bg-canvas-elevated text-ink shadow-xs transition-all">{t('calc.balanced')}</button>
+            <button type="button" id="macro-low-carb" class="px-2 sm:px-2.5 py-1 text-[11px] sm:text-xs font-semibold rounded-md text-mute hover:text-ink transition-all">{t('calc.lowCarb')}</button>
+          </div>
+        </div>
+
+        <!-- Segmented Colored Progress Bar -->
+        <div class="w-full h-3 sm:h-3.5 flex rounded-full overflow-hidden bg-hairline">
+          <div id="bar-protein" class="h-full bg-[var(--color-grad-blue)] transition-all duration-300" style="width: 30%;"></div>
+          <div id="bar-carbs" class="h-full bg-[var(--color-grad-amber)] transition-all duration-300" style="width: 40%;"></div>
+          <div id="bar-fats" class="h-full bg-[var(--color-grad-magenta)] transition-all duration-300" style="width: 30%;"></div>
+        </div>
+
+        <!-- 3 Macro Cards -->
+        <div class="grid grid-cols-3 gap-1.5 sm:gap-3">
+          <!-- Protein -->
+          <div class="border border-hairline rounded-xl p-2.5 sm:p-3.5 bg-canvas text-center sm:text-left">
+            <div class="flex items-center justify-center sm:justify-start gap-1.5 mb-1">
+              <span class="w-2 h-2 sm:w-2.5 sm:h-2.5 rounded-full bg-[var(--color-grad-blue)] flex-shrink-0"></span>
+              <span class="text-[11px] sm:text-xs font-bold text-ink truncate">{t('calc.protein')}</span>
+            </div>
+            <div class="text-base sm:text-2xl font-extrabold text-ink" id="macro-protein-g">192g</div>
+            <div class="text-[9px] sm:text-[11px] text-mute mt-0.5 truncate" style="font-family: var(--font-mono);" id="macro-protein-detail">30% • 768 kcal</div>
+          </div>
+
+          <!-- Carbs -->
+          <div class="border border-hairline rounded-xl p-2.5 sm:p-3.5 bg-canvas text-center sm:text-left">
+            <div class="flex items-center justify-center sm:justify-start gap-1.5 mb-1">
+              <span class="w-2 h-2 sm:w-2.5 sm:h-2.5 rounded-full bg-[var(--color-grad-amber)] flex-shrink-0"></span>
+              <span class="text-[11px] sm:text-xs font-bold text-ink truncate">{t('calc.carbs')}</span>
+            </div>
+            <div class="text-base sm:text-2xl font-extrabold text-ink" id="macro-carbs-g">256g</div>
+            <div class="text-[9px] sm:text-[11px] text-mute mt-0.5 truncate" style="font-family: var(--font-mono);" id="macro-carbs-detail">40% • 1,024 kcal</div>
+          </div>
+
+          <!-- Fats -->
+          <div class="border border-hairline rounded-xl p-2.5 sm:p-3.5 bg-canvas text-center sm:text-left">
+            <div class="flex items-center justify-center sm:justify-start gap-1.5 mb-1">
+              <span class="w-2 h-2 sm:w-2.5 sm:h-2.5 rounded-full bg-[var(--color-grad-magenta)] flex-shrink-0"></span>
+              <span class="text-[11px] sm:text-xs font-bold text-ink truncate">{t('calc.fats')}</span>
+            </div>
+            <div class="text-base sm:text-2xl font-extrabold text-ink" id="macro-fats-g">85g</div>
+            <div class="text-[9px] sm:text-[11px] text-mute mt-0.5 truncate" style="font-family: var(--font-mono);" id="macro-fats-detail">30% • 768 kcal</div>
+          </div>
+        </div>
+
+        <!-- MEAL FREQUENCY SPLITTER -->
+        <div class="border-t border-hairline pt-3 sm:pt-4 flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 sm:gap-3">
+          <div class="flex flex-wrap items-center gap-2 text-xs text-mute font-medium">
+            <span>{t('calc.mealSplit')}</span>
+            <div class="flex bg-canvas rounded-md p-0.5 border border-hairline">
+              <button type="button" data-meals="3" class="meal-btn px-2 py-0.5 text-xs rounded text-mute hover:text-ink transition-all">{t('calc.meals3')}</button>
+              <button type="button" data-meals="4" class="meal-btn active px-2 py-0.5 text-xs rounded bg-canvas-elevated font-semibold text-ink shadow-xs transition-all">{t('calc.meals4')}</button>
+              <button type="button" data-meals="5" class="meal-btn px-2 py-0.5 text-xs rounded text-mute hover:text-ink transition-all">{t('calc.meals5')}</button>
+            </div>
+          </div>
+
+          <div class="text-xs text-ink font-medium" id="meal-breakdown-text">
+            ~<span class="font-bold">640 kcal</span> & <span class="font-bold">48g protein</span> per meal
+          </div>
+        </div>
+
+      </div>
+
+      <!-- ONE-CLICK COPY SUMMARY BUTTON -->
+      <div class="w-full flex items-center justify-stretch sm:justify-end">
+        <button type="button" id="btn-copy-summary" class="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-canvas hover:bg-canvas-elevated border border-hairline text-ink text-xs font-semibold px-4 py-3 sm:py-2.5 rounded-xl transition-all shadow-xs hover:border-ink">
+          <svg class="w-4 h-4 text-ink" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+            <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+          </svg>
+          <span id="copy-btn-text">{t('calc.copyBtn')}</span>
+        </button>
+      </div>
+
+    </div>
+
+  </div>
+</div>
+
+<script>
+  // Pure client-side reactive calculator with zero heavy framework overhead and full i18n support
+  document.addEventListener("DOMContentLoaded", () => {
+    // Read localized translation dictionary from embedded JSON script
+    const i18nEl = document.getElementById("calc-i18n");
+    const i18n: Record<string, string> = i18nEl ? JSON.parse(i18nEl.textContent || "{}") : {};
+    const tr = (k: string, fb: string): string => i18n[k] || fb;
+
+    // Form and Inputs
+    const form = document.getElementById("calculator-form") as HTMLFormElement;
+    const unitImperialBtn = document.getElementById("unit-imperial") as HTMLButtonElement;
+    const unitMetricBtn = document.getElementById("unit-metric") as HTMLButtonElement;
+    const weightLabel = document.getElementById("weight-unit-label") as HTMLSpanElement;
+    
+    const heightImpGroup = document.getElementById("height-imperial-group") as HTMLDivElement;
+    const heightMetGroup = document.getElementById("height-metric-group") as HTMLDivElement;
+    
+    const inputAge = document.getElementById("age") as HTMLInputElement;
+    const inputWeight = document.getElementById("weight") as HTMLInputElement;
+    const inputHeightFt = document.getElementById("height-ft") as HTMLInputElement;
+    const inputHeightIn = document.getElementById("height-in") as HTMLInputElement;
+    const inputHeightCm = document.getElementById("height-cm") as HTMLInputElement;
+    const selectActivity = document.getElementById("activity") as HTMLSelectElement;
+    const selectFormula = document.getElementById("formula") as HTMLSelectElement;
+    const inputBf = document.getElementById("bf") as HTMLInputElement;
+    const bfHint = document.getElementById("bf-hint") as HTMLElement;
+
+    // Display Elements
+    const resTdee = document.getElementById("result-tdee") as HTMLElement;
+    const resWeekly = document.getElementById("result-weekly") as HTMLElement;
+    const activeFormulaTag = document.getElementById("active-formula-tag") as HTMLElement;
+    const resBmr = document.getElementById("result-bmr") as HTMLElement;
+    const resBmi = document.getElementById("result-bmi") as HTMLElement;
+    const bmiStatus = document.getElementById("bmi-status") as HTMLElement;
+    const resLbm = document.getElementById("result-lbm") as HTMLElement;
+    const lbmUnit = document.getElementById("lbm-unit") as HTMLElement;
+
+    // Goal Display Elements
+    const goalAggCut = document.getElementById("goal-agg-cut") as HTMLElement;
+    const goalMildCut = document.getElementById("goal-mild-cut") as HTMLElement;
+    const goalMaintain = document.getElementById("goal-maintain") as HTMLElement;
+    const goalLeanBulk = document.getElementById("goal-lean-bulk") as HTMLElement;
+    const goalAggBulk = document.getElementById("goal-agg-bulk") as HTMLElement;
+    const activeGoalName = document.getElementById("active-goal-name") as HTMLElement;
+    const goalBtns = document.querySelectorAll(".goal-btn");
+
+    // Macro Elements
+    const macroTargetCalories = document.getElementById("macro-target-calories") as HTMLElement;
+    const macroHighProteinBtn = document.getElementById("macro-high-protein") as HTMLButtonElement;
+    const macroBalancedBtn = document.getElementById("macro-balanced") as HTMLButtonElement;
+    const macroLowCarbBtn = document.getElementById("macro-low-carb") as HTMLButtonElement;
+    const barProtein = document.getElementById("bar-protein") as HTMLElement;
+    const barCarbs = document.getElementById("bar-carbs") as HTMLElement;
+    const barFats = document.getElementById("bar-fats") as HTMLElement;
+    const macroProteinG = document.getElementById("macro-protein-g") as HTMLElement;
+    const macroCarbsG = document.getElementById("macro-carbs-g") as HTMLElement;
+    const macroFatsG = document.getElementById("macro-fats-g") as HTMLElement;
+    const macroProteinDetail = document.getElementById("macro-protein-detail") as HTMLElement;
+    const macroCarbsDetail = document.getElementById("macro-carbs-detail") as HTMLElement;
+    const macroFatsDetail = document.getElementById("macro-fats-detail") as HTMLElement;
+
+    // Meal elements
+    const mealBtns = document.querySelectorAll(".meal-btn");
+    const mealBreakdownText = document.getElementById("meal-breakdown-text") as HTMLElement;
+
+    // Copy Button
+    const btnCopySummary = document.getElementById("btn-copy-summary") as HTMLButtonElement;
+    const copyBtnText = document.getElementById("copy-btn-text") as HTMLElement;
+
+    // State
+    let isMetric = false;
+    let currentTDEE = 2560;
+    let currentBMR = 1650;
+    let selectedGoal = "maintain";
+    let selectedGoalCalories = 2560;
+    let selectedMacroSplit = "balanced"; // 'high-protein', 'balanced', 'low-carb'
+    let selectedMeals = 4;
+
+    // Units Event Handlers
+    unitImperialBtn.addEventListener("click", () => setUnit(false));
+    unitMetricBtn.addEventListener("click", () => setUnit(true));
+
+    function setUnit(metric: boolean) {
+      if (isMetric === metric) return;
+      isMetric = metric;
+
+      if (metric) {
+        unitMetricBtn.classList.add("bg-canvas-elevated", "text-ink", "shadow-xs");
+        unitMetricBtn.classList.remove("text-mute");
+        unitImperialBtn.classList.remove("bg-canvas-elevated", "text-ink", "shadow-xs");
+        unitImperialBtn.classList.add("text-mute");
+
+        weightLabel.innerText = "kg";
+        heightImpGroup.classList.add("hidden");
+        heightMetGroup.classList.remove("hidden");
+
+        const curWtLbs = parseFloat(inputWeight.value) || 0;
+        inputWeight.value = Math.round(curWtLbs / 2.20462).toString();
+
+        const ft = parseFloat(inputHeightFt.value) || 0;
+        const inc = parseFloat(inputHeightIn.value) || 0;
+        inputHeightCm.value = Math.round((ft * 12 + inc) * 2.54).toString();
+      } else {
+        unitImperialBtn.classList.add("bg-canvas-elevated", "text-ink", "shadow-xs");
+        unitImperialBtn.classList.remove("text-mute");
+        unitMetricBtn.classList.remove("bg-canvas-elevated", "text-ink", "shadow-xs");
+        unitMetricBtn.classList.add("text-mute");
+
+        weightLabel.innerText = "lbs";
+        heightMetGroup.classList.add("hidden");
+        heightImpGroup.classList.remove("hidden");
+
+        const curWtKg = parseFloat(inputWeight.value) || 0;
+        inputWeight.value = Math.round(curWtKg * 2.20462).toString();
+
+        const cm = parseFloat(inputHeightCm.value) || 0;
+        const totalIn = cm / 2.54;
+        inputHeightFt.value = Math.floor(totalIn / 12).toString();
+        inputHeightIn.value = Math.round(totalIn % 12).toString();
+      }
+      recalculate();
+    }
+
+    // Input listeners
+    form.addEventListener("input", recalculate);
+    selectFormula.addEventListener("change", recalculate);
+
+    // Goal buttons listeners
+    goalBtns.forEach(btn => {
+      btn.addEventListener("click", (e) => {
+        goalBtns.forEach(b => {
+          b.classList.remove("border-2", "border-ink", "shadow-xs");
+          b.classList.add("border-hairline");
+        });
+        const target = (e.currentTarget as HTMLElement);
+        target.classList.remove("border-hairline");
+        target.classList.add("border-2", "border-ink", "shadow-xs");
+
+        selectedGoal = target.dataset.goal || "maintain";
+        updateActiveGoalCalculation();
+      });
+    });
+
+    // Macro Split buttons listeners
+    macroHighProteinBtn.addEventListener("click", () => setMacroPreset("high-protein"));
+    macroBalancedBtn.addEventListener("click", () => setMacroPreset("balanced"));
+    macroLowCarbBtn.addEventListener("click", () => setMacroPreset("low-carb"));
+
+    function setMacroPreset(preset: string) {
+      selectedMacroSplit = preset;
+      [macroHighProteinBtn, macroBalancedBtn, macroLowCarbBtn].forEach(b => {
+        b.classList.remove("bg-canvas-elevated", "text-ink", "shadow-xs");
+        b.classList.add("text-mute");
+      });
+
+      if (preset === "high-protein") {
+        macroHighProteinBtn.classList.add("bg-canvas-elevated", "text-ink", "shadow-xs");
+        macroHighProteinBtn.classList.remove("text-mute");
+      } else if (preset === "balanced") {
+        macroBalancedBtn.classList.add("bg-canvas-elevated", "text-ink", "shadow-xs");
+        macroBalancedBtn.classList.remove("text-mute");
+      } else {
+        macroLowCarbBtn.classList.add("bg-canvas-elevated", "text-ink", "shadow-xs");
+        macroLowCarbBtn.classList.remove("text-mute");
+      }
+      updateMacrosAndMeals();
+    }
+
+    // Meal buttons listeners
+    mealBtns.forEach(btn => {
+      btn.addEventListener("click", (e) => {
+        mealBtns.forEach(b => {
+          b.classList.remove("bg-canvas-elevated", "font-semibold", "text-ink", "shadow-xs");
+          b.classList.add("text-mute");
+        });
+        const target = (e.currentTarget as HTMLElement);
+        target.classList.add("bg-canvas-elevated", "font-semibold", "text-ink", "shadow-xs");
+        target.classList.remove("text-mute");
+
+        selectedMeals = parseInt(target.dataset.meals || "4", 10);
+        updateMacrosAndMeals();
+      });
+    });
+
+    // Main calculation function
+    function recalculate() {
+      const gender = ((form.elements.namedItem("gender") as RadioNodeList).value) || "male";
+      const age = parseFloat(inputAge.value) || 25;
+      const activityMult = parseFloat(selectActivity.value) || 1.55;
+      const bfVal = parseFloat(inputBf.value);
+
+      let weightKg = 0;
+      let heightCm = 0;
+
+      if (isMetric) {
+        weightKg = parseFloat(inputWeight.value) || 70;
+        heightCm = parseFloat(inputHeightCm.value) || 175;
+      } else {
+        const wtLbs = parseFloat(inputWeight.value) || 155;
+        weightKg = wtLbs / 2.20462;
+        const ft = parseFloat(inputHeightFt.value) || 5;
+        const inc = parseFloat(inputHeightIn.value) || 10;
+        heightCm = (ft * 12 + inc) * 2.54;
+      }
+
+      // Formula selection
+      let formula = selectFormula.value;
+      
+      // Auto-suggest or handle Katch-McArdle if BF% provided
+      if (!isNaN(bfVal) && bfVal > 3 && bfVal < 60) {
+        bfHint.innerHTML = `<span class="text-emerald-600 font-medium">${tr('calc.bfHintValid', '✓ Valid body fat entered: Katch-McArdle formula can be used with high precision.')}</span>`;
+      } else {
+        bfHint.innerText = tr('calc.bfHint', 'Leave empty to use Mifflin-St Jeor based on total body weight.');
+      }
+
+      // Calculate BMR
+      let bmr = 0;
+      if (formula === "katch" && !isNaN(bfVal) && bfVal > 3) {
+        const lbmKg = weightKg * (1 - (bfVal / 100));
+        bmr = 370 + (21.6 * lbmKg);
+        activeFormulaTag.innerText = "Katch-McArdle";
+      } else if (formula === "harris") {
+        if (gender === "male") {
+          bmr = 88.362 + (13.397 * weightKg) + (4.799 * heightCm) - (5.677 * age);
+        } else {
+          bmr = 447.593 + (9.247 * weightKg) + (3.098 * heightCm) - (4.330 * age);
+        }
+        activeFormulaTag.innerText = "Harris-Benedict";
+      } else {
+        // Mifflin-St Jeor default
+        if (gender === "male") {
+          bmr = (10 * weightKg) + (6.25 * heightCm) - (5 * age) + 5;
+        } else {
+          bmr = (10 * weightKg) + (6.25 * heightCm) - (5 * age) - 161;
+        }
+        activeFormulaTag.innerText = "Mifflin-St Jeor";
+      }
+
+      currentBMR = Math.round(bmr);
+      currentTDEE = Math.round(bmr * activityMult);
+
+      // Update TDEE displays
+      resTdee.innerText = currentTDEE.toLocaleString();
+      resWeekly.innerText = (currentTDEE * 7).toLocaleString();
+      resBmr.innerText = currentBMR.toLocaleString();
+
+      // BMI Calculation (Weight kg / (Height m)^2)
+      const heightM = heightCm / 100;
+      if (heightM > 0) {
+        const bmi = weightKg / (heightM * heightM);
+        resBmi.innerText = bmi.toFixed(1);
+        if (bmi < 18.5) {
+          bmiStatus.innerText = tr('calc.bmiUnderweight', 'Underweight (<18.5)');
+          bmiStatus.className = "text-[10px] font-medium text-amber-600 mt-0.5 line-clamp-1";
+        } else if (bmi < 25) {
+          bmiStatus.innerText = tr('calc.bmiNormal', 'Normal (18.5-24.9)');
+          bmiStatus.className = "text-[10px] font-medium text-emerald-600 mt-0.5 line-clamp-1";
+        } else if (bmi < 30) {
+          bmiStatus.innerText = tr('calc.bmiOverweight', 'Overweight (25-29.9)');
+          bmiStatus.className = "text-[10px] font-medium text-amber-600 mt-0.5 line-clamp-1";
+        } else {
+          bmiStatus.innerText = tr('calc.bmiObese', 'Obese (≥30)');
+          bmiStatus.className = "text-[10px] font-medium text-red-500 mt-0.5 line-clamp-1";
+        }
+      }
+
+      // Lean Body Mass display
+      if (!isNaN(bfVal) && bfVal > 3) {
+        const lbmKg = weightKg * (1 - (bfVal / 100));
+        const fatMassLabel = tr('calc.fatMass', 'Fat mass');
+        if (isMetric) {
+          resLbm.innerText = `${lbmKg.toFixed(1)} kg`;
+          lbmUnit.innerText = `${fatMassLabel}: ${(weightKg - lbmKg).toFixed(1)} kg`;
+        } else {
+          const lbmLbs = lbmKg * 2.20462;
+          const totalLbs = weightKg * 2.20462;
+          resLbm.innerText = `${lbmLbs.toFixed(1)} lbs`;
+          lbmUnit.innerText = `${fatMassLabel}: ${(totalLbs - lbmLbs).toFixed(1)} lbs`;
+        }
+      } else {
+        resLbm.innerText = "—";
+        lbmUnit.innerText = tr('calc.inputBfHint', 'Input BF% to calculate');
+      }
+
+      // Update 5 Goal Values
+      goalAggCut.innerText = Math.round(currentTDEE - 500).toLocaleString();
+      goalMildCut.innerText = Math.round(currentTDEE - 250).toLocaleString();
+      goalMaintain.innerText = currentTDEE.toLocaleString();
+      goalLeanBulk.innerText = Math.round(currentTDEE + 250).toLocaleString();
+      goalAggBulk.innerText = Math.round(currentTDEE + 500).toLocaleString();
+
+      updateActiveGoalCalculation();
+    }
+
+    function updateActiveGoalCalculation() {
+      if (selectedGoal === "aggressive-cut") {
+        selectedGoalCalories = currentTDEE - 500;
+        activeGoalName.innerText = tr('calc.goalAggCutDesc', 'Aggressive Cut (-500 kcal)');
+      } else if (selectedGoal === "mild-cut") {
+        selectedGoalCalories = currentTDEE - 250;
+        activeGoalName.innerText = tr('calc.goalMildCutDesc', 'Mild Cut (-250 kcal)');
+      } else if (selectedGoal === "lean-bulk") {
+        selectedGoalCalories = currentTDEE + 250;
+        activeGoalName.innerText = tr('calc.goalLeanBulkDesc', 'Lean Bulk (+250 kcal)');
+      } else if (selectedGoal === "aggressive-bulk") {
+        selectedGoalCalories = currentTDEE + 500;
+        activeGoalName.innerText = tr('calc.goalHeavyBulkDesc', 'Heavy Bulk (+500 kcal)');
+      } else {
+        selectedGoalCalories = currentTDEE;
+        activeGoalName.innerText = tr('calc.goalMaintainDesc', 'Maintenance (Baseline)');
+      }
+
+      macroTargetCalories.innerText = `${selectedGoalCalories.toLocaleString()} kcal`;
+      updateMacrosAndMeals();
+    }
+
+    function updateMacrosAndMeals() {
+      // Split ratios
+      let pRatio = 0.30;
+      let cRatio = 0.40;
+      let fRatio = 0.30;
+
+      if (selectedMacroSplit === "high-protein") {
+        pRatio = 0.40;
+        cRatio = 0.35;
+        fRatio = 0.25;
+      } else if (selectedMacroSplit === "low-carb") {
+        pRatio = 0.25;
+        cRatio = 0.15;
+        fRatio = 0.60;
+      }
+
+      // Update progress bar widths
+      barProtein.style.width = `${pRatio * 100}%`;
+      barCarbs.style.width = `${cRatio * 100}%`;
+      barFats.style.width = `${fRatio * 100}%`;
+
+      // Protein = 4 kcal/g, Carbs = 4 kcal/g, Fat = 9 kcal/g
+      const pCals = selectedGoalCalories * pRatio;
+      const cCals = selectedGoalCalories * cRatio;
+      const fCals = selectedGoalCalories * fRatio;
+
+      const pGrams = Math.round(pCals / 4);
+      const cGrams = Math.round(cCals / 4);
+      const fGrams = Math.round(fCals / 9);
+
+      macroProteinG.innerText = `${pGrams}g`;
+      macroCarbsG.innerText = `${cGrams}g`;
+      macroFatsG.innerText = `${fGrams}g`;
+
+      macroProteinDetail.innerText = `${Math.round(pRatio * 100)}% • ${Math.round(pCals)} kcal`;
+      macroCarbsDetail.innerText = `${Math.round(cRatio * 100)}% • ${Math.round(cCals)} kcal`;
+      macroFatsDetail.innerText = `${Math.round(fRatio * 100)}% • ${Math.round(fCals)} kcal`;
+
+      // Meal Frequency Split
+      const calsPerMeal = Math.round(selectedGoalCalories / selectedMeals);
+      const proteinPerMeal = Math.round(pGrams / selectedMeals);
+      const tpl = tr('calc.mealBreakdownTpl', '~{cals} kcal & {protein}g protein across {meals} meals');
+      mealBreakdownText.innerHTML = tpl
+        .replace('{cals}', `<span class="font-bold">${calsPerMeal}</span>`)
+        .replace('{protein}', `<span class="font-bold">${proteinPerMeal}</span>`)
+        .replace('{meals}', selectedMeals.toString());
+    }
+
+    // Copy Summary Handler
+    btnCopySummary.addEventListener("click", () => {
+      const summaryHeader = tr('calc.summaryHeader', 'FreeMaintenanceCaloriesCalculator.com Results');
+      const summaryTdee = tr('calc.summaryTdee', 'Maintenance TDEE');
+      const summaryBmr = tr('calc.summaryBmr', 'Resting BMR');
+      const summaryGoal = tr('calc.summaryGoal', 'Target Goal');
+      const summaryMacros = tr('calc.summaryMacros', 'Macros');
+      const summaryMeal = tr('calc.summaryMeal', 'Meal Split');
+      const proteinLabel = tr('calc.protein', 'Protein');
+      const carbsLabel = tr('calc.carbs', 'Carbs');
+      const fatsLabel = tr('calc.fats', 'Fats');
+
+      const summaryText = `--- ${summaryHeader} ---
+• ${summaryTdee}: ${currentTDEE.toLocaleString()} kcal/day (${(currentTDEE * 7).toLocaleString()} kcal/week)
+• ${summaryBmr}: ${currentBMR.toLocaleString()} kcal/day
+• ${summaryGoal}: ${activeGoalName.innerText} (${selectedGoalCalories.toLocaleString()} kcal/day)
+• ${summaryMacros} (${selectedMacroSplit.toUpperCase()}):
+   - ${proteinLabel}: ${macroProteinG.innerText} (${macroProteinDetail.innerText})
+   - ${carbsLabel}: ${macroCarbsG.innerText} (${macroCarbsDetail.innerText})
+   - ${fatsLabel}: ${macroFatsG.innerText} (${macroFatsDetail.innerText})
+• ${summaryMeal} (${selectedMeals}): ${mealBreakdownText.innerText}
+Calculated at: https://freemaintenancecaloriescalculator.com`;
+
+      navigator.clipboard.writeText(summaryText).then(() => {
+        copyBtnText.innerText = tr('calc.copiedBtn', 'Copied to Clipboard! ✓');
+        setTimeout(() => {
+          copyBtnText.innerText = tr('calc.copyBtn', 'Copy Results Summary');
+        }, 2500);
+      });
+    });
+
+    // Submit Button Handler
+    const btnSubmit = document.getElementById("calc-submit-btn");
+    btnSubmit?.addEventListener("click", () => {
+      recalculate();
+      resultTdee?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    });
+
+    // Initial calculation trigger
+    recalculate();
+  });
+</script>

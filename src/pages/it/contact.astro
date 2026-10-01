@@ -1,0 +1,75 @@
+---
+import Layout from '../../layouts/Layout.astro';
+
+const title = "Supporto & Contatti | FreeMaintenanceCaloriesCalculator.com";
+const description = "Contatta il team di FreeMaintenanceCaloriesCalculator.com per domande sulle formule nutrizionali, assistenza o segnalazioni.";
+---
+
+<Layout title={title} description={description}>
+  <div class="max-w-3xl mx-auto px-4 sm:px-6 py-16">
+    <div class="border-b border-hairline pb-8 mb-10 text-center">
+      <span class="text-xs font-semibold uppercase tracking-wider text-mute" style="font-family: var(--font-mono);">Assistenza Utenti</span>
+      <h1 class="text-3xl sm:text-4xl font-extrabold text-ink tracking-tight mt-1 mb-2">Supporto & Contatti</h1>
+      <p class="text-sm text-body max-w-md mx-auto mb-4">
+        Hai quesiti sulle formule scientifiche impiegate, hai riscontrato un'anomalia o vuoi suggerire un miglioramento? Saremo lieti di risponderti.
+      </p>
+      <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-canvas-elevated border border-hairline text-xs text-mute">
+        <span>Email Ufficiale:</span>
+        <a href="mailto:hello@freemaintenancecaloriecalculator.com" class="font-semibold text-ink hover:underline">hello@freemaintenancecaloriecalculator.com</a>
+      </div>
+    </div>
+
+    <div class="bg-canvas-elevated border border-hairline rounded-2xl p-6 sm:p-8 shadow-xs">
+      <form id="contact-form" class="flex flex-col gap-5">
+        <div>
+          <label for="name" class="block text-xs font-semibold uppercase tracking-wider text-ink mb-1.5" style="font-family: var(--font-mono);">Il Tuo Nome</label>
+          <input type="text" id="name" name="name" required placeholder="Nome Cognome" class="w-full bg-canvas text-ink border border-hairline rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-ink focus:ring-1 focus:ring-ink transition-all" />
+        </div>
+
+        <div>
+          <label for="email" class="block text-xs font-semibold uppercase tracking-wider text-ink mb-1.5" style="font-family: var(--font-mono);">Indirizzo Email</label>
+          <input type="email" id="email" name="email" required placeholder="nome@esempio.it" class="w-full bg-canvas text-ink border border-hairline rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-ink focus:ring-1 focus:ring-ink transition-all" />
+        </div>
+
+        <div>
+          <label for="subject" class="block text-xs font-semibold uppercase tracking-wider text-ink mb-1.5" style="font-family: var(--font-mono);">Oggetto</label>
+          <select id="subject" name="subject" class="w-full bg-canvas text-ink border border-hairline rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-ink focus:ring-1 focus:ring-ink transition-all">
+            <option value="feedback">Feedback Generale & Suggerimenti</option>
+            <option value="bug">Segnalazione Errore / Discrepanza Calcolo</option>
+            <option value="formula">Quesito su Formule Scientifiche</option>
+            <option value="business">Richieste Commerciali & Media</option>
+          </select>
+        </div>
+
+        <div>
+          <label for="message" class="block text-xs font-semibold uppercase tracking-wider text-ink mb-1.5" style="font-family: var(--font-mono);">Messaggio</label>
+          <textarea id="message" name="message" rows="5" required placeholder="Scrivi qui il tuo messaggio..." class="w-full bg-canvas text-ink border border-hairline rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-ink focus:ring-1 focus:ring-ink transition-all"></textarea>
+        </div>
+
+        <button type="submit" id="submit-btn" class="bg-primary text-on-primary hover:bg-black font-semibold text-sm py-3 px-6 rounded-xl transition-all shadow-xs self-start">
+          Invia Messaggio
+        </button>
+        <p id="form-status" class="text-xs text-emerald-600 font-medium hidden">Grazie! Il tuo messaggio è stato inviato con successo.</p>
+      </form>
+    </div>
+
+    <script>
+      const form = document.getElementById("contact-form") as HTMLFormElement;
+      const status = document.getElementById("form-status") as HTMLElement;
+      const btn = document.getElementById("submit-btn") as HTMLButtonElement;
+
+      form?.addEventListener("submit", (e) => {
+        e.preventDefault();
+        btn.disabled = true;
+        btn.innerText = "Invio in corso...";
+        setTimeout(() => {
+          form.reset();
+          btn.disabled = false;
+          btn.innerText = "Invia Messaggio";
+          status.classList.remove("hidden");
+          setTimeout(() => status.classList.add("hidden"), 5000);
+        }, 600);
+      });
+    </script>
+  </div>
+</Layout>

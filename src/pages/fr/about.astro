@@ -1,0 +1,67 @@
+---
+import Layout from '../../layouts/Layout.astro';
+
+const title = "À Propos & Méthodologie Scientifique | FreeMaintenanceCaloriesCalculator.com";
+const description = "Découvrez la démarche, les équations scientifiques et la méthodologie métabolique de FreeMaintenanceCaloriesCalculator.com.";
+---
+
+<Layout title={title} description={description}>
+  <div class="max-w-4xl mx-auto px-4 sm:px-6 py-16">
+    <div class="border-b border-hairline pb-8 mb-10">
+      <span class="text-xs font-semibold uppercase tracking-wider text-mute" style="font-family: var(--font-mono);">Notre Mission</span>
+      <h1 class="text-3xl sm:text-4xl font-extrabold text-ink tracking-tight mt-1 mb-4">
+        La Rigueur Scientifique au Service de la Nutrition
+      </h1>
+      <p class="text-base text-body leading-relaxed">
+        FreeMaintenanceCaloriesCalculator.com a été conçu pour affranchir les pratiquants des estimations trompeuses, des formules opaques et des abonnements payants des applications de fitness conventionnelles.
+      </p>
+    </div>
+
+    <div class="flex flex-col gap-10 text-body text-sm leading-relaxed">
+      <section class="flex flex-col gap-3">
+        <h2 class="text-xl font-bold text-ink">Origine du projet</h2>
+        <p>
+          De nombreux trackers d'activité et appareils de cardio surestiment la dépense calorique journalière de 20% à 90%. Ce biais amène de nombreuses personnes à surconsommer sans s'en rendre compte, bloquant ainsi leur perte de poids.
+        </p>
+        <p>
+          Nous mettons à votre disposition une solution indépendante, rigoureuse et entièrement validée par les publications scientifiques internationales.
+        </p>
+      </section>
+
+      <section class="flex flex-col gap-3">
+        <h2 class="text-xl font-bold text-ink">Formules cliniques de référence</h2>
+        <p>
+          Nous appliquons strictement les formules reconnues par les sociétés savantes :
+        </p>
+        <ul class="list-disc list-inside space-y-2 pl-2">
+          <li>
+            <strong>Équation Mifflin-St Jeor (1990) :</strong> Validée par l'Académie de Nutrition et Diététique sur plus de 240 études cliniques comme la formule la plus précise sans mesure de masse grasse.
+          </li>
+          <li>
+            <strong>Formule Katch-McArdle (1996) :</strong> Repose sur la masse maigre métaboliquement active pour une précision maximale chez les sportifs.
+          </li>
+          <li>
+            <strong>Harris-Benedict Révisée (1984) :</strong> Modernisée par Roza et Shizgal comme étalon comparatif.
+          </li>
+        </ul>
+      </section>
+
+      <section class="flex flex-col gap-3">
+        <h2 class="text-xl font-bold text-ink">Accès universel et respect des données</h2>
+        <p>
+          Tous les calculs s'opèrent instantanément sur votre terminal. Aucune de vos données physiologiques n'est transférée ou commercialisée.
+        </p>
+      </section>
+
+      <div class="bg-canvas-elevated border border-hairline rounded-2xl p-6 shadow-xs mt-4">
+        <h3 class="text-base font-bold text-ink mb-2">Une suggestion ou une question ?</h3>
+        <p class="text-xs text-mute mb-4">
+          Nous adaptons constamment nos modèles d'analyse en fonction des avancées en physiologie sportive.
+        </p>
+        <a href="/fr/contact" class="inline-flex items-center text-xs font-semibold text-ink hover:underline">
+          Contacter notre équipe &rarr;
+        </a>
+      </div>
+    </div>
+  </div>
+</Layout>

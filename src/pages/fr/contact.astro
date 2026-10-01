@@ -1,0 +1,75 @@
+---
+import Layout from '../../layouts/Layout.astro';
+
+const title = "Contact & Support | FreeMaintenanceCaloriesCalculator.com";
+const description = "Contactez l'équipe de FreeMaintenanceCaloriesCalculator.com pour toute question, suggestion ou signalement d'anomalie.";
+---
+
+<Layout title={title} description={description}>
+  <div class="max-w-3xl mx-auto px-4 sm:px-6 py-16">
+    <div class="border-b border-hairline pb-8 mb-10 text-center">
+      <span class="text-xs font-semibold uppercase tracking-wider text-mute" style="font-family: var(--font-mono);">Assistance & Contact</span>
+      <h1 class="text-3xl sm:text-4xl font-extrabold text-ink tracking-tight mt-1 mb-2">Contact & Support</h1>
+      <p class="text-sm text-body max-w-md mx-auto mb-4">
+        Vous avez une question sur nos équations métaboliques, souhaitez signaler une anomalie ou proposer une amélioration ? Nous sommes à votre écoute.
+      </p>
+      <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-canvas-elevated border border-hairline text-xs text-mute">
+        <span>Email Officiel :</span>
+        <a href="mailto:hello@freemaintenancecaloriecalculator.com" class="font-semibold text-ink hover:underline">hello@freemaintenancecaloriecalculator.com</a>
+      </div>
+    </div>
+
+    <div class="bg-canvas-elevated border border-hairline rounded-2xl p-6 sm:p-8 shadow-xs">
+      <form id="contact-form" class="flex flex-col gap-5">
+        <div>
+          <label for="name" class="block text-xs font-semibold uppercase tracking-wider text-ink mb-1.5" style="font-family: var(--font-mono);">Votre Nom</label>
+          <input type="text" id="name" name="name" required placeholder="Prénom Nom" class="w-full bg-canvas text-ink border border-hairline rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-ink focus:ring-1 focus:ring-ink transition-all" />
+        </div>
+
+        <div>
+          <label for="email" class="block text-xs font-semibold uppercase tracking-wider text-ink mb-1.5" style="font-family: var(--font-mono);">Adresse Email</label>
+          <input type="email" id="email" name="email" required placeholder="nom@exemple.fr" class="w-full bg-canvas text-ink border border-hairline rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-ink focus:ring-1 focus:ring-ink transition-all" />
+        </div>
+
+        <div>
+          <label for="subject" class="block text-xs font-semibold uppercase tracking-wider text-ink mb-1.5" style="font-family: var(--font-mono);">Objet</label>
+          <select id="subject" name="subject" class="w-full bg-canvas text-ink border border-hairline rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-ink focus:ring-1 focus:ring-ink transition-all">
+            <option value="feedback">Commentaires & Suggestions</option>
+            <option value="bug">Signaler un Bug ou Écart de Calcul</option>
+            <option value="formula">Question sur les Formules Scientifiques</option>
+            <option value="business">Partenariats & Presse</option>
+          </select>
+        </div>
+
+        <div>
+          <label for="message" class="block text-xs font-semibold uppercase tracking-wider text-ink mb-1.5" style="font-family: var(--font-mono);">Votre Message</label>
+          <textarea id="message" name="message" rows="5" required placeholder="Rédigez votre message ici..." class="w-full bg-canvas text-ink border border-hairline rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-ink focus:ring-1 focus:ring-ink transition-all"></textarea>
+        </div>
+
+        <button type="submit" id="submit-btn" class="bg-primary text-on-primary hover:bg-black font-semibold text-sm py-3 px-6 rounded-xl transition-all shadow-xs self-start">
+          Envoyer le Message
+        </button>
+        <p id="form-status" class="text-xs text-emerald-600 font-medium hidden">Merci ! Votre message a bien été transmis.</p>
+      </form>
+    </div>
+
+    <script>
+      const form = document.getElementById("contact-form") as HTMLFormElement;
+      const status = document.getElementById("form-status") as HTMLElement;
+      const btn = document.getElementById("submit-btn") as HTMLButtonElement;
+
+      form?.addEventListener("submit", (e) => {
+        e.preventDefault();
+        btn.disabled = true;
+        btn.innerText = "Envoi en cours...";
+        setTimeout(() => {
+          form.reset();
+          btn.disabled = false;
+          btn.innerText = "Envoyer le Message";
+          status.classList.remove("hidden");
+          setTimeout(() => status.classList.add("hidden"), 5000);
+        }, 600);
+      });
+    </script>
+  </div>
+</Layout>
