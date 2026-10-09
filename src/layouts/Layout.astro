@@ -19,9 +19,9 @@ const translatePath = useTranslatedPath(currentLang);
 
 const { 
 	title, 
-	description = "Calculate your maintenance calories (TDEE), BMR, and macronutrient targets instantly with scientific precision.",
+	description = "Calculate TDEE and maintenance calories instantly with our free TDEE calculator. Discover what is TDEE, the true TDEE meaning, your BMR, and optimal macro targets with clinically proven metabolic formulas.",
 	canonical,
-	keywords = "maintenance calorie calculator, most accurate maintenance calorie calculator, best maintenance calorie calculator, calorie calculator, calorie calculator for weight loss, weight loss calorie calculator, calorie calculator to lose weight, treadmill calorie calculator, daily calorie calculator",
+	keywords = "maintenance calorie calculator, tdee calculator, tdee, tdee calculator free, tdee calc, what is tdee, free tdee calculator, calculate tdee, tdee meaning, most accurate maintenance calorie calculator, best maintenance calorie calculator, calorie calculator, calorie calculator for weight loss, daily calorie calculator",
 	image = "https://freemaintenancecaloriescalculator.com/og-image.svg",
 	noindex = false
 } = Astro.props;
@@ -104,7 +104,13 @@ const resolvedCanonical = canonical || (currentLang === 'en' ? `${siteUrl}${base
 					"@type": "WebSite",
 					"@id": "https://freemaintenancecaloriescalculator.com/#website",
 					"url": "https://freemaintenancecaloriescalculator.com/",
-					"name": "Free Maintenance Calories Calculator",
+					"name": "Free Maintenance Calories Calculator & TDEE Calculator",
+					"alternateName": [
+						"Free TDEE Calculator",
+						"TDEE Calculator",
+						"TDEE Calc",
+						"Maintenance Calorie Calculator"
+					],
 					"publisher": {
 						"@id": "https://freemaintenancecaloriescalculator.com/#organization"
 					},

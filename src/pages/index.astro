@@ -2,30 +2,41 @@
 import Layout from '../layouts/Layout.astro';
 import Calculator from '../components/Calculator.astro';
 
-const seoTitle = "Maintenance Calorie Calculator | Most Accurate Daily Calorie Calculator";
-const seoDescription = "Calculate your maintenance calories (TDEE), daily calorie burn, and customized macro targets. The most accurate maintenance calorie calculator and calorie calculator for weight loss.";
+const seoTitle = "Free TDEE Calculator & Maintenance Calorie Calculator | TDEE Calc";
+const seoDescription = "Use our free TDEE calculator to calculate TDEE and maintenance calories. Discover what is TDEE, the exact TDEE meaning, BMR, and macro targets with clinical precision.";
+const seoKeywords = "maintenance calorie calculator, tdee calculator, tdee, tdee calculator free, tdee calc, what is tdee, free tdee calculator, calculate tdee, tdee meaning, calculate maintenance calories, bmr and tdee calculator, most accurate maintenance calorie calculator";
 
 const softwareSchema = {
   "@context": "https://schema.org",
   "@type": "WebApplication",
-  "name": "Maintenance Calorie Calculator",
+  "name": "Free TDEE Calculator & Maintenance Calorie Calculator",
+  "alternateName": [
+    "TDEE Calculator",
+    "Free TDEE Calculator",
+    "TDEE Calc",
+    "Maintenance Calorie Calculator",
+    "TDEE and Maintenance Calories Calculator",
+    "Calculate TDEE"
+  ],
   "url": "https://freemaintenancecaloriescalculator.com/",
-  "description": "The most accurate maintenance calorie calculator and daily calorie calculator for weight loss, maintenance, and muscle gain.",
+  "description": "Free TDEE calculator and maintenance calorie calculator. Calculate your daily calories, BMR, and macro targets using peer-reviewed Mifflin-St Jeor and Katch-McArdle equations.",
   "applicationCategory": "HealthApplication",
   "operatingSystem": "All",
+  "browserRequirements": "Requires JavaScript",
   "offers": {
     "@type": "Offer",
     "price": "0",
     "priceCurrency": "USD"
   },
   "featureList": [
-    "Mifflin-St Jeor equation calculation",
-    "Katch-McArdle formula for lean body mass",
-    "Revised Harris-Benedict baseline",
-    "Calorie calculator for weight loss deficit planner",
-    "Lean bulk surplus targets",
-    "Interactive macronutrient distribution",
-    "Meal frequency calorie & protein breakdown"
+    "Calculate TDEE (Total Daily Energy Expenditure)",
+    "Maintenance calorie calculator for weight loss and muscle gain",
+    "Free TDEE calc with Mifflin-St Jeor formula",
+    "Katch-McArdle formula using Lean Body Mass (LBM)",
+    "Revised Harris-Benedict baseline comparison",
+    "Interactive macronutrient distribution (Protein, Fats, Carbs)",
+    "Meal frequency calorie & protein breakdown",
+    "100% Free with zero registration or paywalls"
   ]
 };
 
@@ -33,6 +44,54 @@ const faqSchema = {
   "@context": "https://schema.org",
   "@type": "FAQPage",
   "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "What is TDEE and what is the meaning of TDEE?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "TDEE stands for Total Daily Energy Expenditure. The meaning of TDEE is the total number of calories your body burns in a single 24-hour day across all metabolic processes: Basal Metabolic Rate (BMR, 60-70%), Non-Exercise Activity Thermogenesis (NEAT, 15-20%), Exercise Activity Thermogenesis (EAT, 5-10%), and the Thermic Effect of Food (TEF, 8-10%). In nutrition and fitness, your TDEE is identical to your maintenance calories."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How do I calculate TDEE?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "To calculate TDEE: First, compute your Basal Metabolic Rate (BMR) using the Mifflin-St Jeor formula: [10 × weight in kg] + [6.25 × height in cm] - [5 × age] + s (+5 for men, -161 for women). Second, multiply your BMR by your Physical Activity Level (PAL) multiplier (1.2 for sedentary, 1.375 for lightly active, 1.55 for moderately active, 1.725 for very active, or 1.9 for extremely active). The result is your daily TDEE (maintenance calories). You can also use our free TDEE calculator above to calculate it instantly."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Is this TDEE calculator completely free to use?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes, our TDEE calculator is 100% free with no hidden fees, paid subscriptions, or email sign-up requirements. You get unrestricted access to validated Mifflin-St Jeor, Katch-McArdle, and Harris-Benedict algorithms, customized macro distributions, and deficit/surplus caloric targets."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What is the difference between TDEE and maintenance calories?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "TDEE (Total Daily Energy Expenditure) and maintenance calories refer to the exact same caloric figure. TDEE is the physiological term describing total daily energy burn, while maintenance calories is the dietary term describing the daily caloric intake needed to match that expenditure and keep your body weight unchanged."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What is the difference between BMR and TDEE?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "BMR (Basal Metabolic Rate) is the baseline number of calories required to sustain involuntary biological life at complete rest (brain function, heart beating, respiration). TDEE (Total Daily Energy Expenditure) is your BMR plus all calories burned through daily movement, digestion, and structured exercise. TDEE is always higher than BMR, and you should avoid consuming fewer calories than your BMR for extended periods."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How accurate is this free TDEE calc?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Our free TDEE calc is accurate within ±5% for the vast majority of healthy adults when using the Mifflin-St Jeor formula. When using the Katch-McArdle formula with a known body fat percentage, precision increases even further because it measures metabolically active Lean Body Mass rather than gross body weight."
+      }
+    },
     {
       "@type": "Question",
       "name": "what is my calorie maintenance calculator?",
@@ -173,7 +232,7 @@ const faqSchema = {
 };
 ---
 
-<Layout title={seoTitle} description={seoDescription}>
+<Layout title={seoTitle} description={seoDescription} keywords={seoKeywords}>
   <!-- JSON-LD Schemas for SEO -->
   <script type="application/ld+json" set:html={JSON.stringify(softwareSchema)} />
   <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} />
@@ -184,25 +243,26 @@ const faqSchema = {
       <!-- Technical Eyebrow Label -->
       <span class="inline-flex items-center justify-center gap-1.5 px-3 py-1 rounded-full bg-canvas-elevated border border-hairline text-[11px] sm:text-xs font-semibold text-ink shadow-xs max-w-full text-center" style="font-family: var(--font-mono);">
         <span class="w-2 h-2 rounded-full bg-emerald-500 flex-shrink-0"></span>
-        <span class="truncate sm:whitespace-normal">Peer-Reviewed Metabolic Algorithms • 2026 Edition</span>
+        <span class="truncate sm:whitespace-normal">Peer-Reviewed Metabolic Algorithms • 100% Free TDEE Calc</span>
       </span>
 
       <!-- Primary H1 Display Title -->
       <h1 class="text-3xl xs:text-4xl sm:text-6xl font-extrabold text-ink tracking-tight leading-[1.1] break-words" style="letter-spacing: -1.5px;">
-        Maintenance Calorie Calculator
+        Free TDEE Calculator & Maintenance Calorie Calculator
       </h1>
 
       <!-- Subtitle with Secondary Keywords -->
       <p class="text-base sm:text-lg text-body max-w-2xl mx-auto leading-relaxed">
-        The most accurate daily calorie calculator for weight loss, maintenance, and muscle gain. Calculate your true Total Daily Energy Expenditure (TDEE) and optimal macros with validated scientific formulas.
+        Calculate TDEE and daily maintenance calories with clinical precision. Our free TDEE calculator uses peer-reviewed Mifflin-St Jeor and Katch-McArdle equations to accurately determine your Total Daily Energy Expenditure, BMR, and custom macro targets for fat loss, maintenance, or muscle gain.
       </p>
 
       <!-- Trust Badges -->
       <div class="flex flex-wrap items-center justify-center gap-4 pt-2 text-xs text-mute" style="font-family: var(--font-mono);">
+        <span class="flex items-center gap-1.5">✓ 100% Free TDEE Calc</span>
         <span class="flex items-center gap-1.5">✓ Mifflin-St Jeor</span>
         <span class="flex items-center gap-1.5">✓ Katch-McArdle</span>
         <span class="flex items-center gap-1.5">✓ Harris-Benedict</span>
-        <span class="flex items-center gap-1.5">✓ 100% Free & No Signup</span>
+        <span class="flex items-center gap-1.5">✓ Instant Macro Splits</span>
       </div>
     </div>
   </section>
@@ -212,8 +272,162 @@ const faqSchema = {
     <Calculator lang="en" />
   </section>
 
+  <!-- WHAT IS TDEE & TDEE MEANING SECTION (FEATURED SNIPPET TARGET) -->
+  <section id="what-is-tdee" class="max-w-6xl mx-auto px-4 sm:px-6 py-16 border-t border-hairline mt-12">
+    <div class="max-w-3xl mb-8">
+      <span class="text-xs font-semibold uppercase tracking-wider text-mute" style="font-family: var(--font-mono);">Metabolic Fundamentals</span>
+      <h2 class="text-2xl sm:text-4xl font-extrabold text-ink tracking-tight mt-1 mb-3">
+        What is TDEE? (TDEE Meaning Explained)
+      </h2>
+      <p class="text-body text-sm sm:text-base leading-relaxed">
+        If you are embarking on a weight loss, muscle building, or body recomposition journey, knowing your <strong>TDEE</strong> is the single most critical number in your nutrition plan.
+      </p>
+    </div>
+
+    <!-- Featured Snippet Definition Callout Box -->
+    <div class="bg-canvas-elevated border-2 border-ink/20 rounded-2xl p-6 sm:p-8 shadow-sm mb-10">
+      <div class="flex items-center gap-2 mb-3">
+        <span class="w-3 h-3 rounded-full bg-emerald-500"></span>
+        <span class="text-xs font-bold uppercase tracking-wider text-ink font-mono">Quick Definition</span>
+      </div>
+      <p class="text-base sm:text-lg text-ink font-medium leading-relaxed">
+        <strong>TDEE stands for Total Daily Energy Expenditure.</strong> The meaning of TDEE is the comprehensive measure of all calories your body burns over a full 24-hour day across involuntary organ function (BMR), non-exercise physical movement (NEAT), planned workouts (EAT), and the thermic effect of food digestion (TEF). In health and sports nutrition, <strong>TDEE is identical to your maintenance calories</strong>—eating this exact number of calories keeps your body weight perfectly stable.
+      </p>
+    </div>
+
+    <!-- TDEE Acronym Breakdown Grid -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-10">
+      <div class="bg-canvas-elevated border border-hairline rounded-xl p-5 flex flex-col gap-2">
+        <span class="text-2xl font-black text-ink font-mono">T</span>
+        <h3 class="text-sm font-bold text-ink">Total</h3>
+        <p class="text-xs text-body leading-relaxed">
+          The sum of every biological and physical activity in your body combined into one daily caloric figure.
+        </p>
+      </div>
+      <div class="bg-canvas-elevated border border-hairline rounded-xl p-5 flex flex-col gap-2">
+        <span class="text-2xl font-black text-ink font-mono">D</span>
+        <h3 class="text-sm font-bold text-ink">Daily</h3>
+        <p class="text-xs text-body leading-relaxed">
+          Measured across an average 24-hour cycle to smooth out day-to-day variations in steps, workouts, and digestion.
+        </p>
+      </div>
+      <div class="bg-canvas-elevated border border-hairline rounded-xl p-5 flex flex-col gap-2">
+        <span class="text-2xl font-black text-ink font-mono">E</span>
+        <h3 class="text-sm font-bold text-ink">Energy</h3>
+        <p class="text-xs text-body leading-relaxed">
+          Expressed in nutritional calories (kilocalories or kcal) consumed from food and beverages.
+        </p>
+      </div>
+      <div class="bg-canvas-elevated border border-hairline rounded-xl p-5 flex flex-col gap-2">
+        <span class="text-2xl font-black text-ink font-mono">E</span>
+        <h3 class="text-sm font-bold text-ink">Expenditure</h3>
+        <p class="text-xs text-body leading-relaxed">
+          The rate at which energy is oxidized for survival, organ maintenance, thermoregulation, and muscular motion.
+        </p>
+      </div>
+    </div>
+
+    <!-- TDEE vs BMR vs Maintenance Calories Comparison Grid -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div class="bg-canvas-elevated border border-hairline rounded-2xl p-6 flex flex-col gap-2">
+        <h3 class="text-base font-bold text-ink">TDEE vs Maintenance Calories: What's the Difference?</h3>
+        <p class="text-xs sm:text-sm text-body leading-relaxed">
+          There is no mathematical difference between TDEE and maintenance calories. <strong>TDEE</strong> is the physiological term describing the total amount of energy your body expends each day. <strong>Maintenance calories</strong> is the dietary term describing the amount of food energy you must consume to balance that expenditure. If your TDEE is 2,400 calories, your daily maintenance caloric target is also exactly 2,400 calories.
+        </p>
+      </div>
+
+      <div class="bg-canvas-elevated border border-hairline rounded-2xl p-6 flex flex-col gap-2">
+        <h3 class="text-base font-bold text-ink">TDEE vs BMR: Why You Should Never Confuse the Two</h3>
+        <p class="text-xs sm:text-sm text-body leading-relaxed">
+          <strong>Basal Metabolic Rate (BMR)</strong> represents only the energy burned while in a coma or sleeping in a temperature-controlled room (60% to 70% of total burn). <strong>TDEE</strong> includes your BMR <em>plus</em> all movement, standing, fidgeting, workouts, and food digestion. A common dieting mistake is consuming calories at or below your BMR, which can trigger hormonal crashes, thyroid suppression, and severe muscle loss.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- HOW TO CALCULATE TDEE SECTION -->
+  <section id="how-to-calculate-tdee" class="max-w-6xl mx-auto px-4 sm:px-6 py-16 border-t border-hairline">
+    <div class="max-w-3xl mb-8">
+      <span class="text-xs font-semibold uppercase tracking-wider text-mute" style="font-family: var(--font-mono);">Step-by-Step Math</span>
+      <h2 class="text-2xl sm:text-4xl font-extrabold text-ink tracking-tight mt-1 mb-3">
+        How to Calculate TDEE: Step-by-Step Guide with Formulas
+      </h2>
+      <p class="text-body text-sm sm:text-base leading-relaxed">
+        Calculating your TDEE manually requires two evidence-based steps: calculating your Basal Metabolic Rate (BMR) and applying your Physical Activity Level (PAL) multiplier.
+      </p>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+      <!-- Step 1 -->
+      <div class="bg-canvas-elevated border border-hairline rounded-2xl p-6 flex flex-col gap-3">
+        <div class="flex items-center justify-between">
+          <span class="w-7 h-7 rounded-lg bg-ink text-canvas font-mono font-bold text-xs flex items-center justify-center">01</span>
+          <span class="text-xs font-mono text-mute uppercase font-semibold">Step One</span>
+        </div>
+        <h3 class="text-base font-bold text-ink">Calculate BMR</h3>
+        <p class="text-xs text-body leading-relaxed">
+          Use the clinically validated <strong>Mifflin-St Jeor formula</strong>:
+        </p>
+        <div class="bg-canvas p-3 rounded-xl border border-hairline font-mono text-[11px] text-ink space-y-1">
+          <div><strong>Men:</strong> (10 × wt kg) + (6.25 × ht cm) - (5 × age) + 5</div>
+          <div><strong>Women:</strong> (10 × wt kg) + (6.25 × ht cm) - (5 × age) - 161</div>
+        </div>
+        <p class="text-[11px] text-mute mt-auto">
+          Or use Katch-McArdle if you know your body fat %: BMR = 370 + (21.6 × LBM in kg).
+        </p>
+      </div>
+
+      <!-- Step 2 -->
+      <div class="bg-canvas-elevated border border-hairline rounded-2xl p-6 flex flex-col gap-3">
+        <div class="flex items-center justify-between">
+          <span class="w-7 h-7 rounded-lg bg-ink text-canvas font-mono font-bold text-xs flex items-center justify-center">02</span>
+          <span class="text-xs font-mono text-mute uppercase font-semibold">Step Two</span>
+        </div>
+        <h3 class="text-base font-bold text-ink">Apply Activity Multiplier</h3>
+        <p class="text-xs text-body leading-relaxed">
+          Multiply your BMR by your realistic weekly physical activity level:
+        </p>
+        <div class="bg-canvas p-3 rounded-xl border border-hairline font-mono text-[11px] text-ink space-y-1">
+          <div>• <strong>Sedentary:</strong> BMR × 1.2</div>
+          <div>• <strong>Light Activity:</strong> BMR × 1.375</div>
+          <div>• <strong>Moderate Activity:</strong> BMR × 1.55</div>
+          <div>• <strong>Very Active:</strong> BMR × 1.725</div>
+          <div>• <strong>Extremely Active:</strong> BMR × 1.9</div>
+        </div>
+      </div>
+
+      <!-- Step 3 -->
+      <div class="bg-canvas-elevated border border-hairline rounded-2xl p-6 flex flex-col gap-3">
+        <div class="flex items-center justify-between">
+          <span class="w-7 h-7 rounded-lg bg-ink text-canvas font-mono font-bold text-xs flex items-center justify-center">03</span>
+          <span class="text-xs font-mono text-mute uppercase font-semibold">Step Three</span>
+        </div>
+        <h3 class="text-base font-bold text-ink">Adjust for Your Goal</h3>
+        <p class="text-xs text-body leading-relaxed">
+          Your TDEE output is your maintenance baseline. Adjust intake to meet your objective:
+        </p>
+        <div class="bg-canvas p-3 rounded-xl border border-hairline text-[11px] text-ink space-y-1.5">
+          <div><strong>Weight Loss (Cut):</strong> Subtract 300 to 500 kcal/day (0.5 to 1 lb fat loss/week).</div>
+          <div><strong>Weight Maintenance:</strong> Eat exactly 100% of your TDEE.</div>
+          <div><strong>Muscle Building (Lean Bulk):</strong> Add 200 to 300 kcal/day.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Quick CTA banner -->
+    <div class="bg-canvas-elevated border border-hairline rounded-2xl p-6 flex flex-col sm:flex-row items-center justify-between gap-4">
+      <div>
+        <h4 class="text-sm sm:text-base font-bold text-ink">Don't want to do the math manually?</h4>
+        <p class="text-xs text-mute mt-0.5">Our free TDEE calculator calculates your BMR, TDEE, and optimal protein/fat/carb macros in milliseconds.</p>
+      </div>
+      <a href="#calculator" class="px-5 py-2.5 rounded-xl bg-ink text-canvas font-semibold text-xs whitespace-nowrap hover:opacity-90 transition-opacity shadow-xs">
+        Calculate TDEE Now ↑
+      </a>
+    </div>
+  </section>
+
   <!-- THE 4 PILLARS OF ENERGY EXPENDITURE -->
-  <section id="science" class="max-w-6xl mx-auto px-4 sm:px-6 py-20 border-t border-hairline mt-12">
+  <section id="science" class="max-w-6xl mx-auto px-4 sm:px-6 py-20 border-t border-hairline">
     <div class="max-w-3xl mb-12">
       <span class="text-xs font-semibold uppercase tracking-wider text-mute" style="font-family: var(--font-mono);">Energy Science</span>
       <h2 class="text-3xl font-bold text-ink tracking-tight mt-1 mb-3">The 4 Components of Total Daily Energy Expenditure (TDEE)</h2>
@@ -438,10 +652,10 @@ const faqSchema = {
     <div class="mb-10 text-center max-w-2xl mx-auto">
       <span class="text-xs font-semibold uppercase tracking-wider text-mute" style="font-family: var(--font-mono);">Evidence-Based Energy Science</span>
       <h2 class="text-2xl sm:text-3xl font-extrabold text-ink tracking-tight mt-1 mb-3">
-        The Definitive Guide to Using a Maintenance Calorie Calculator
+        The Definitive Guide to TDEE and Maintenance Calories
       </h2>
       <p class="text-sm text-body leading-relaxed">
-        Everything you need to know about calculating daily energy expenditure, structuring sustainable weight loss deficits, and avoiding common metabolic pitfalls.
+        Everything you need to know about calculating Total Daily Energy Expenditure (TDEE), finding maintenance calories, structuring sustainable weight loss deficits, and avoiding common metabolic pitfalls.
       </p>
     </div>
 
@@ -450,13 +664,26 @@ const faqSchema = {
       <!-- Section 1 -->
       <section class="flex flex-col gap-3">
         <h3 class="text-xl font-bold text-ink tracking-tight">
-          Understanding Your Maintenance Calories: Why Finding Your Baseline Matters
+          Understanding Your Maintenance Calories & TDEE: Why Finding Your Baseline Matters
         </h3>
         <p>
           To master your physical transformation—whether shedding stubborn fat, building lean muscle tissue, or sustaining peak athletic endurance—you must first understand the fundamental law of human energetics: energy balance. A <strong>maintenance calorie calculator</strong> is an engineered nutritional tool designed to pinpoint your Total Daily Energy Expenditure (TDEE). This number represents the precise quantity of caloric energy your body expends over a 24-hour window through cellular respiration, organ function, unconscious movement, food digestion, and physical exercise.
         </p>
         <p>
-          When your daily caloric consumption exactly equals your TDEE, your body maintains biological equilibrium, neither storing new adipose tissue nor catabolizing existing muscle and fat stores. Knowing this baseline is the critical cornerstone of fitness. Without utilizing a scientifically grounded <strong>calorie calculator</strong>, attempting to alter body composition is pure guesswork.
+          When your daily caloric consumption exactly equals your TDEE, your body maintains biological equilibrium, neither storing new adipose tissue nor catabolizing existing muscle and fat stores. Knowing this baseline is the critical cornerstone of fitness. Without utilizing a scientifically grounded <strong>calorie calculator</strong> or <strong>TDEE calc</strong>, attempting to alter body composition is pure guesswork.
+        </p>
+      </section>
+
+      <!-- Section: Why Use Our Free TDEE Calculator -->
+      <section class="flex flex-col gap-3">
+        <h3 class="text-xl font-bold text-ink tracking-tight">
+          Why Use Our Free TDEE Calculator? (Free TDEE Calc vs Inaccurate Trackers)
+        </h3>
+        <p>
+          While fitness trackers and smartwatches offer estimated calorie burns, clinical trials consistently demonstrate that consumer wearables have error rates ranging from 20% to over 80% when measuring daily expenditure. Relying on them often leads to "eating back" phantom calories and wondering why fat loss stalls.
+        </p>
+        <p>
+          Our <strong>free TDEE calculator</strong> solves this by using peer-reviewed metabolic equations tested across clinical trials. By entering your biological metrics, you get an uninflated, realistic baseline of your daily energy burn—with zero subscription fees, email gates, or hidden paywalls.
         </p>
       </section>
 
@@ -573,13 +800,91 @@ const faqSchema = {
       <span class="text-xs font-semibold uppercase tracking-wider text-mute" style="font-family: var(--font-mono);">Evidence-Based Answers</span>
       <h2 class="text-3xl font-bold text-ink tracking-tight mt-1 mb-2">Frequently Asked Questions</h2>
       <p class="text-body text-sm leading-relaxed">
-        Common questions about calculating maintenance calories, structuring weight loss diets, and understanding daily energy expenditure.
+        Common questions about calculating maintenance calories, understanding what is TDEE, structuring weight loss diets, and measuring daily energy expenditure.
       </p>
     </div>
 
     <div class="flex flex-col gap-3.5">
       
-      <!-- FAQ 1 -->
+      <!-- FAQ: What is TDEE / Meaning -->
+      <details class="group bg-canvas-elevated border border-hairline rounded-xl p-5 [&_summary::-webkit-details-marker]:hidden">
+        <summary class="flex cursor-pointer items-center justify-between font-semibold text-ink text-sm sm:text-base">
+          <span>What is TDEE and what is the meaning of TDEE?</span>
+          <span class="transition group-open:rotate-180 text-mute">
+            <svg fill="none" height="20" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" width="20"><path d="M6 9l6 6 6-6"></path></svg>
+          </span>
+        </summary>
+        <p class="text-body mt-3 text-xs sm:text-sm leading-relaxed">
+          TDEE stands for Total Daily Energy Expenditure. The meaning of TDEE is the total number of calories your body burns in a single 24-hour day across all metabolic processes: Basal Metabolic Rate (BMR, 60-70%), Non-Exercise Activity Thermogenesis (NEAT, 15-20%), Exercise Activity Thermogenesis (EAT, 5-10%), and the Thermic Effect of Food (TEF, 8-10%). In nutrition and fitness, your TDEE is identical to your maintenance calories.
+        </p>
+      </details>
+
+      <!-- FAQ: How to calculate TDEE -->
+      <details class="group bg-canvas-elevated border border-hairline rounded-xl p-5 [&_summary::-webkit-details-marker]:hidden">
+        <summary class="flex cursor-pointer items-center justify-between font-semibold text-ink text-sm sm:text-base">
+          <span>How do I calculate TDEE?</span>
+          <span class="transition group-open:rotate-180 text-mute">
+            <svg fill="none" height="20" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" width="20"><path d="M6 9l6 6 6-6"></path></svg>
+          </span>
+        </summary>
+        <p class="text-body mt-3 text-xs sm:text-sm leading-relaxed">
+          To calculate TDEE: First, compute your Basal Metabolic Rate (BMR) using the Mifflin-St Jeor formula: [10 × weight in kg] + [6.25 × height in cm] - [5 × age] + s (+5 for men, -161 for women). Second, multiply your BMR by your Physical Activity Level (PAL) multiplier (1.2 for sedentary, 1.375 for lightly active, 1.55 for moderately active, 1.725 for very active, or 1.9 for extremely active). The result is your daily TDEE (maintenance calories). You can also use our free TDEE calculator above to calculate it instantly.
+        </p>
+      </details>
+
+      <!-- FAQ: Is this TDEE calculator free -->
+      <details class="group bg-canvas-elevated border border-hairline rounded-xl p-5 [&_summary::-webkit-details-marker]:hidden">
+        <summary class="flex cursor-pointer items-center justify-between font-semibold text-ink text-sm sm:text-base">
+          <span>Is this TDEE calculator completely free to use?</span>
+          <span class="transition group-open:rotate-180 text-mute">
+            <svg fill="none" height="20" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" width="20"><path d="M6 9l6 6 6-6"></path></svg>
+          </span>
+        </summary>
+        <p class="text-body mt-3 text-xs sm:text-sm leading-relaxed">
+          Yes, our TDEE calculator is 100% free with no hidden fees, paid subscriptions, or email sign-up requirements. You get unrestricted access to validated Mifflin-St Jeor, Katch-McArdle, and Harris-Benedict algorithms, customized macro distributions, and deficit/surplus caloric targets.
+        </p>
+      </details>
+
+      <!-- FAQ: Difference between TDEE and maintenance calories -->
+      <details class="group bg-canvas-elevated border border-hairline rounded-xl p-5 [&_summary::-webkit-details-marker]:hidden">
+        <summary class="flex cursor-pointer items-center justify-between font-semibold text-ink text-sm sm:text-base">
+          <span>What is the difference between TDEE and maintenance calories?</span>
+          <span class="transition group-open:rotate-180 text-mute">
+            <svg fill="none" height="20" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" width="20"><path d="M6 9l6 6 6-6"></path></svg>
+          </span>
+        </summary>
+        <p class="text-body mt-3 text-xs sm:text-sm leading-relaxed">
+          TDEE (Total Daily Energy Expenditure) and maintenance calories refer to the exact same caloric figure. TDEE is the physiological term describing total daily energy burn, while maintenance calories is the dietary term describing the daily caloric intake needed to match that expenditure and keep your body weight unchanged.
+        </p>
+      </details>
+
+      <!-- FAQ: BMR vs TDEE -->
+      <details class="group bg-canvas-elevated border border-hairline rounded-xl p-5 [&_summary::-webkit-details-marker]:hidden">
+        <summary class="flex cursor-pointer items-center justify-between font-semibold text-ink text-sm sm:text-base">
+          <span>What is the difference between BMR and TDEE?</span>
+          <span class="transition group-open:rotate-180 text-mute">
+            <svg fill="none" height="20" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" width="20"><path d="M6 9l6 6 6-6"></path></svg>
+          </span>
+        </summary>
+        <p class="text-body mt-3 text-xs sm:text-sm leading-relaxed">
+          BMR (Basal Metabolic Rate) is the baseline number of calories required to sustain involuntary biological life at complete rest (brain function, heart beating, respiration). TDEE (Total Daily Energy Expenditure) is your BMR plus all calories burned through daily movement, digestion, and structured exercise. TDEE is always higher than BMR, and you should avoid consuming fewer calories than your BMR for extended periods.
+        </p>
+      </details>
+
+      <!-- FAQ: Accuracy of free TDEE calc -->
+      <details class="group bg-canvas-elevated border border-hairline rounded-xl p-5 [&_summary::-webkit-details-marker]:hidden">
+        <summary class="flex cursor-pointer items-center justify-between font-semibold text-ink text-sm sm:text-base">
+          <span>How accurate is this free TDEE calc?</span>
+          <span class="transition group-open:rotate-180 text-mute">
+            <svg fill="none" height="20" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" width="20"><path d="M6 9l6 6 6-6"></path></svg>
+          </span>
+        </summary>
+        <p class="text-body mt-3 text-xs sm:text-sm leading-relaxed">
+          Our free TDEE calc is accurate within ±5% for the vast majority of healthy adults when using the Mifflin-St Jeor formula. When using the Katch-McArdle formula with a known body fat percentage, precision increases even further because it measures metabolically active Lean Body Mass rather than gross body weight.
+        </p>
+      </details>
+
+      <!-- FAQ 1 (Original) -->
       <details class="group bg-canvas-elevated border border-hairline rounded-xl p-5 [&_summary::-webkit-details-marker]:hidden">
         <summary class="flex cursor-pointer items-center justify-between font-semibold text-ink text-sm sm:text-base">
           <span>what is my calorie maintenance calculator?</span>
